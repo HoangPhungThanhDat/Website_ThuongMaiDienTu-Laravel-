@@ -82,8 +82,8 @@
                                     <input type="number" value="" name="pricesale" id="pricesale" class="form-control">
                                 </div>
                                 <div class="mb-3">
-                                    <label for="qty">Số lượng</label>
-                                    <input type="number" value="" name="qty" id="qty" class="form-control">
+                                    <label for="quantity">Số lượng kho</label>
+                                    <input type="number" value="" name="quantity" id="quantity" class="form-control">
                                 </div>
                                 <div class="mb-3">
                                     <label for="image">Hình</label>

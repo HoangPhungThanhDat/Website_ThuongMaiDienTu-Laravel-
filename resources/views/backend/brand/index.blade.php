@@ -78,6 +78,8 @@
                                     <th style="width: 90px;" class="text-center">Hình</th>
                                     <th>Tên Thương Hiệu</th>
                                     <th>Slug</th>
+                                    <th>Created_at</th>
+                                    <th>Updated_at</th>
                                     <th style="width: 180px;" class="text-center">Chức Năng</th>
                                     <th style="width: 30px;" class="text-center">ID</th>
                                 </tr>
@@ -94,6 +96,8 @@
                                         </td>
                                         <td>{{ $row->name }}</td>
                                         <td>{{ $row->slug }}</td>
+                                        <td class="text-center">{{ $row->created_at }}</td>
+                                        <td class="text-center">{{ $row->updated_at }}</td>
                                         <td class="text-center">
                                             @php
                                                 $argrs = ['id' => $row->id];

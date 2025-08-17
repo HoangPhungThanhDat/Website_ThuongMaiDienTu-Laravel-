@@ -196,6 +196,9 @@ Route::prefix("post")->group(function(){
     Route::get('restore/{id}', [PostController::class,'restore'])->name('admin.post.restore');
     Route::delete('destroy/{id}', [PostController::class,"destroy"])->name('admin.post.destroy');
 
+
+    Route::post('order/{id}/done', [OrderController::class, 'done'])->name('admin.order.done');
+
     });
 
 // 8.topic

@@ -18,28 +18,12 @@ class ContactController extends Controller
     {
        
         $list= Contact::where('status','!=',0)
-        ->select("id","name","email","phone","status","title")
+        ->select("id","name","email","phone","status","title", "created_at", "updated_at")
         ->orderBy('created_at','DESC')
         ->get();
         
 
         return view("backend.contact.index",compact('list'));
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
     }
 
     /**

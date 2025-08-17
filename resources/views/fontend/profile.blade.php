@@ -38,9 +38,6 @@
                             <p class="font-semibold text-sm leading-tight">{{ $user->name }}</p>
                             <p class="text-gray-500 text-xs leading-tight">{{ $user->phone ?? 'Chưa cập nhật' }}</p>
                         </div>
-                        <a class="text-blue-600 text-sm hover:underline" href="#">
-                            Xem hồ sơ
-                        </a>
                     </div>
                     <div class="bg-red-50 rounded-md p-3 flex items-center space-x-3">
                         <div class="flex-1 text-xs text-gray-700 leading-tight">
@@ -59,7 +56,8 @@
 
                 <!-- Navigation menu with Bootstrap Tabs -->
                 <div class="bg-white rounded-lg p-4 shadow-sm nav flex-column nav-pills" role="tablist" aria-orientation="vertical">
-                    <a class="nav-link active text-dark" data-bs-toggle="pill" href="#orders" role="tab"><i class="fas fa-box-open"></i> Đơn hàng của tôi</a>
+                    <a class="nav-link active text-dark" data-bs-toggle="pill" href="#profile" role="tab"><i class="fas fa-user"></i> Thông tin cá nhân </a>
+                    <a class="nav-link text-dark" data-bs-toggle="pill" href="#orders" role="tab"><i class="fas fa-box-open"></i> Đơn hàng của tôi</a>
                     <a class="nav-link text-dark" data-bs-toggle="pill" href="#services" role="tab"><i class="fas fa-file-invoice-dollar"></i> Dịch vụ thu hộ</a>
                     <a class="nav-link text-dark" data-bs-toggle="pill" href="#loyalty" role="tab"><i class="fas fa-heart"></i> Khách hàng thân thiết</a>
                     <a class="nav-link text-dark" data-bs-toggle="pill" href="#addresses" role="tab"><i class="fas fa-map-marker-alt"></i> Sổ địa chỉ</a>
@@ -73,7 +71,7 @@
 
             <!-- Right content area (tab content) -->
             <div class="tab-content flex-1 mt-6 md:mt-0">
-                <div class="tab-pane fade show active" id="orders" role="tabpanel">
+                <div class="tab-pane fade show active" id="profile" role="tabpanel">
                     <h2 class="text-xl font-bold mb-4"  >
                         Thông tin cá nhân
                     </h2>
@@ -174,6 +172,12 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="orders" role="tabpanel">
+                    <div class="bg-white rounded-lg p-6 shadow-sm">
+                        <h2 class="text-xl font-bold mb-4">thông tin đơn hàng của tôi</h2>
+                        <p>Thông tin các đơn hàng đã đặt </p>
                     </div>
                 </div>
                 <div class="tab-pane fade" id="services" role="tabpanel">

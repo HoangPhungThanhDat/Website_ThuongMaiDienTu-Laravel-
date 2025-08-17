@@ -135,14 +135,14 @@
     </footer>
 
     <script src="{{ asset('bootstrap/js/bootstrap.bundle.min.js') }}"></script>
-    <script>
+    {{-- <script>
         document.addEventListener("DOMContentLoaded", function() {
             AOS.init({
                 duration: 1200,
                 once: true
             });
         });
-    </script>
+    </script> --}}
     <script src="{{ asset('js/layoutside.js') }}"></script>
     @yield('footer')
 </body>

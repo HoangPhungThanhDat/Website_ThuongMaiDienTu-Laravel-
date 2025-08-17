@@ -56,10 +56,17 @@
                                 <td>{{ $topic->created_at}}</td>
                             </tr>
                             <tr>
+                                <td>Updated_At</td>
+                                <td>{{ $topic->updated_at}}</td>
+                            </tr>
+                            <tr>
                                 <td>Created_By</td>
                                 <td>{{ $topic->created_by}}</td>
                             </tr>                           
                             <tr>
+                                <td>Updated_By</td>
+                                <td>{{ $topic->updated_by}}</td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>

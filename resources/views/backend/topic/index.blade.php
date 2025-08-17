@@ -1,7 +1,5 @@
 @extends('layouts.admin')
-
 @section('title','Quản Lý Chủ Đề')
-
 @section('maincontent')
     <section class="content-header">
         <div class="container-fluid">
@@ -72,9 +70,10 @@
                             <thead>
                                 <tr>
                                     <th style="width: 30px;" class="text-center">#</th>
-                                 
                                     <th>Tên Chủ Đề</th>
                                     <th>Slug</th>
+                                    <th>Created_at</th>
+                                    <th>Updated_at</th>
                                     <th style="width: 180px;" class="text-center">Chức Năng</th>
                                     <th style="width: 30px;" class="text-center">ID</th>
                                 </tr>
@@ -88,6 +87,8 @@
                                        
                                         <td>{{ $row->name }}</td>
                                         <td>{{ $row->slug }}</td>
+                                        <td class="text-center">{{ $row->created_at }}</td>
+                                        <td class="text-center">{{ $row->updated_at }}</td>
                                         <td class="text-center">
                                             @php
                                                 $argrs = ['id' => $row->id];

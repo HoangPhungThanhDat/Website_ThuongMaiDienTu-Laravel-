@@ -36,6 +36,7 @@
               <th>Điện thoại</th>
               <th>Email</th>
               <th>Ngày tạo</th>
+              <th class="text-center">Trạng thái</th>
               <th class="text-center" style="width:200px;">Chức năng</th>
               <th class="text-center" style="width:30px;">ID</th>
             </tr>
@@ -50,8 +51,17 @@
               <td>{{$row->delivery_phone}}</td>
               <td>{{$row->delivery_email}}</td>
               <td>{{$row->created_at}}</td>
-  
-        
+              <td>
+                @if ($row->status == 1)
+                    <span class="badge badge-success">Đã xác nhận</span>
+                @elseif($row->status == 2)
+                    <span class="badge badge-info">Đang giao</span>
+                @elseif($row->status == 3)
+                    <span class="badge badge-primary">Hoàn thành</span>
+                @else
+                    <span class="badge badge-danger">Hủy</span>
+                @endif
+              </td>
               <td  class="text-center">
                 @php
                     $args=['id'=>$row->id];

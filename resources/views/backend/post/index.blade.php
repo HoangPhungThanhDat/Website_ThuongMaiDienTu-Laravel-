@@ -38,7 +38,10 @@
                       <th class="text-center" style="width:90px;">Hình</th>
                       <th>Tiêu đề bài viết</th>
                       <th>Chủ đề</th>
+                      <th>Slug</th>
                       <th>Kiểu</th>
+                      <th>Created_at</th>
+                      <th>Updated_at</th>
                       <th class="text-center" style="width:200px;">Chức năng</th>
                       <th class="text-center" style="width:30px;">ID</th>
                   </tr>
@@ -54,11 +57,10 @@
                  
                   <td>{{$row->title}}</td>               
                   <td>{{$row->topicname}}</td>
+                  <td>{{$row->slug}}</td>
                   <td>{{$row->type}}</td> 
-                          
-                 
-                  
-            
+                  <td class="text-center">{{ $row->created_at }}</td>
+                  <td class="text-center">{{ $row->updated_at }}</td>
                   <td  class="text-center">
                     @php
                         $args=['id'=>$row->id];

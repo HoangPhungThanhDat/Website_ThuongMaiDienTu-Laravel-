@@ -31,24 +31,25 @@
         <table class="table table-bordered table-hover">
             <thead>
               <tr>
-                <th style="width:30px;" class="text-center">#</th>
-              
-             
-                <th> Tên Chủ Đề </th>
+                <th style="width: 30px;" class="text-center">#</th>
+                <th>Tên Chủ Đề</th>
                 <th>Slug</th>
-                <th style="width:180px;" class="text-center">Chức Năng</th>
-                <th style="width:30px;" class="text-center">ID</th>
-              </tr>
+                <th>Created_at</th>
+                <th>Updated_at</th>
+                <th style="width: 180px;" class="text-center">Chức Năng</th>
+                <th style="width: 30px;" class="text-center">ID</th>
+            </tr>
             </thead>
             <tbody>
               @foreach ($list as $row)
               <tr>
                 <td  class="text-center">
-                  <input type="checkbox" name="checkId[]" id="checkId" value="1"></td>
-              
+                  <input type="checkbox" name="checkId[]" id="checkId" value="1">
+                </td>
                 <td>{{$row->name}}</td>
                 <td>{{$row->slug}}</td>
-          
+                <td class="text-center">{{ $row->created_at }}</td>
+                <td class="text-center">{{ $row->updated_at }}</td>
                 <td  class="text-center">
                   @php
                       $args=['id'=>$row->id];
