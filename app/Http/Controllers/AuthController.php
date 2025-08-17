@@ -2,15 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use App\Models\User; // Import model User
+use Illuminate\Support\Facades\Auth; // Import model User
 use Illuminate\Support\Facades\Hash; // Import Hash để mã hóa mật khẩu
+
 class AuthController extends Controller
 {
     public function getlogin()
     {
-        return view("login");
+        return view('login');
     }
 
     public function dologin(Request $request)
@@ -18,14 +19,14 @@ class AuthController extends Controller
         // Lấy thông tin từ form đăng nhập
         $credentials = [
             'password' => $request->password,
-            'status' => 1
+            'status' => 1,
         ];
 
         // Kiểm tra nếu username là email hợp lệ thì đăng nhập bằng email, ngược lại đăng nhập bằng username
         if (filter_var($request->username, FILTER_VALIDATE_EMAIL)) {
-            $credentials["email"] = $request->username;
+            $credentials['email'] = $request->username;
         } else {
-            $credentials["username"] = $request->username;
+            $credentials['username'] = $request->username;
         }
 
         // Thử đăng nhập
@@ -39,19 +40,19 @@ class AuthController extends Controller
             return redirect()->route('website.getlogin')->with('error', 'Tên đăng nhập hoặc mật khẩu không đúng!');
         }
     }
-    function logout()
+
+    public function logout()
     {
 
         Auth::logout();
+
         return redirect()->route('site.home');
     }
-
-
 
     // Hiển thị form đăng ký
     public function getregister()
     {
-        return view("register");
+        return view('register');
     }
 
     // Xử lý đăng ký

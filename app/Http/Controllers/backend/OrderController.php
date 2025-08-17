@@ -3,11 +3,9 @@
 namespace App\Http\Controllers\backend;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Http\Requests\UpdateOrderRequest;
 use App\Models\Order;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Str;
-use App\Http\Requests\UpdateOrderRequest;
 
 class OrderController extends Controller
 {
@@ -19,21 +17,20 @@ class OrderController extends Controller
         $list = Order::where('order.status', '!=', 0)
             ->join('orderdetail', 'order.id', '=', 'orderdetail.order_id')
             ->join('product', 'orderdetail.product_id', '=', 'product.id')
-            ->select("order.id","order.type", "order.delivery_name", "order.delivery_email", "order.delivery_phone", "order.status", "order.created_at", "product.name as productname", "orderdetail.qty as productqty", "orderdetail.price as productprice")
+            ->select('order.id', 'order.type', 'order.delivery_name', 'order.delivery_email', 'order.delivery_phone', 'order.status', 'order.created_at', 'product.name as productname', 'orderdetail.qty as productqty', 'orderdetail.price as productprice')
             ->orderBy('created_at', 'DESC')
             ->get();
-        return view("backend.order.index", compact('list'));
-    }
 
+        return view('backend.order.index', compact('list'));
+    }
 
     /**
      * Display the specified resource.
      */
-
     public function show(string $id)
     {
         $order = Order::find($id);
-        if ($order == NULL) {
+        if ($order == null) {
             return redirect()->route('admin.order.index');
         }
 
@@ -41,13 +38,13 @@ class OrderController extends Controller
             ->join('product', 'orderdetail.product_id', '=', 'product.id')
             ->where('order.id', $id) // chỉ lấy sản phẩm của đơn này
             ->select(
-                "product.name as productname",
-                "orderdetail.qty as productqty",
-                "orderdetail.price as productprice"
+                'product.name as productname',
+                'orderdetail.qty as productqty',
+                'orderdetail.price as productprice'
             )
             ->get();
 
-        return view("backend.order.show", compact("list", "order"));
+        return view('backend.order.show', compact('list', 'order'));
     }
 
     /**
@@ -60,10 +57,11 @@ class OrderController extends Controller
             return redirect()->route('admin.order.index');
         }
         $list = order::where('status', '!=', 0)
-            ->select("id", "delivery_name", "delivery_email", "delivery_phone", "status", "created_at")
+            ->select('id', 'delivery_name', 'delivery_email', 'delivery_phone', 'status', 'created_at')
             ->orderBy('created_at', 'DESC')
             ->get();
-        return view("backend.order.edit", compact("list", "order"));
+
+        return view('backend.order.edit', compact('list', 'order'));
     }
 
     /**
@@ -82,6 +80,7 @@ class OrderController extends Controller
         $order->updated_at = date('Y-m-d H:i:s');
         $order->updated_by = Auth::id() ?? 1;
         $order->save();
+
         return redirect()->route('admin.order.index');
     }
 
@@ -95,8 +94,10 @@ class OrderController extends Controller
             return redirect()->route('admin.order.index');
         }
         $order->delete();
+
         return redirect()->route('admin.order.trash');
     }
+
     public function status(string $id)
     {
         $order = Order::find($id);
@@ -107,8 +108,10 @@ class OrderController extends Controller
         $order->updated_at = date('Y-m-d H:i:s'); //ngày hệ thống
         $order->updated_by = Auth::id() ?? 1; //id quản trị
         $order->save();
+
         return redirect()->route('admin.order.index');
     }
+
     public function delete(string $id)
     {
         $order = Order::find($id);
@@ -120,17 +123,20 @@ class OrderController extends Controller
         $order->updated_by = Auth::id() ?? 1; //id quản trị
 
         $order->save();
+
         return redirect()->route('admin.order.index');
     }
+
     public function trash()
     {
         $list = Order::where('status', '=', 0)
-            ->select("id", "delivery_name", "delivery_email", "delivery_phone", "status", "created_at")
+            ->select('id', 'delivery_name', 'delivery_email', 'delivery_phone', 'status', 'created_at')
             ->orderBy('created_at', 'DESC')
             ->get();
 
-        return view("backend.order.trash", compact("list"));
+        return view('backend.order.trash', compact('list'));
     }
+
     public function restore(string $id)
     {
         $order = Order::find($id);
@@ -142,9 +148,9 @@ class OrderController extends Controller
         $order->updated_by = Auth::id() ?? 1; //id quản trị
 
         $order->save();
+
         return redirect()->route('admin.order.trash');
     }
-
 
     public function done($id)
     {

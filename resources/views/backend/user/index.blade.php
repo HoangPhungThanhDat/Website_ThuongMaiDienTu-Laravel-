@@ -40,11 +40,12 @@
                       <th>Điện thoại</th>
                       <th>Email</th>
                       <th>Quyền</th>
+                      <th>Created_at</th>
+                      <th>Updated_at</th>
                       <th class="text-center" style="width:200px;">Chức năng</th>
                       <th class="text-center" style="width:30px;">ID</th>
                   </tr>
               </thead>
-          
               <tbody>
                 @foreach ($list as $row)
                 <tr>
@@ -58,7 +59,8 @@
                   <td>{{$row->phone}}</td>
                   <td>{{$row->email}}</td>
                   <td>{{$row->roles}}</td>
-
+                  <td>{{$row->created_at}}</td>
+                  <td>{{$row->updated_at}}</td>
                   <td  class="text-center">
                     @php
                     $args=['id'=>$row->id];
@@ -71,11 +73,7 @@
                  <a href="{{route('admin.user.status',$args)}}" class="btn btn-sm btn-danger"> 
                    <i class="fa fa-toggle-off " aria-hidden="true"></i>
                  </a>
-    
-    
                  @endif
-    
-                
                 <a href="{{route('admin.user.show',$args)}}" class="btn btn-sm btn-info"> 
                   <i class="fa fa-eye " aria-hidden="true"></i>
                 </a>

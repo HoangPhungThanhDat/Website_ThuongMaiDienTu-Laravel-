@@ -8,18 +8,17 @@ use Illuminate\View\Component;
 
 class PostCard extends Component
 {
-    
-    public $post_row=null;
+    public $post_row = null;
+
     public function __construct($postitem)
     {
-        $this-> post_row=$postitem;
+        $this->post_row = $postitem;
     }
 
-   
     public function render(): View|Closure|string
     {
-        $post= $this->post_row;
-        return view('components.post-card',compact('post'));
+        $post = $this->post_row;
+
+        return view('components.post-card', compact('post'));
     }
 }
-

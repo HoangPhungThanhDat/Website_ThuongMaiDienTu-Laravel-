@@ -38,14 +38,14 @@
 //                         array_push($listcatid,$cat2->id);
 //                         $listcat3=Category::where([ ['parent_id','=',$cat2->id],['status','=',1]])
 //                         ->select("id")->get();
-        
+
 //                         if(count($listcat3)>0)
 //                         {
 //                             foreach($listcat3 as $cat3)
 //                             {
 //                                 array_push($listcatid,$cat3->id);
 //                             }
-        
+
 //                         }
 //                     }
 
@@ -61,16 +61,13 @@
 //     }
 // }
 
-
-
-
 namespace App\View\Components;
 
+use App\Models\Category;
+use App\Models\Product;
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
-use App\Models\Product;
-use App\Models\Category;
 
 class ProductCategory extends Component
 {

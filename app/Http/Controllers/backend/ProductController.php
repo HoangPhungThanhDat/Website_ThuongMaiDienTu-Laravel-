@@ -3,15 +3,14 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
-use App\Models\Product;
-use App\Models\Category;
-use App\Models\Brand;
-use Illuminate\Http\Request;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
+use App\Models\Brand;
+use App\Models\Category;
+use App\Models\Product;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
-use Carbon\Carbon;
 
 class ProductController extends Controller
 {
@@ -24,22 +23,23 @@ class ProductController extends Controller
             ->join('category', 'product.category_id', '=', 'category.id')
             ->join('brand', 'product.brand_id', '=', 'brand.id')
             ->select(
-                "product.id",
-                "product.name",
-                "product.image",
-                "product.status",
-                "product.price",
-                "product.pricesale",
-                "product.quantity",
-                "product.created_at",
-                "product.updated_at",
-                "product.slug",
-                "category.name as categoryname",
-                "brand.name as brandname"
+                'product.id',
+                'product.name',
+                'product.image',
+                'product.status',
+                'product.price',
+                'product.pricesale',
+                'product.quantity',
+                'product.created_at',
+                'product.updated_at',
+                'product.slug',
+                'category.name as categoryname',
+                'brand.name as brandname'
             )
             ->orderBy('product.created_at', 'desc')
             ->get();
-        return view("backend.product.index", compact('list'));
+
+        return view('backend.product.index', compact('list'));
     }
 
     /**
@@ -50,7 +50,7 @@ class ProductController extends Controller
         $categories = Category::all();
         $brands = Brand::all();
 
-        return view("backend.product.create", compact("categories", "brands"));
+        return view('backend.product.create', compact('categories', 'brands'));
     }
 
     /**
@@ -60,7 +60,7 @@ class ProductController extends Controller
     {
         $product = new Product();
 
-        // Tên trường || tên của thẻ input name  
+        // Tên trường || tên của thẻ input name
         $product->name = $request->name;
         $product->slug = Str::of($request->name)->slug('-');
         $product->description = $request->description;
@@ -73,18 +73,19 @@ class ProductController extends Controller
         $product->pricesale = $request->pricesale;
         //Upload file
         if ($request->image) {
-            $exten = $request->file("image")->extension();
+            $exten = $request->file('image')->extension();
             //Lấy đuôi file
-            if (in_array($exten, ["png", "jpg", "jpeg", "gif", "webp"])) {
-                $filename = $product->slug . "." . $exten;
-                $request->image->move(public_path("images/products"), $filename);
+            if (in_array($exten, ['png', 'jpg', 'jpeg', 'gif', 'webp'])) {
+                $filename = $product->slug.'.'.$exten;
+                $request->image->move(public_path('images/products'), $filename);
                 $product->image = $filename;
             }
         }
 
         $product->created_at = date('Y-m-d H:i:s');
-        $product->created_by = Auth::id() ?? 1; //Id của người quản trị    
+        $product->created_by = Auth::id() ?? 1; //Id của người quản trị
         $product->save();
+
         return redirect()->route('admin.product.index');
     }
 
@@ -94,9 +95,10 @@ class ProductController extends Controller
     public function show(string $id)
     {
         $product = Product::find($id);
-        if (!$product) {
+        if (! $product) {
             return redirect()->route('admin.product.index');
         }
+
         return view('backend.product.show', compact('product'));
     }
 
@@ -106,14 +108,14 @@ class ProductController extends Controller
     public function edit(string $id)
     {
         $product = Product::find($id);
-        if (!$product) {
+        if (! $product) {
             return redirect()->route('admin.product.index');
         }
 
         $categories = Category::all();
         $brands = Brand::all();
 
-        return view("backend.product.edit", compact("product", "categories", "brands"));
+        return view('backend.product.edit', compact('product', 'categories', 'brands'));
     }
 
     /**
@@ -122,8 +124,9 @@ class ProductController extends Controller
     public function update(UpdateProductRequest $request, string $id)
     {
         $product = Product::find($id);
-        if ($product == NULL)
+        if ($product == null) {
             return redirect()->route('admin.product.index');
+        }
 
         $product->name = $request->name;
         $product->slug = Str::of($request->name)->slug('-');
@@ -138,18 +141,17 @@ class ProductController extends Controller
 
         //Upload file
         if ($request->image) {
-            $exten = $request->file("image")->extension();
+            $exten = $request->file('image')->extension();
             //Lấy đuôi file
-            if (in_array($exten, ["png", "jpg", "jpeg", "gif", "webp"])) {
-                $filename = $product->slug . "." . $exten;
-                $request->image->move(public_path("images/products"), $filename);
+            if (in_array($exten, ['png', 'jpg', 'jpeg', 'gif', 'webp'])) {
+                $filename = $product->slug.'.'.$exten;
+                $request->image->move(public_path('images/products'), $filename);
                 $product->image = $filename;
             }
         }
 
         $product->updated_at = date('Y-m-d H:i:s');
         $product->updated_by = Auth::id() ?? 1; //Id của người quản trị
-
 
         // Lưu vào csdl
         $product->save();
@@ -164,14 +166,11 @@ class ProductController extends Controller
      */
     // xóa vĩnh viễn trongg thùng rác
     public function destroy(string $id)
-
-
     {
         $product = Product::find($id);
         if ($product == null) {
             return redirect()->route('admin.product.index');
         }
-
 
         // Cập nhật thời gian và người cập nhật
         $product->updated_at = Carbon::now();
@@ -185,14 +184,13 @@ class ProductController extends Controller
         return redirect()->route('admin.product.index');
     }
 
-
     /**
      * Toggle product status between active and inactive.
      */
     public function status(string $id)
     {
         $product = Product::find($id);
-        if (!$product) {
+        if (! $product) {
             return redirect()->route('admin.product.index');
         }
 
@@ -202,8 +200,7 @@ class ProductController extends Controller
         return redirect()->route('admin.product.index')->with('success', 'Cập nhật trạng thái sản phẩm thành công.');
     }
 
-
-    // xóa sản phẩm 
+    // xóa sản phẩm
     public function delete(string $id)
     {
         $product = Product::find($id);
@@ -223,7 +220,6 @@ class ProductController extends Controller
         // Chuyển hướng trang
         return redirect()->route('admin.product.index');
     }
-
 
     // thùng rác
     public function trash()
@@ -248,7 +244,7 @@ class ProductController extends Controller
             ->orderBy('product.created_at', 'DESC')
             ->get();
 
-        return view("backend.product.trash", compact("list"));
+        return view('backend.product.trash', compact('list'));
     }
 
     // khôi phục sản phẩm
@@ -263,6 +259,7 @@ class ProductController extends Controller
         $product->updated_by = Auth::id() ?? 1; //id quản trị
 
         $product->save();
+
         return redirect()->route('admin.product.trash');
     }
 }

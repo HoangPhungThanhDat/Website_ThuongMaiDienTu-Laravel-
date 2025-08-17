@@ -82,6 +82,8 @@
                                 <th>Tên banner</th>
                                 <th>Liên kết</th>
                                 <th>Vị trí</th>
+                                <th>Created_at</th>
+                                <th>Updated_at</th>
                                 <th class="text-center" style="width:200px;">Chức năng</th>
                                 <th class="text-center" style="width:30px;">ID</th>
                             </tr>
@@ -99,6 +101,8 @@
                                     <td>{{ $row->name }}</td>
                                     <td>{{ $row->link }}</td>
                                     <td>{{ $row->position }}</td>
+                                    <td>{{ $row->created_at }}</td>
+                                    <td>{{ $row->updated_at }}</td>
                                     <td class="text-center">
                                         @php
                                             $argrs = ['id' => $row->id];

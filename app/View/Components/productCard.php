@@ -9,9 +9,10 @@ use Illuminate\View\Component;
 class productCard extends Component
 {
     public $product_row = null;
+
     public function __construct($productitem)
     {
-       $this->product_row = $productitem;
+        $this->product_row = $productitem;
     }
 
     /**
@@ -19,12 +20,8 @@ class productCard extends Component
      */
     public function render(): View|Closure|string
     {
-        $product= $this->product_row;
-        return view('components.product-card',compact('product'));
+        $product = $this->product_row;
+
+        return view('components.product-card', compact('product'));
     }
 }
-
-
-
-
-

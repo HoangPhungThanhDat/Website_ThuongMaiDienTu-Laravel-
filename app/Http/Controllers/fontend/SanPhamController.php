@@ -3,11 +3,9 @@
 namespace App\Http\Controllers\fontend;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use App\Models\Product;
-use App\Models\Category;
 use App\Models\Brand;
-
+use App\Models\Category;
+use App\Models\Product;
 
 class SanPhamController extends Controller
 {
@@ -29,11 +27,11 @@ class SanPhamController extends Controller
     {
         $listcatid = [];
         array_push($listcatid, $rowid);
-        $list1 = Category::where([['parent_id', '=', $rowid], ['status', '=', 1]])->select("id")->get();
+        $list1 = Category::where([['parent_id', '=', $rowid], ['status', '=', 1]])->select('id')->get();
         if (count($list1) > 0) {
             foreach ($list1 as $row1) {
                 array_push($listcatid, $row1->id);
-                $list2 = Category::where([['parent_id', '=', $row1->id], ['status', '=', 1]])->select("id")->get();
+                $list2 = Category::where([['parent_id', '=', $row1->id], ['status', '=', 1]])->select('id')->get();
                 if (count($list2) > 0) {
                     foreach ($list2 as $row2) {
                         array_push($listcatid, $row2->id);
@@ -44,13 +42,14 @@ class SanPhamController extends Controller
 
         return $listcatid;
     }
+
     //product category
     public function category($slug)
     {
         // Tìm danh mục theo slug
         $category = Category::where('slug', $slug)->where('status', 1)->first();
 
-        if (!$category) {
+        if (! $category) {
             abort(404, 'Danh mục không tồn tại');
         }
 
@@ -81,7 +80,6 @@ class SanPhamController extends Controller
             ->limit(10)
             ->get();
 
-
         return view('fontend.product_detail', compact('product', 'list_product'));
     }
 
@@ -90,11 +88,11 @@ class SanPhamController extends Controller
     {
         $listcatid = [];
         array_push($listcatid, $rowid);
-        $list1 = Brand::where([['sort_order', '=', $rowid], ['status', '=', 1]])->select("id")->get();
+        $list1 = Brand::where([['sort_order', '=', $rowid], ['status', '=', 1]])->select('id')->get();
         if (count($list1) > 0) {
             foreach ($list1 as $row1) {
                 array_push($listcatid, $row1->id);
-                $list2 = Brand::where([['sort_order', '=', $rowid], ['status', '=', 1]])->select("id")->get();
+                $list2 = Brand::where([['sort_order', '=', $rowid], ['status', '=', 1]])->select('id')->get();
                 if (count($list2) > 0) {
                     foreach ($list2 as $row2) {
                         array_push($listcatid, $row2->id);
@@ -105,10 +103,11 @@ class SanPhamController extends Controller
 
         return $listcatid;
     }
+
     //lay san pham theo thuong hieu
     public function brand($slug)
     {
-        $row = Brand::where([['slug', '=', $slug], ['status', '=', 1]])->select("id", "name", "slug")->first();
+        $row = Brand::where([['slug', '=', $slug], ['status', '=', 1]])->select('id', 'name', 'slug')->first();
         $listcatid = [];
         if ($row != null) {
             $listcatid = $this->getlistbrandid($row->id);

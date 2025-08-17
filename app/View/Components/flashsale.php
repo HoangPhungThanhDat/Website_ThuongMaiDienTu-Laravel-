@@ -2,11 +2,11 @@
 
 namespace App\View\Components;
 
+use App\Models\Product;
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
-use App\Models\Product;
-    
+
 class flashsale extends Component
 {
     /**
@@ -22,9 +22,10 @@ class flashsale extends Component
      */
     public function render(): View|Closure|string
     {
-        $product_flash_sale=Product::where([['status','=',1],['pricesale','>',0]])
-        ->orderBy('created_at','desc')
-        ->limit(8)->get();
-        return view('components.flash-sale',compact('product_flash_sale'));
+        $product_flash_sale = Product::where([['status', '=', 1], ['pricesale', '>', 0]])
+            ->orderBy('created_at', 'desc')
+            ->limit(8)->get();
+
+        return view('components.flash-sale', compact('product_flash_sale'));
     }
 }

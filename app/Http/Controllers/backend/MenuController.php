@@ -1,19 +1,16 @@
 <?php
 
-
 namespace App\Http\Controllers\backend;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\UpdateMenuRequest;
+use App\Models\Brand;
+use App\Models\Category;
+use App\Models\Menu;
+use App\Models\Post;
+use App\Models\Topic;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Models\Menu;
-use Illuminate\Support\Str;
-use App\Http\Requests\StoreMenuRequest;
-use App\Http\Requests\UpdateMenuRequest;
-use App\Models\Category;
-use App\Models\Brand;
-use App\Models\Topic;
-use App\Models\Post;
 
 class MenuController extends Controller
 {
@@ -21,42 +18,44 @@ class MenuController extends Controller
 
     public function index()
     {
-        $list = Menu::where('status','!=',0)
-            ->select("id","name","link","sort_order","parent_id","status","type","position")
-            ->orderBy('created_at','desc')
+        $list = Menu::where('status', '!=', 0)
+            ->select('id', 'name', 'link', 'sort_order', 'parent_id', 'status', 'type', 'position')
+            ->orderBy('created_at', 'desc')
             ->get();
-        $list_category = Category::where('status','!=',0)
-            ->select("id","name")
-            ->orderBy('created_at','desc')
+        $list_category = Category::where('status', '!=', 0)
+            ->select('id', 'name')
+            ->orderBy('created_at', 'desc')
             ->get();
-        $list_brand = Brand::where('status','!=',0)
-            ->select("id","name")
-            ->orderBy('created_at','desc')
+        $list_brand = Brand::where('status', '!=', 0)
+            ->select('id', 'name')
+            ->orderBy('created_at', 'desc')
             ->get();
-        $list_topic = Topic::where('status','!=',0)
-            ->select("id","name")
-            ->orderBy('created_at','desc')
+        $list_topic = Topic::where('status', '!=', 0)
+            ->select('id', 'name')
+            ->orderBy('created_at', 'desc')
             ->get();
-        $list_page = Post::where([['status','!=',0], ['type','=','page']])
-            ->select("id","title")
-            ->orderBy('created_at','desc')
+        $list_page = Post::where([['status', '!=', 0], ['type', '=', 'page']])
+            ->select('id', 'title')
+            ->orderBy('created_at', 'desc')
             ->get();
-        $htmltopicid = "";
-        foreach($list as $row){
-            $htmltopicid .= "<option value='" . $row->id . "'>" . $row->name . "</option>";
+        $htmltopicid = '';
+        foreach ($list as $row) {
+            $htmltopicid .= "<option value='".$row->id."'>".$row->name.'</option>';
         }
-        return view("backend.menu.index",compact("list", "list_category", "list_brand", "list_topic", "list_page", "htmltopicid"));
+
+        return view('backend.menu.index', compact('list', 'list_category', 'list_brand', 'list_topic', 'list_page', 'htmltopicid'));
     }
 
     //trash
 
     public function trash()
     {
-        $list = Menu::where('status','=',0)
-            ->select("id","name","link","sort_order","parent_id","status","type","position")
-            ->orderBy('created_at','desc')
+        $list = Menu::where('status', '=', 0)
+            ->select('id', 'name', 'link', 'sort_order', 'parent_id', 'status', 'type', 'position')
+            ->orderBy('created_at', 'desc')
             ->get();
-        return view("backend.menu.trash",compact("list"));
+
+        return view('backend.menu.trash', compact('list'));
     }
 
     //create
@@ -71,16 +70,15 @@ class MenuController extends Controller
     public function store(Request $request)
     {
         //Upload file
-        if(isset($request->createCategory))
-        {
+        if (isset($request->createCategory)) {
             $listid = $request->categoryid;
-            if($listid){
-                foreach($listid as $id){
+            if ($listid) {
+                foreach ($listid as $id) {
                     $category = Category::find($id);
-                    if($category != null){
+                    if ($category != null) {
                         $menu = new Menu();
                         $menu->name = $category->name;
-                        $menu->link ='danh-muc/'.$category->slug;
+                        $menu->link = 'danh-muc/'.$category->slug;
                         $menu->sort_order = 0;
                         $menu->parent_id = 0;
                         $menu->type = 'category';
@@ -92,22 +90,22 @@ class MenuController extends Controller
                         $menu->save();
                     }
                 }
+
                 // Chuyển hướng trang
                 return redirect()->route('admin.menu.index');
-            }else{
-                echo"Không có";
+            } else {
+                echo 'Không có';
             }
         }
-        if(isset($request->createBrand))
-        {
+        if (isset($request->createBrand)) {
             $listid = $request->brandid;
-            if($listid){
-                foreach($listid as $id){
+            if ($listid) {
+                foreach ($listid as $id) {
                     $brand = Brand::find($id);
-                    if($brand != null){
+                    if ($brand != null) {
                         $menu = new Menu();
                         $menu->name = $brand->name;
-                        $menu->link ='thuong-hieu/'. $brand->slug;
+                        $menu->link = 'thuong-hieu/'.$brand->slug;
                         $menu->sort_order = 0;
                         $menu->parent_id = 0;
                         $menu->type = 'brand';
@@ -119,22 +117,22 @@ class MenuController extends Controller
                         $menu->save();
                     }
                 }
+
                 // Chuyển hướng trang
                 return redirect()->route('admin.menu.index');
-            }else{
-                echo"Không có";
+            } else {
+                echo 'Không có';
             }
         }
-        if(isset($request->createTopic))
-        {
+        if (isset($request->createTopic)) {
             $listid = $request->topicid;
-            if($listid){
-                foreach($listid as $id){
+            if ($listid) {
+                foreach ($listid as $id) {
                     $topic = Topic::find($id);
-                    if($topic != null){
+                    if ($topic != null) {
                         $menu = new Menu();
                         $menu->name = $topic->name;
-                        $menu->link ='chu-de/'.$topic->slug;
+                        $menu->link = 'chu-de/'.$topic->slug;
                         $menu->sort_order = 0;
                         $menu->parent_id = 0;
                         $menu->type = 'topic';
@@ -146,22 +144,22 @@ class MenuController extends Controller
                         $menu->save();
                     }
                 }
+
                 // Chuyển hướng trang
                 return redirect()->route('admin.menu.index');
-            }else{
-                echo"Không có";
+            } else {
+                echo 'Không có';
             }
         }
-        if(isset($request->createPage))
-        {
+        if (isset($request->createPage)) {
             $listid = $request->pageid;
-            if($listid){
-                foreach($listid as $id){
+            if ($listid) {
+                foreach ($listid as $id) {
                     $page = Post::where([['id', '=', $id], ['type', '=', 'page']])->first();
-                    if($page != null){
+                    if ($page != null) {
                         $menu = new Menu();
                         $menu->name = $page->title;
-                        $menu->link ='trang-don/'.$page->slug;
+                        $menu->link = 'trang-don/'.$page->slug;
                         $menu->sort_order = 0;
                         $menu->parent_id = 0;
                         $menu->type = 'page';
@@ -173,16 +171,15 @@ class MenuController extends Controller
                         $menu->save();
                     }
                 }
+
                 // Chuyển hướng trang
                 return redirect()->route('admin.menu.index');
-            }else{
-                echo"Không có";
+            } else {
+                echo 'Không có';
             }
         }
-        if(isset($request->createCustom))
-        {
-            if(isset($request->name, $request->link))
-            {
+        if (isset($request->createCustom)) {
+            if (isset($request->name, $request->link)) {
                 $menu = new Menu();
                 $menu->name = $request->name;
                 $menu->link = $request->link;
@@ -197,7 +194,7 @@ class MenuController extends Controller
 
                 return redirect()->route('admin.menu.index');
             }
-            
+
         }
     }
 
@@ -205,12 +202,14 @@ class MenuController extends Controller
 
     public function show(string $id)
     {
-        {
-            $menu=Menu::find($id);
-            if($menu==NULL)
-                return redirect()->route('admin.menu.index');
-            return view('backend.menu.show',compact('menu'));
+
+        $menu = Menu::find($id);
+        if ($menu == null) {
+            return redirect()->route('admin.menu.index');
         }
+
+        return view('backend.menu.show', compact('menu'));
+
     }
 
     //edit
@@ -221,45 +220,43 @@ class MenuController extends Controller
         if ($menu == null) {
             return redirect()->route('admin.menu.index');
         }
-        $list = Menu::where('status','!=',0)
-            ->select("id","name","link","sort_order","parent_id","status","type","position")
-            ->orderBy('created_at','desc')
+        $list = Menu::where('status', '!=', 0)
+            ->select('id', 'name', 'link', 'sort_order', 'parent_id', 'status', 'type', 'position')
+            ->orderBy('created_at', 'desc')
             ->get();
-        $list_category = Category::where('status','!=',0)
-            ->select("id","name")
-            ->orderBy('created_at','desc')
+        $list_category = Category::where('status', '!=', 0)
+            ->select('id', 'name')
+            ->orderBy('created_at', 'desc')
             ->get();
-        $list_brand = Brand::where('status','!=',0)
-            ->select("id","name")
-            ->orderBy('created_at','desc')
+        $list_brand = Brand::where('status', '!=', 0)
+            ->select('id', 'name')
+            ->orderBy('created_at', 'desc')
             ->get();
-        $list_topic = Topic::where('status','!=',0)
-            ->select("id","name")
-            ->orderBy('created_at','desc')
+        $list_topic = Topic::where('status', '!=', 0)
+            ->select('id', 'name')
+            ->orderBy('created_at', 'desc')
             ->get();
-        $list_page = Post::where([['status','!=',0], ['type','=','page']])
-            ->select("id","title")
-            ->orderBy('created_at','desc')
+        $list_page = Post::where([['status', '!=', 0], ['type', '=', 'page']])
+            ->select('id', 'title')
+            ->orderBy('created_at', 'desc')
             ->get();
-        $htmltopicid = "";
-        foreach($list as $row){
-            if($menu->parent_id == $row->id)
-            {
-                $htmltopicid .= "<option selected value='" . $row->id . "'>" . $row->name . "</option>";
-            }
-            else
-            {
-                $htmltopicid .= "<option value='" . $row->id . "'>" . $row->name . "</option>";
+        $htmltopicid = '';
+        foreach ($list as $row) {
+            if ($menu->parent_id == $row->id) {
+                $htmltopicid .= "<option selected value='".$row->id."'>".$row->name.'</option>';
+            } else {
+                $htmltopicid .= "<option value='".$row->id."'>".$row->name.'</option>';
             }
         }
+
         //chuyển hướng trang
-        return view('backend.menu.edit',compact('menu','list','htmltopicid',"list_category", "list_brand", "list_topic", "list_page", "htmltopicid"));
+        return view('backend.menu.edit', compact('menu', 'list', 'htmltopicid', 'list_category', 'list_brand', 'list_topic', 'list_page', 'htmltopicid'));
     }
 
     //update
     public function update(UpdateMenuRequest $request, string $id)
     {
-       //
+        //
         //Lấy thông tin và lưu vào CSDL
         $menu = Menu::find($id);
         if ($menu == null) {
@@ -272,7 +269,6 @@ class MenuController extends Controller
         $menu->type = 'custom';
         $menu->position = $request->position;
         $menu->table_id = $id;
-     
 
         $menu->status = $request->status;
 
@@ -280,6 +276,7 @@ class MenuController extends Controller
         $menu->updated_by = Auth::id() ?? 1;
 
         $menu->save(); //lưu vào csdl
+
         //chuyển hướng trang
         return redirect()->route('admin.menu.index');
     }
@@ -289,12 +286,12 @@ class MenuController extends Controller
     public function destroy(string $id)
     {
         $menu = Menu::find($id);
-        if($menu==null)
-        {
+        if ($menu == null) {
             return redirect()->route('admin.menu.index');
         }
-        $menu->delete();//xóa khỏi CSDL
-        //chuyển hướng 
+        $menu->delete(); //xóa khỏi CSDL
+
+        //chuyển hướng
         return redirect()->route('admin.menu.trash');
     }
 
@@ -310,6 +307,7 @@ class MenuController extends Controller
         $menu->updated_at = date('Y-m-d H:i:s'); //Ngày hệ thống
         $menu->updated_by = Auth::id() ?? 1;
         $menu->save(); //lưu vào csdl
+
         return redirect()->route('admin.menu.index');
     }
 
@@ -318,14 +316,14 @@ class MenuController extends Controller
     public function delete(string $id)
     {
         $menu = Menu::find($id);
-        if($menu==null)
-        {
+        if ($menu == null) {
             return redirect()->route('admin.menu.index');
         }
         $menu->status = 0;
         $menu->updated_at = date('Y-m-d H:i:s'); //Ngày hệ thống
         $menu->updated_by = Auth::id() ?? 1;
         $menu->save(); //lưu vào csdl
+
         return redirect()->route('admin.menu.index');
     }
 
@@ -334,15 +332,14 @@ class MenuController extends Controller
     public function restore(string $id)
     {
         $menu = Menu::find($id);
-        if($menu==null)
-        {
+        if ($menu == null) {
             return redirect()->route('admin.menu.index');
         }
         $menu->status = 2;
         $menu->updated_at = date('Y-m-d H:i:s'); //Ngày hệ thống
         $menu->updated_by = Auth::id() ?? 1;
         $menu->save(); //lưu vào csdl
+
         return redirect()->route('admin.menu.trash');
     }
-    
 }

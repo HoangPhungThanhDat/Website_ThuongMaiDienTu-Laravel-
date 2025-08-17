@@ -49,7 +49,6 @@
                                 <td class="text-center">
                                     <input type="checkbox" name="checkId[]" id="checkId" value="1">
                                 </td>
-
                                 <td>{{ $row->name }}</td>
                                 <td>{{ $row->phone }}</td>
                                 <td>{{ $row->email }}</td>
@@ -96,5 +95,4 @@
             </div>
         </div>
     </section>
-
 @endsection

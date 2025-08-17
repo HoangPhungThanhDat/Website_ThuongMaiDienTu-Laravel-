@@ -1,22 +1,14 @@
 <?php
 
-
-
 namespace App\Http\Controllers\backend;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use App\Models\Category;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Str;
 use App\Http\Requests\StoreCategoryRequest;
 use App\Http\Requests\UpdateCategoryRequest;
-use Illuminate\Support\Facades\Log;
-
-
+use App\Models\Category;
 use Carbon\Carbon;
-
-
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 class CategoryController extends Controller
 {
@@ -26,30 +18,30 @@ class CategoryController extends Controller
     public function index()
     {
         $list = Category::where('status', '!=', 0)
-            ->select("id", "name", "image", "status", "slug", "sort_order","created_at", "updated_at")
+            ->select('id', 'name', 'image', 'status', 'slug', 'sort_order', 'created_at', 'updated_at')
             ->orderBy('created_at', 'DESC')
             ->get();
-        $htmlparentid = "";
-        $htmlsortorder = "";
+        $htmlparentid = '';
+        $htmlsortorder = '';
         foreach ($list as $row) {
-            $htmlparentid .= "<option value='" . $row->id . "'>" . $row->name . "</option>";
-            $htmlsortorder .= "<option value='" . ($row->sort_order + 1) . "'>Sau:" . $row->name . "</option>";
+            $htmlparentid .= "<option value='".$row->id."'>".$row->name.'</option>';
+            $htmlsortorder .= "<option value='".($row->sort_order + 1)."'>Sau:".$row->name.'</option>';
         }
 
-        return view("backend.category.index", compact("list", "htmlparentid", "htmlsortorder"));
+        return view('backend.category.index', compact('list', 'htmlparentid', 'htmlsortorder'));
     }
 
     //-------------------------------------------------------------------------------------
     public function trash()
     {
         $list = Category::where('status', '=', 0)
-            ->select("id", "name", "image", "status", "slug", "sort_order", "created_at", "updated_at")
+            ->select('id', 'name', 'image', 'status', 'slug', 'sort_order', 'created_at', 'updated_at')
             ->orderBy('created_at', 'DESC')
             ->get();
 
-
-        return view("backend.category.trash", compact("list"));
+        return view('backend.category.trash', compact('list'));
     }
+
     /**
      * Store a newly created resource in storage.
      */
@@ -64,33 +56,36 @@ class CategoryController extends Controller
 
         //UPLOAD FILE
         if ($request->image) {
-            $exten = $request->file("image")->extension();
-            if (in_array($exten, ["png", "jpg", "jpeg", "gif", "webp"])) {
-                $filename = $category->slug . "." . $exten;
-                $request->image->move(public_path("images/category"), $filename);
+            $exten = $request->file('image')->extension();
+            if (in_array($exten, ['png', 'jpg', 'jpeg', 'gif', 'webp'])) {
+                $filename = $category->slug.'.'.$exten;
+                $request->image->move(public_path('images/category'), $filename);
                 $category->image = $filename;
             }
         }
         $category->status = $request->status;
 
-        $category->created_at = date('Y-m-d H:i:s'); //ngay 
-        $category->created_by = Auth::id() ?? 1; // id cua quan tri 
+        $category->created_at = date('Y-m-d H:i:s'); //ngay
+        $category->created_by = Auth::id() ?? 1; // id cua quan tri
 
         $category->save(); // luu
-        //chuyen huong trang 
-        return redirect()->route("admin.category.index");
+
+        //chuyen huong trang
+        return redirect()->route('admin.category.index');
     }
 
     /**
      * Display the specified resource.
      */
     public function show(string $id)
-    { {
-            $category = Category::find($id);
-            if ($category == NULL)
-                return redirect()->route('admin.category.index');
-            return view('backend.category.show', compact('category'));
+    {
+        $category = Category::find($id);
+        if ($category == null) {
+            return redirect()->route('admin.category.index');
         }
+
+        return view('backend.category.show', compact('category'));
+
     }
 
     /**
@@ -103,26 +98,26 @@ class CategoryController extends Controller
             return redirect()->route('admin.category.index');
         }
         $list = Category::where('status', '!=', 0)
-            ->select("id", "name", "sort_order")
+            ->select('id', 'name', 'sort_order')
             ->orderBy('created_at', 'DESC')
             ->get();
 
-        $htmlparentid = "";
-        $htmlsortorder = "";
+        $htmlparentid = '';
+        $htmlsortorder = '';
         foreach ($list as $row) {
             if ($category->parent_id == $row->id) {
-                $htmlparentid .= "<option selected value='" . $row->id . "'>" . $row->name . "</option>";
+                $htmlparentid .= "<option selected value='".$row->id."'>".$row->name.'</option>';
             } else {
-                $htmlparentid .= "<option value='" . $row->id . "'>" . $row->name . "</option>";
+                $htmlparentid .= "<option value='".$row->id."'>".$row->name.'</option>';
             }
             if ($category->sort_order - 1 == $row->sort_order) {
-                $htmlsortorder .= "<option  selected value='" . ($row->sort_order + 1) . "'>Sau:" . $row->name . "</option>";
+                $htmlsortorder .= "<option  selected value='".($row->sort_order + 1)."'>Sau:".$row->name.'</option>';
             } else {
-                $htmlsortorder .= "<option value='" . ($row->sort_order + 1) . "'>Sau:" . $row->name . "</option>";
+                $htmlsortorder .= "<option value='".($row->sort_order + 1)."'>Sau:".$row->name.'</option>';
             }
         }
 
-        return view("backend.category.edit", compact("category", "list", "htmlparentid", "htmlsortorder"));
+        return view('backend.category.edit', compact('category', 'list', 'htmlparentid', 'htmlsortorder'));
     }
 
     /**
@@ -142,36 +137,34 @@ class CategoryController extends Controller
 
         //UPLOAD FILE
         if ($request->image) {
-            $exten = $request->file("image")->extension();
-            if (in_array($exten, ["png", "jpg", "jpeg", "gif", "webp"])) {
-                $filename = $category->slug . "." . $exten;
-                $request->image->move(public_path("images/category"), $filename);
+            $exten = $request->file('image')->extension();
+            if (in_array($exten, ['png', 'jpg', 'jpeg', 'gif', 'webp'])) {
+                $filename = $category->slug.'.'.$exten;
+                $request->image->move(public_path('images/category'), $filename);
                 $category->image = $filename;
             }
         }
 
         //end load file
         $category->status = $request->status;
-        $category->updated_at = date('Y-m-d H:i:s'); //ngay 
-        $category->updated_by = Auth::id() ?? 1; // id cua quan tri 
+        $category->updated_at = date('Y-m-d H:i:s'); //ngay
+        $category->updated_by = Auth::id() ?? 1; // id cua quan tri
 
         $category->save(); // luu
-        //chuyen huong trang 
-        return redirect()->route("admin.category.index");
+
+        //chuyen huong trang
+        return redirect()->route('admin.category.index');
     }
 
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(string $id)
-
-
     {
         $category = Category::find($id);
         if ($category == null) {
             return redirect()->route('admin.category.index');
         }
-
 
         // Cập nhật thời gian và người cập nhật
         $category->updated_at = Carbon::now();
@@ -205,9 +198,6 @@ class CategoryController extends Controller
         return redirect()->route('admin.category.index');
     }
 
-
-
-
     public function delete(string $id)
     {
         $category = Category::find($id);
@@ -228,7 +218,6 @@ class CategoryController extends Controller
         return redirect()->route('admin.category.index');
     }
 
-
     //retore
     public function restore(string $id)
     {
@@ -241,6 +230,7 @@ class CategoryController extends Controller
         $category->updated_by = Auth::id() ?? 1; //id quản trị
 
         $category->save();
+
         return redirect()->route('admin.category.trash');
     }
 }

@@ -2,10 +2,11 @@
 
 namespace App\View\Components;
 
+use App\Models\Post;
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
-use App\Models\Post;
+
 class PostNew extends Component
 {
     /**
@@ -21,11 +22,10 @@ class PostNew extends Component
      */
     public function render(): View|Closure|string
     {
-      
-        $post_new=Post::
-        orderBy('created_at','desc')
-        ->limit(4)->get();
-       
-        return view('components.post-new',compact('post_new'));
+
+        $post_new = Post::orderBy('created_at', 'desc')
+            ->limit(4)->get();
+
+        return view('components.post-new', compact('post_new'));
     }
 }

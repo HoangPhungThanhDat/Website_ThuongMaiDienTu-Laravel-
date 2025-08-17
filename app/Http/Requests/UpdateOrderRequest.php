@@ -11,18 +11,18 @@ class UpdateOrderRequest extends FormRequest
         return true;
     }
 
-    
     public function rules(): array
     {
         return [
-            "delivery_name"=>"required|min:6",
+            'delivery_name' => 'required|min:6',
         ];
     }
+
     public function messages(): array
     {
         return [
-            "delivery_name.required"=>"Vui lòng nhập tên danh mục",
-            "delivery_name.min"=>"Tên danh mục phải có ít nhất 6 ký tự",
-        ];  
+            'delivery_name.required' => 'Vui lòng nhập tên danh mục',
+            'delivery_name.min' => 'Tên danh mục phải có ít nhất 6 ký tự',
+        ];
     }
 }

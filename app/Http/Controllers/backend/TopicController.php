@@ -3,10 +3,9 @@
 namespace App\Http\Controllers\backend;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use App\Models\Topic;
 use App\Http\Requests\StoreTopicRequest;
 use App\Http\Requests\UpdateTopicRequest;
+use App\Models\Topic;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
@@ -18,15 +17,17 @@ class TopicController extends Controller
     public function index()
     {
         $list = Topic::where('status', '!=', 0)
-            ->select("id", "name", "slug", "description", "status", "created_at", "updated_at")
+            ->select('id', 'name', 'slug', 'description', 'status', 'created_at', 'updated_at')
             ->orderBy('created_at', 'DESC')
             ->get();
-        $htmlsortorder = "";
-        foreach ($list as $row)
-            $htmlsortorder .= "<option value='" . ($row->sort_order + 1) . "'> " . $row->name . "</option>";
+        $htmlsortorder = '';
+        foreach ($list as $row) {
+            $htmlsortorder .= "<option value='".($row->sort_order + 1)."'> ".$row->name.'</option>';
+        }
 
-        return view("backend.topic.index", compact('list', 'htmlsortorder'));
+        return view('backend.topic.index', compact('list', 'htmlsortorder'));
     }
+
     /**
      * Store a newly created resource in storage.
      */
@@ -35,30 +36,34 @@ class TopicController extends Controller
 
         $topic = new Topic();
 
-        // Tên trường || tên của thẻ input name  
+        // Tên trường || tên của thẻ input name
         $topic->name = $request->name;
         $topic->slug = Str::of($request->name)->slug('-');
         $topic->description = $request->description;
         $topic->status = $request->status;
         $topic->sort_order = $request->sort_order;
 
-
         $topic->created_at = date('Y-m-d H:i:s');
         $topic->created_by = Auth::id() ?? 1; //Id của người quản trị
         $topic->save();
+
         return redirect()->route('admin.topic.index');
     }
+
     /**
      * Display the specified resource.
      */
     public function show(string $id)
-    { {
-            $topic = Topic::find($id);
-            if ($topic == NULL)
-                return redirect()->route('admin.topic.index');
-            return view('backend.topic.show', compact('topic'));
+    {
+        $topic = Topic::find($id);
+        if ($topic == null) {
+            return redirect()->route('admin.topic.index');
         }
+
+        return view('backend.topic.show', compact('topic'));
+
     }
+
     /**
      * Show the form for editing the specified resource.
      */
@@ -69,23 +74,22 @@ class TopicController extends Controller
             return redirect()->route('admin.topic.index');
         }
         $list = Topic::where('status', '!=', 0)
-            ->select("id", "name", "slug", "description", "status")
+            ->select('id', 'name', 'slug', 'description', 'status')
             ->orderBy('created_at', 'DESC')
             ->get();
 
-
-        $htmlsortorder = "";
+        $htmlsortorder = '';
         foreach ($list as $row) {
 
-
             if ($topic->sort_order - 1 == $row->sort_order) {
-                $htmlsortorder .= "<option selected value='" . ($row->sort_order + 1) . "'>" . $row->name . "</option>";
+                $htmlsortorder .= "<option selected value='".($row->sort_order + 1)."'>".$row->name.'</option>';
             } else {
 
-                $htmlsortorder .= "<option value='" . ($row->sort_order + 1) . "'>" . $row->name . "</option>";
+                $htmlsortorder .= "<option value='".($row->sort_order + 1)."'>".$row->name.'</option>';
             }
         }
-        return view("backend.topic.edit", compact("list", "htmlsortorder", "topic"));
+
+        return view('backend.topic.edit', compact('list', 'htmlsortorder', 'topic'));
     }
 
     /**
@@ -94,8 +98,9 @@ class TopicController extends Controller
     public function update(UpdateTopicRequest $request, string $id)
     {
         $topic = Topic::find($id);
-        if ($topic == NULL)
+        if ($topic == null) {
             return redirect()->route('admin.topic.index');
+        }
 
         $topic->name = $request->name;
         $topic->slug = Str::of($request->name)->slug('-');
@@ -104,7 +109,6 @@ class TopicController extends Controller
         $topic->sort_order = $request->sort_order;
         $topic->updated_at = date('Y-m-d H:i:s');
         $topic->updated_by = Auth::id() ?? 1; //Id của người quản trị
-
 
         // Lưu vào csdl
         $topic->save();
@@ -124,8 +128,10 @@ class TopicController extends Controller
             return redirect()->route('admin.topic.index');
         }
         $topic->delete();
+
         return redirect()->route('admin.topic.trash');
     }
+
     public function status(string $id)
     {
         $topic = Topic::find($id);
@@ -136,8 +142,10 @@ class TopicController extends Controller
         $topic->updated_at = date('Y-m-d H:i:s'); //ngày hệ thống
         $topic->updated_by = Auth::id() ?? 1; //id quản trị
         $topic->save();
+
         return redirect()->route('admin.topic.index');
     }
+
     public function delete(string $id)
     {
         $topic = Topic::find($id);
@@ -149,17 +157,20 @@ class TopicController extends Controller
         $topic->updated_by = Auth::id() ?? 1; //id quản trị
 
         $topic->save();
+
         return redirect()->route('admin.topic.index');
     }
+
     public function trash()
     {
         $list = Topic::where('status', '=', 0)
-            ->select("id", "name", "slug", "description", "status", "created_at", "updated_at")
+            ->select('id', 'name', 'slug', 'description', 'status', 'created_at', 'updated_at')
             ->orderBy('created_at', 'DESC')
             ->get();
 
-        return view("backend.topic.trash", compact("list"));
+        return view('backend.topic.trash', compact('list'));
     }
+
     public function restore(string $id)
     {
         $topic = Topic::find($id);
@@ -171,6 +182,7 @@ class TopicController extends Controller
         $topic->updated_by = Auth::id() ?? 1; //id quản trị
 
         $topic->save();
+
         return redirect()->route('admin.topic.trash');
     }
 }

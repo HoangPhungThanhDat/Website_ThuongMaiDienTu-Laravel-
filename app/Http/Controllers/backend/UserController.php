@@ -3,12 +3,11 @@
 namespace App\Http\Controllers\backend;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use App\Models\User;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
+use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Str;
 
 class UserController extends Controller
 {
@@ -18,10 +17,11 @@ class UserController extends Controller
     public function index()
     {
         $list = User::where('status', '!=', 0)
-            ->select("id", "name", "image", "email", "phone", "roles", "status")
+            ->select('id', 'name', 'image', 'email', 'phone', 'roles', 'status', 'created_at', 'updated_at')
             ->orderBy('created_at', 'DESC')
             ->get();
-        return view("backend.user.index", compact('list'));
+
+        return view('backend.user.index', compact('list'));
     }
 
     /**
@@ -31,26 +31,25 @@ class UserController extends Controller
     {
         $user = User::all();
 
-
-        return view("backend.user.create", compact("user"));
+        return view('backend.user.create', compact('user'));
     }
-
 
     public function trash()
     {
         $list = User::where('status', '=', 0)
-            ->select("id", "name", "image", "email", "phone", "roles", "status")
+            ->select('id', 'name', 'image', 'email', 'phone', 'roles', 'status')
             ->orderBy('created_at', 'DESC')
             ->get();
 
-        return view("backend.user.trash", compact("list"));
+        return view('backend.user.trash', compact('list'));
     }
+
     public function store(StoreUserRequest $request)
     {
 
         $user = new User();
 
-        // Tên trường || tên của thẻ input name  
+        // Tên trường || tên của thẻ input name
         $user->name = $request->name;
         $user->username = $request->username;
         $user->password = $request->password;
@@ -63,11 +62,11 @@ class UserController extends Controller
 
         //Upload file
         if ($request->image) {
-            $exten = $request->file("image")->extension();
+            $exten = $request->file('image')->extension();
             //Lấy đuôi file
-            if (in_array($exten, ["png", "jpg", "jpeg", "gif", "webp"])) {
-                $filename = $user->slug . "." . $exten;
-                $request->image->move(public_path("images/users"), $filename);
+            if (in_array($exten, ['png', 'jpg', 'jpeg', 'gif', 'webp'])) {
+                $filename = $user->slug.'.'.$exten;
+                $request->image->move(public_path('images/users'), $filename);
                 $user->image = $filename;
             }
         }
@@ -75,10 +74,7 @@ class UserController extends Controller
         $user->created_at = date('Y-m-d H:i:s');
         $user->created_by = Auth::id() ?? 1; //Id của người quản trị
 
-
-
         $user->save();
-
 
         return redirect()->route('admin.user.index');
     }
@@ -87,12 +83,14 @@ class UserController extends Controller
      * Display the specified resource.
      */
     public function show(string $id)
-    { {
-            $user = User::find($id);
-            if ($user == NULL)
-                return redirect()->route('admin.user.index');
-            return view('backend.user.show', compact('user'));
+    {
+        $user = User::find($id);
+        if ($user == null) {
+            return redirect()->route('admin.user.index');
         }
+
+        return view('backend.user.show', compact('user'));
+
     }
 
     /**
@@ -101,13 +99,11 @@ class UserController extends Controller
     public function edit(string $id)
     {
         $user = User::find($id);
-        if (!$user) {
+        if (! $user) {
             return redirect()->route('admin.user.index');
         }
 
-
-
-        return view("backend.user.edit", compact("user"));
+        return view('backend.user.edit', compact('user'));
     }
 
     /**
@@ -116,8 +112,9 @@ class UserController extends Controller
     public function update(UpdateUserRequest $request, string $id)
     {
         $user = User::find($id);
-        if ($user == NULL)
+        if ($user == null) {
             return redirect()->route('admin.user.index');
+        }
 
         $user->name = $request->name;
         $user->username = $request->username;
@@ -131,18 +128,17 @@ class UserController extends Controller
 
         //Upload file
         if ($request->image) {
-            $exten = $request->file("image")->extension();
+            $exten = $request->file('image')->extension();
             //Lấy đuôi file
-            if (in_array($exten, ["png", "jpg", "jpeg", "gif", "webp"])) {
-                $filename = $user->slug . "." . $exten;
-                $request->image->move(public_path("images/users"), $filename);
+            if (in_array($exten, ['png', 'jpg', 'jpeg', 'gif', 'webp'])) {
+                $filename = $user->slug.'.'.$exten;
+                $request->image->move(public_path('images/users'), $filename);
                 $user->image = $filename;
             }
         }
 
         $user->updated_at = date('Y-m-d H:i:s');
         $user->updated_by = Auth::id() ?? 1; //Id của người quản trị
-
 
         // Lưu vào csdl
         $user->save();
@@ -162,6 +158,7 @@ class UserController extends Controller
             return redirect()->route('admin.user.index');
         }
         $user->delete();
+
         return redirect()->route('admin.user.trash');
     }
 
@@ -175,9 +172,9 @@ class UserController extends Controller
         $user->updated_at = date('Y-m-d H:i:s'); //ngày hệ thống
         $user->updated_by = Auth::id() ?? 1; //id quản trị
         $user->save();
+
         return redirect()->route('admin.user.index');
     }
-
 
     public function delete(string $id)
     {
@@ -190,6 +187,7 @@ class UserController extends Controller
         $user->updated_by = Auth::id() ?? 1; //id quản trị
 
         $user->save();
+
         return redirect()->route('admin.user.index');
     }
 
@@ -204,13 +202,14 @@ class UserController extends Controller
         $user->updated_by = Auth::id() ?? 1; //id quản trị
 
         $user->save();
+
         return redirect()->route('admin.user.trash');
     }
-
 
     public function profile()
     {
         $user = Auth::user();
+
         return view('fontend.profile', compact('user'));
     }
 
@@ -227,6 +226,7 @@ class UserController extends Controller
         $user->phone = $request->phone;
         $user->gender = $request->gender;
         $user->save();
+
         return redirect()->back()->with('success', 'Thông tin cá nhân đã được cập nhật.');
     }
 }

@@ -2,10 +2,10 @@
 
 namespace App\View\Components;
 
+use App\Models\Product;
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
-use App\Models\Product;
 
 class ProductNew extends Component
 {
@@ -23,10 +23,9 @@ class ProductNew extends Component
     public function render(): View|Closure|string
     {
 
-        $product_new=Product::
-        orderBy('created_at','desc')
-        ->limit(10)->get();
-       
-        return view('components.product-new',compact('product_new'));
+        $product_new = Product::orderBy('created_at', 'desc')
+            ->limit(10)->get();
+
+        return view('components.product-new', compact('product_new'));
     }
 }

@@ -3,14 +3,12 @@
 namespace App\Http\Controllers\backend;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use App\Models\Topic;
 use App\Models\Post;
-use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Auth;
-use App\Http\Requests\StorePostRequest;
-use App\Http\Requests\UpdatePostRequest;
+use App\Models\Topic;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 class PostController extends Controller
 {
@@ -21,10 +19,11 @@ class PostController extends Controller
     {
         $list = Post::where('post.status', '!=', 0)
             ->join('topic', 'post.topic_id', '=', 'topic.id')
-            ->select("post.id", "post.slug", "post.type", "post.title", "post.image", "post.status", "topic.name as topicname", "post.created_at", "post.updated_at")
+            ->select('post.id', 'post.slug', 'post.type', 'post.title', 'post.image', 'post.status', 'topic.name as topicname', 'post.created_at', 'post.updated_at')
             ->orderBy('post.created_at', 'desc')
             ->get();
-        return view("backend.post.index", compact('list'));
+
+        return view('backend.post.index', compact('list'));
     }
 
     /**
@@ -34,7 +33,7 @@ class PostController extends Controller
     {
         $topics = Topic::all();
 
-        return view("backend.post.create", compact("topics"));
+        return view('backend.post.create', compact('topics'));
     }
 
     /**
@@ -44,7 +43,7 @@ class PostController extends Controller
     {
         $post = new Post();
 
-        // Tên trường || tên của thẻ input name  
+        // Tên trường || tên của thẻ input name
         $post->title = $request->title;
         $post->slug = Str::of($request->name)->slug('-');
         $post->description = $request->description;
@@ -54,18 +53,19 @@ class PostController extends Controller
 
         //Upload file
         if ($request->image) {
-            $exten = $request->file("image")->extension();
+            $exten = $request->file('image')->extension();
             //Lấy đuôi file
-            if (in_array($exten, ["png", "jpg", "jpeg", "gif", "webp"])) {
-                $filename = $post->slug . "." . $exten;
-                $request->image->move(public_path("images/posts"), $filename);
+            if (in_array($exten, ['png', 'jpg', 'jpeg', 'gif', 'webp'])) {
+                $filename = $post->slug.'.'.$exten;
+                $request->image->move(public_path('images/posts'), $filename);
                 $post->image = $filename;
             }
         }
 
         $post->created_at = date('Y-m-d H:i:s');
-        $post->created_by = Auth::id() ?? 1; //Id của người quản trị    
+        $post->created_by = Auth::id() ?? 1; //Id của người quản trị
         $post->save();
+
         return redirect()->route('admin.post.index');
     }
 
@@ -75,9 +75,10 @@ class PostController extends Controller
     public function show(string $id)
     {
         $post = Post::find($id);
-        if (!$post) {
+        if (! $post) {
             return redirect()->route('admin.post.index');
         }
+
         return view('backend.post.show', compact('post'));
     }
 
@@ -87,13 +88,13 @@ class PostController extends Controller
     public function edit(string $id)
     {
         $post = Post::find($id);
-        if (!$post) {
+        if (! $post) {
             return redirect()->route('admin.post.index');
         }
 
         $topics = Topic::all();
 
-        return view("backend.post.edit", compact("post", "topics"));
+        return view('backend.post.edit', compact('post', 'topics'));
     }
 
     /**
@@ -103,7 +104,7 @@ class PostController extends Controller
     {
         $post = Post::find($id);
 
-        if (!$post) {
+        if (! $post) {
             return redirect()->route('admin.post.index');
         }
 
@@ -117,10 +118,10 @@ class PostController extends Controller
 
         // Xử lý upload file hình ảnh
         if ($request->hasFile('image')) {
-            $exten = $request->file("image")->extension();
-            if (in_array($exten, ["png", "jpg", "jpeg", "gif", "webp"])) {
-                $filename = $post->slug . "." . $exten;
-                $request->file('image')->move(public_path("images/posts"), $filename);
+            $exten = $request->file('image')->extension();
+            if (in_array($exten, ['png', 'jpg', 'jpeg', 'gif', 'webp'])) {
+                $filename = $post->slug.'.'.$exten;
+                $request->file('image')->move(public_path('images/posts'), $filename);
                 $post->image = $filename;
             }
         }
@@ -146,13 +147,15 @@ class PostController extends Controller
             return redirect()->route('admin.post.index');
         }
         $post->delete();
+
         return redirect()->route('admin.post.trash');
     }
-    // trạng thái 
+
+    // trạng thái
     public function status(string $id)
     {
         $post = Post::find($id);
-        if (!$post) {
+        if (! $post) {
             return redirect()->route('admin.post.index');
         }
 
@@ -161,7 +164,8 @@ class PostController extends Controller
 
         return redirect()->route('admin.post.index')->with('success', 'Cập nhật trạng thái sản phẩm thành công.');
     }
-    //xóa bài viết 
+
+    //xóa bài viết
     public function delete(string $id)
     {
         $post = Post::find($id);
@@ -181,18 +185,20 @@ class PostController extends Controller
         // Chuyển hướng trang
         return redirect()->route('admin.post.index');
     }
-    //thùng rác bài viết 
+
+    //thùng rác bài viết
     public function trash()
     {
         $list = Post::where('post.status', '=', 0)
             ->join('topic', 'post.topic_id', '=', 'topic.id')
-            ->select("post.id", "post.title", "post.image", "post.status", "post.slug", "post.type", "post.created_at", "post.updated_at", "topic.name as topicname")
+            ->select('post.id', 'post.title', 'post.image', 'post.status', 'post.slug', 'post.type', 'post.created_at', 'post.updated_at', 'topic.name as topicname')
             ->orderBy('post.created_at', 'DESC')
             ->get();
 
-        return view("backend.post.trash", compact("list"));
+        return view('backend.post.trash', compact('list'));
     }
-    //khôi phục thùn rác 
+
+    //khôi phục thùn rác
     public function restore(string $id)
     {
         $post = Post::find($id);
@@ -204,6 +210,7 @@ class PostController extends Controller
         $post->updated_by = Auth::id() ?? 1; //id quản trị
 
         $post->save();
+
         return redirect()->route('admin.post.trash');
     }
 }
