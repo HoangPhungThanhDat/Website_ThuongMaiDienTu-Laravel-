@@ -22,8 +22,8 @@ class ProductNew extends Component
      */
     public function render(): View|Closure|string
     {
-
-        $product_new = Product::orderBy('created_at', 'desc')
+        $product_new = Product::where('status', 1)
+            ->orderBy('created_at', 'desc')
             ->limit(10)->get();
 
         return view('components.product-new', compact('product_new'));

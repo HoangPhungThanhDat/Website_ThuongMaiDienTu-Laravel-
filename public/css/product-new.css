@@ -1,0 +1,58 @@
+.view-all-btn {
+    display: inline-block;
+    padding: 12px 28px;
+    border: 2px solid #000;
+    border-radius: 30px;
+    font-size: 16px;
+    font-weight: 500;
+    color: #000;
+    text-decoration: none;
+    background-color: transparent;
+    transition: all 0.3s ease;
+}
+
+.view-all-btn:hover {
+    background-color: #000;
+    color: #fff;
+    transform: scale(1.05);
+}
+
+.highlight-products {
+    background: linear-gradient(135deg, #fff5e6, #ffeedd);
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.highlight-products:hover {
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+    transform: translateY(-2px);
+}
+
+.section-title {
+    font-size: 28px;
+    font-weight: bold;
+    color: #2e2e2e;
+}
+
+/* Swiper Banner style */
+
+.swiper-slide img {
+    max-height: 100%;
+    max-width: 100%;
+    object-fit: contain; /* giữ nguyên tỉ lệ, không cắt */
+    border-radius: 15px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.swiper-slide img:hover {
+    transform: scale(1.03);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+@media (max-width: 768px) {
+    .swiper-slide img {
+        height: 160px;
+    }
+}

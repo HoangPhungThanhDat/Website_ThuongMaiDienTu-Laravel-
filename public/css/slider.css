@@ -1,0 +1,21 @@
+.full-width-banner {
+    width: 100%;
+    max-height: 500px;
+    object-fit: cover;
+    display: block;
+}
+
+.carousel-img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+}
+
+@media (max-width: 768px) {
+    .full-width-banner {
+        max-height: 300px;
+    }
+    .carousel-img {
+        height: 250px;
+    }
+}

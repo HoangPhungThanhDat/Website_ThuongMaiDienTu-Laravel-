@@ -1,12 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{ asset('bootstrap/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('fontawesome-free-6.5.2-web/css/all.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/layoutsize.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/flash-sale.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/main-menu.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/post-new.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/post-card.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/product-new.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/baiviet_detail.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/home.css') }}">
+
+
+
+
+
+
+    
+
+
+
+
+
+
+
+  
+
+
+
+
     <link rel="stylesheet" href="{{ asset('bootstrap/css/menuDoc.css') }}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" />
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

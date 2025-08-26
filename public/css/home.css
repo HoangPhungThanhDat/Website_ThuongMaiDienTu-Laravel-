@@ -1,0 +1,58 @@
+body {
+    margin: 0;
+    padding: 0;
+}
+
+.social-icons {
+    position: fixed;
+    bottom: 20px !important;
+    right: 20px !important;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.social-icon {
+    display: block;
+}
+
+.social-icon img {
+    width: 40px;
+    /* Adjust size as needed */
+    height: auto;
+    display: block;
+    border-radius: 50%;
+    /* Optional: round icons */
+    transition: opacity 0.3s;
+    animation: shake 3s infinite;
+    /* Apply the shake animation */
+}
+
+/* Hover effect */
+.social-icon img:hover {
+    opacity: 0.7;
+    /* Optional: add hover effect */
+}
+
+/* Keyframes for shake animation */
+@keyframes shake {
+    0%,
+    100% {
+        transform: rotate(0deg);
+    }
+
+    10%,
+    30%,
+    50%,
+    70%,
+    90% {
+        transform: rotate(-10deg);
+    }
+
+    20%,
+    40%,
+    60%,
+    80% {
+        transform: rotate(10deg);
+    }
+}

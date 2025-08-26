@@ -16,7 +16,6 @@
         }
     </style>
 </head>
-
 <body class="bg-yellow-100 min-h-screen flex items-center justify-center p-6">
     <div class="bg-white rounded-xl max-w-md w-full p-8 drop-shadow-md" style="min-width: 320px">
         <p class="text-center text-gray-600 mb-2 text-base">
@@ -31,7 +30,7 @@
         <form action="{{ route('website.dologin') }}" method="post">
             @csrf
             <label class="block font-semibold text-gray-800 mb-1" for="phoneEmail">
-               Tên đăng nhập/email
+                Tên đăng nhập/email
                 <span class="text-red-600">
                     *
                 </span>
@@ -91,8 +90,6 @@
             </a>
         </p>
     </div>
-
-
     {{-- // Thêm script để hiển thị/ẩn mật khẩu --}}
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -137,10 +134,7 @@
         </script>
     @endif
 </body>
-
 </html>
-
-
 <style>
     body {
         font-family: 'Inter', sans-serif;
