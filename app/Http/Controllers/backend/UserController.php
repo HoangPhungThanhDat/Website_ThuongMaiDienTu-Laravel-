@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Models\User;
+use App\Models\Order;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -204,29 +206,5 @@ class UserController extends Controller
         $user->save();
 
         return redirect()->route('admin.user.trash');
-    }
-
-    public function profile()
-    {
-        $user = Auth::user();
-
-        return view('fontend.profile', compact('user'));
-    }
-
-    public function updateProfile(Request $request)
-    {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'phone' => 'nullable|string|max:15',
-            'gender' => 'nullable|in:1,2',
-        ]);
-
-        $user = Auth::user();
-        $user->name = $request->name;
-        $user->phone = $request->phone;
-        $user->gender = $request->gender;
-        $user->save();
-
-        return redirect()->back()->with('success', 'Thông tin cá nhân đã được cập nhật.');
     }
 }

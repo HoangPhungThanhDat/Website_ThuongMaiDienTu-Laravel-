@@ -122,4 +122,8 @@ class SanPhamController extends Controller
 
         return view('fontend.product_brand', compact('list_product', 'row', 'categories'));
     }
+
+
+
+    
 }

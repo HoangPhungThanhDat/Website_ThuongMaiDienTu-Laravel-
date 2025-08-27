@@ -94,10 +94,7 @@
                 <!-- Tabs for accessories and combo -->
                 <div class="flex gap-3 mt-6 select-none">
                     <button class="text-xs border border-red-600 text-red-600 rounded-full px-3 py-1 font-semibold">
-                        Phụ kiện mua cùng
-                    </button>
-                    <button class="text-xs border border-[#D1D5DB] text-[#6B7280] rounded-full px-3 py-1 font-semibold">
-                        Combo
+                        Sản phẩm mới nhất 
                     </button>
                 </div>
                 <!-- Accessories carousel -->
@@ -108,58 +105,23 @@
                         </i>
                     </button>
                     <div class="flex gap-4 overflow-x-auto scrollbar-hide px-8">
+                        @foreach($new_products as $productnew)
                         <!-- Accessory item 1 -->
                         <div class="min-w-[100px] flex flex-col items-center gap-1 select-none">
-                            <img alt="Hình ảnh tai nghe Apple AirPods 4 màu trắng" class="w-[80px] h-[80px] object-contain"
-                                height="80"
-                                src="https://storage.googleapis.com/a1aa/image/fba51807-b466-44d5-ba9d-dad7ba9a789a.jpg"
-                                width="80" />
+                            <a href="{{ route('site.product.detail', ['slug' => $productnew->slug]) }}">
+                             <img alt="{{ $productnew->name }}" class="w-[80px] h-[80px] object-contain" height="80"
+                                src="{{ asset('images/products/' . $productnew->image) }}" width="80" />
+                            </a>
                             <div class="text-[10px] text-[#6B7280]">
-                                Tai nghe Apple AirPods 4 -
+                                {{ Str::limit($productnew->name, 20) }}
                             </div>
-                            <button class="bg-red-600 text-white text-xs rounded px-3 py-1 mt-1 w-full hover:bg-red-700">
-                                Thêm vào giỏ hàng
-                            </button>
+                            <a href="{{ route('site.product.detail', ['slug' => $productnew->slug]) }}">
+                                <button class="bg-red-600 text-white text-xs rounded px-3 py-1 mt-1 w-full hover:bg-red-700">
+                                    Thêm vào giỏ hàng 
+                                </button>
+                            </a>
                         </div>
-                        <!-- Accessory item 2 -->
-                        <div class="min-w-[100px] flex flex-col items-center gap-1 select-none">
-                            <img alt="Hình ảnh kính cường lực UNIQ OPTIC màu xanh lá"
-                                class="w-[80px] h-[80px] object-contain" height="80"
-                                src="https://storage.googleapis.com/a1aa/image/0131bb81-bf25-43a4-7a5e-da8ebe579f6a.jpg"
-                                width="80" />
-                            <div class="text-[10px] text-[#6B7280]">
-                                Kính Cường Lực UNIQ OPTIC...
-                            </div>
-                            <button class="bg-red-600 text-white text-xs rounded px-3 py-1 mt-1 w-full hover:bg-red-700">
-                                Thêm vào giỏ hàng
-                            </button>
-                        </div>
-                        <!-- Accessory item 3 -->
-                        <div class="min-w-[100px] flex flex-col items-center gap-1 select-none">
-                            <img alt="Hình ảnh kính cường lực UNIQ OPTIC màu xanh lá"
-                                class="w-[80px] h-[80px] object-contain" height="80"
-                                src="https://storage.googleapis.com/a1aa/image/0131bb81-bf25-43a4-7a5e-da8ebe579f6a.jpg"
-                                width="80" />
-                            <div class="text-[10px] text-[#6B7280]">
-                                Kính Cường Lực UNIQ OPTIC...
-                            </div>
-                            <button class="bg-red-600 text-white text-xs rounded px-3 py-1 mt-1 w-full hover:bg-red-700">
-                                Thêm vào giỏ hàng
-                            </button>
-                        </div>
-                        <!-- Accessory item 4 -->
-                        <div class="min-w-[100px] flex flex-col items-center gap-1 select-none">
-                            <img alt="Hình ảnh kính cường lực UNIQ OPTIC màu đỏ" class="w-[80px] h-[80px] object-contain"
-                                height="80"
-                                src="https://storage.googleapis.com/a1aa/image/12f8a466-7417-4591-988b-2d8bca3b1a02.jpg"
-                                width="80" />
-                            <div class="text-[10px] text-[#6B7280]">
-                                Kính Cường Lực UNIQ OPTIC...
-                            </div>
-                            <button class="bg-red-600 text-white text-xs rounded px-3 py-1 mt-1 w-full hover:bg-red-700">
-                                Thêm vào giỏ hàng
-                            </button>
-                        </div>
+                       @endforeach
                     </div>
                     <button aria-label="Next"
                         class="absolute top-1/2 -right-2 -translate-y-1/2 bg-white border border-[#E4E7F1] rounded-full w-7 h-7 flex items-center justify-center text-[#6B7280] hover:text-black shadow-sm z-10">

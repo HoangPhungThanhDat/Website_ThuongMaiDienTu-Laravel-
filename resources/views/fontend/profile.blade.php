@@ -198,11 +198,62 @@
                         </div>
                     </div>
                     <div class="tab-pane fade" id="orders" role="tabpanel">
-                        <div class="bg-white rounded-lg p-6 shadow-sm">
-                            <h2 class="text-xl font-bold mb-4">thông tin đơn hàng của tôi</h2>
-                            <p>Thông tin các đơn hàng đã đặt </p>
+                        <div class="bg-white rounded-lg p-4 shadow-sm">
+                            <h2 class="h5 font-weight-bold mb-3">🛒 Đơn hàng của tôi</h2>
+                            <p class="text-muted mb-4">Danh sách tất cả các đơn hàng bạn đã đặt</p>
+                    
+                            @if(isset($orders) && count($orders) > 0)
+                                <div class="table-responsive">
+                                    <table class="table table-bordered table-hover align-middle">
+                                        <thead class="thead-dark">
+                                            <tr>
+                                                <th scope="col">Mã đơn</th>
+                                                <th scope="col">Ngày đặt</th>
+                                                <th scope="col">Hình</th>
+
+                                                <th scope="col">Tổng tiền</th>
+                                                <th scope="col">Trạng thái</th>
+                                                <th scope="col">Thao tác</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach($orders as $order)
+                                                <tr>
+                                                    <td>#{{ $order->id }}</td>
+                                                    <td>{{ date('d/m/Y H:i', strtotime($order->created_at)) }}</td>
+                                                    <td></td>
+                                                    <td>{{ number_format($order->total, 0, ',', '.') }} đ</td>
+                                                    <td>
+                                                        @if($order->status == 'pending')
+                                                            <span class="badge badge-warning">Chờ xử lý</span>
+                                                        @elseif($order->status == 'processing')
+                                                            <span class="badge badge-info">Đang xử lý</span>
+                                                        @elseif($order->status == 'completed')
+                                                            <span class="badge badge-success">Hoàn thành</span>
+                                                        @elseif($order->status == 'cancelled')
+                                                            <span class="badge badge-danger">Đã hủy</span>
+                                                        @endif
+                                                    </td>
+                                                    <td>
+                                                        <a href="" 
+                                                           class="btn btn-sm btn-outline-primary">
+                                                           <i class="fas fa-eye"></i> Xem chi tiết
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                            @else
+                                <div class="alert alert-info">
+                                    Bạn chưa có đơn hàng nào. 
+                                    <a href="{{ route('site.sanpham') }}" class="font-weight-bold">Mua ngay</a>
+                                </div>
+                            @endif
                         </div>
                     </div>
+                    
                     <div class="tab-pane fade" id="services" role="tabpanel">
                         <div class="bg-white rounded-lg p-6 shadow-sm">
                             <h2 class="text-xl font-bold mb-4">Dịch vụ thu hộ đã thanh toán</h2>

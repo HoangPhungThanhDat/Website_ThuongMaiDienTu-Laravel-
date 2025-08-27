@@ -14,8 +14,9 @@ class CartController extends Controller
     public function index()
     {
         $list_cart = session('carts', []);
-
-        return view('fontend.cart', compact('list_cart'));
+        $new_products = Product::where('status',1)  
+        ->orderby('created_at', 'desc')->take(5)->get();
+        return view('fontend.cart', compact('list_cart', 'new_products'));
     }
 
     public function addcart()
@@ -123,4 +124,21 @@ class CartController extends Controller
 
         return redirect()->route('site.home')->with('success', 'Đặt hàng thành công! Cảm ơn bạn đã mua hàng.');
     }
+
+
+
+
+    public function cart()
+    {
+        $list_cart = session('cart', []);
+        $new_products = Product::orderBy('created_at', 'desc')->take(4)->get(); // Lấy 4 sản phẩm mới nhất
+
+        return view('fontend.cart', compact('list_cart', 'new_products'));
+    }
+
+
+
+
+    
+    
 }

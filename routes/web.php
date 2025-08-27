@@ -17,6 +17,7 @@ use App\Http\Controllers\backend\TopicController;
 use App\Http\Controllers\backend\UserController;
 use App\Http\Controllers\fontend\BaiVietController;
 use App\Http\Controllers\fontend\CartController;
+use App\Http\Controllers\fontend\ProfileController;
 use App\Http\Controllers\fontend\HomeController;
 use App\Http\Controllers\fontend\LienheController as lienhecontroller;
 use App\Http\Controllers\fontend\SanphamController as sanphamcontroller;
@@ -33,9 +34,9 @@ Route::get('lien-he', [LienheController::class, 'index'])->name('site.lienhe');
 Route::get('thuong-hieu/{slug}', [SanPhamController::class, 'brand'])->name('site.product.brand');
 
 Route::middleware('auth')->group(function () {
-    Route::get('/profile', [UserController::class, 'profile'])->name('website.profile');
+    Route::get('/profile', [ProfileController::class, 'profile'])->name('website.profile');
+    Route::post('/update-profile', [ProfileController::class, 'updateProfile'])->name('website.updateProfile');
 });
-Route::post('/update-profile', [UserController::class, 'updateProfile'])->name('website.updateProfile');
 
 // cart
 Route::get('cart/addcart', [CartController::class, 'addcart'])->name('site.cart.addcart');
@@ -44,6 +45,7 @@ Route::get('cart/delete/{id}', [CartController::class, 'delete'])->name('site.ca
 Route::get('thanh-toan', [CartController::class, 'checkout'])->name('site.cart.checkout');
 Route::post('thong-bao', [CartController::class, 'docheckout'])->name('site.cart.docheckout');
 Route::get('gio-hang', [CartController::class, 'index'])->name('site.cart.index');
+
 
 // bài viết
 

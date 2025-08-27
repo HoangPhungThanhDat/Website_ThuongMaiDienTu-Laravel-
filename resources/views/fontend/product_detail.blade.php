@@ -89,62 +89,18 @@
                     </div>
                     <ul role="list" aria-label="Product color thumbnails"
                         class="mt-3 flex gap-2 overflow-x-auto scrollbar-hide px-1">
+                        @foreach($list_product as $related)
                         <li>
                             <button
                                 class="border border-gray-300 rounded-md p-1 focus:outline-none focus:ring-2 focus:ring-yellow-400">
-                                <img src="http://localhost/Website_SmartPhone_LARAVEL/Website_SmartPhone_LARAVEL/public/images/products/iphone13.jpg"
-                                    alt="Thumbnail of Yellow iPhone 14" class="w-14 h-14 object-contain rounded"
-                                    width="60" height="60" />
+                                <a href="{{ route('site.product.detail', ['slug' => $related->slug]) }}">
+                                    <img src="{{ asset('images/products/' . $related->image) }}"
+                                        alt="{{ $related->name }}" class="w-14 h-14 object-contain rounded"
+                                        width="60" height="60" />
+                                    </a>
                             </button>
                         </li>
-                        <li>
-                            <button
-                                class="border border-gray-300 rounded-md p-1 focus:outline-none focus:ring-2 focus:ring-yellow-400">
-                                <img src="http://localhost/Website_SmartPhone_LARAVEL/Website_SmartPhone_LARAVEL/public/images/products/iphone-x.jpg"
-                                    alt="Thumbnail of Black iPhone 14" class="w-14 h-14 object-contain rounded"
-                                    width="60" height="60" />
-                            </button>
-                        </li>
-                        <li>
-                            <button aria-current="true"
-                                class="border-2 border-yellow-400 rounded-md p-1 focus:outline-none focus:ring-2 focus:ring-yellow-400">
-                                <img src="http://localhost/Website_SmartPhone_LARAVEL/Website_SmartPhone_LARAVEL/public/images/products/iphone12.webp"
-                                    alt="Thumbnail of Red iPhone 14 selected" class="w-14 h-14 object-contain rounded"
-                                    width="60" height="60" />
-                            </button>
-                        </li>
-                        <li>
-                            <button
-                                class="border border-gray-300 rounded-md p-1 focus:outline-none focus:ring-2 focus:ring-yellow-400">
-                                <img src="http://localhost/Website_SmartPhone_LARAVEL/Website_SmartPhone_LARAVEL/public/images/products/iphone-17.webp"
-                                    alt="Thumbnail of Blue iPhone 14" class="w-14 h-14 object-contain rounded"
-                                    width="60" height="60" />
-                            </button>
-                        </li>
-                        <li>
-                            <button
-                                class="border border-gray-300 rounded-md p-1 focus:outline-none focus:ring-2 focus:ring-yellow-400">
-                                <img src="http://localhost/Website_SmartPhone_LARAVEL/Website_SmartPhone_LARAVEL/public/images/products/iphone-17.webp"
-                                    alt="Thumbnail of Purple iPhone 14" class="w-14 h-14 object-contain rounded"
-                                    width="60" height="60" />
-                            </button>
-                        </li>
-                        <li>
-                            <button
-                                class="border border-gray-300 rounded-md p-1 focus:outline-none focus:ring-2 focus:ring-yellow-400">
-                                <img src="http://localhost/Website_SmartPhone_LARAVEL/Website_SmartPhone_LARAVEL/public/images/products/iphone11.jpg"
-                                    alt="Thumbnail of Green iPhone 14" class="w-14 h-14 object-contain rounded"
-                                    width="60" height="60" />
-                            </button>
-                        </li>
-                        <li>
-                            <button
-                                class="border border-gray-300 rounded-md p-1 focus:outline-none focus:ring-2 focus:ring-yellow-400">
-                                <img src="http://localhost/Website_SmartPhone_LARAVEL/Website_SmartPhone_LARAVEL/public/images/products/iphone-xs.jpg"
-                                    alt="Thumbnail of Orange iPhone 14" class="w-14 h-14 object-contain rounded"
-                                    width="60" height="60" />
-                            </button>
-                        </li>
+                        @endforeach
                     </ul>
                 </div>
                 <!-- Right: Product info -->
@@ -429,13 +385,7 @@
 
                     </div>
                 </div>
-
             </div>
-
-
-
-            <!-- Bottom right promotions and offers -->
-            <!-- filepath: d:\xampp\htdocs\Website_SmartPhone_LARAVEL\Website_SmartPhone_LARAVEL\resources\views\fontend\product_detail.blade.php -->
             <div class="row">
                 <div class="col-12">
                     <nav>
