@@ -62,6 +62,10 @@ Route::get('dang-xuat', [AuthController::class, 'logout'])->name('website.logout
 Route::get('/register', [AuthController::class, 'getregister'])->name('website.getregister');
 Route::post('/register', [AuthController::class, 'doregister'])->name('website.doregister');
 
+
+// router profile
+Route::put('/order/{id}/cancel', [ProfileController::class, 'cancelOrder'])->name('order.cancel');
+Route::get('/order/{id}', [ProfileController::class, 'orderDetail'])->name('order.detail');
 //router admin kiem tra dawng nhap
 Route::prefix('admin')->middleware('middleauth')->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('admin.dashbread');

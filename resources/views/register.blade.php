@@ -19,27 +19,8 @@
 
         .form-container {
             padding: 16px;
-            /* Giảm padding */
             width: 100%;
-            /* Đặt chiều rộng 100% */
             max-width: 500px;
-            /* Tăng chiều rộng tối đa */
-        }
-
-        .form-container label {
-            margin-bottom: 2px;
-            /* Giảm khoảng cách giữa label và input */
-        }
-
-        .form-container input,
-        .form-container button {
-            padding: 6px 10px;
-            /* Giảm padding trong input và button */
-        }
-
-        .form-container .mb-5 {
-            margin-bottom: 10px;
-            /* Giảm khoảng cách giữa các trường */
         }
     </style>
 </head>
@@ -51,89 +32,90 @@
             <span class="font-semibold text-red-700">Bạch Long Mobile</span>
         </p>
         <h1 class="text-center font-extrabold text-2xl mb-3">Đăng ký</h1>
+
         <form action="{{ route('website.doregister') }}" method="post">
             @csrf
+
             <!-- Họ và tên -->
-            <label class="block font-semibold text-gray-800" for="fullname">
-                Họ và tên <span class="text-red-600">*</span>
-            </label>
-            <input type="text"
-                class="w-full border border-gray-300 rounded-md mb-5 text-gray-400 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
-                id="fullname" placeholder="Nhập họ và tên" name="fullname" required>
+            <label class="block font-semibold text-gray-800" for="fullname">Họ và tên <span class="text-red-600">*</span></label>
+            <input type="text" name="fullname" value="{{ old('fullname') }}"
+                class="w-full border rounded-md px-3 py-2 mb-1 @error('fullname') border-red-500 @else border-gray-300 @enderror"
+                placeholder="Nhập họ và tên" required>
+            @error('fullname')
+                <p class="text-red-500 text-sm mb-3">{{ $message }}</p>
+            @enderror
 
             <!-- Tên đăng nhập -->
-            <label class="block font-semibold text-gray-800" for="username">
-                Tên đăng nhập <span class="text-red-600">*</span>
-            </label>
-            <input type="text"
-                class="w-full border border-gray-300 rounded-md mb-5 text-gray-400 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
-                id="username" placeholder="Nhập tên đăng nhập" name="username" required>
+            <label class="block font-semibold text-gray-800" for="username">Tên đăng nhập <span class="text-red-600">*</span></label>
+            <input type="text" name="username" value="{{ old('username') }}"
+                class="w-full border rounded-md px-3 py-2 mb-1 @error('username') border-red-500 @else border-gray-300 @enderror"
+                placeholder="Nhập tên đăng nhập" required>
+            @error('username')
+                <p class="text-red-500 text-sm mb-3">{{ $message }}</p>
+            @enderror
 
             <!-- Email -->
-            <label class="block font-semibold text-gray-800" for="email">
-                Email <span class="text-red-600">*</span>
-            </label>
-            <input type="email"
-                class="w-full border border-gray-300 rounded-md mb-5 text-gray-400 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
-                id="email" placeholder="Nhập email" name="email" required>
+            <label class="block font-semibold text-gray-800" for="email">Email <span class="text-red-600">*</span></label>
+            <input type="email" name="email" value="{{ old('email') }}"
+                class="w-full border rounded-md px-3 py-2 mb-1 @error('email') border-red-500 @else border-gray-300 @enderror"
+                placeholder="Nhập email" required>
+            @error('email')
+                <p class="text-red-500 text-sm mb-3">{{ $message }}</p>
+            @enderror
 
             <!-- Số điện thoại -->
-            <label class="block font-semibold text-gray-800" for="phone">
-                Số điện thoại <span class="text-red-600">*</span>
-            </label>
-            <input type="text"
-                class="w-full border border-gray-300 rounded-md mb-5 text-gray-400 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
-                id="phone" placeholder="Nhập số điện thoại" name="phone" required>
+            <label class="block font-semibold text-gray-800" for="phone">Số điện thoại <span class="text-red-600">*</span></label>
+            <input type="text" name="phone" value="{{ old('phone') }}"
+                class="w-full border rounded-md px-3 py-2 mb-1 @error('phone') border-red-500 @else border-gray-300 @enderror"
+                placeholder="Nhập số điện thoại" required>
+            @error('phone')
+                <p class="text-red-500 text-sm mb-3">{{ $message }}</p>
+            @enderror
 
             <!-- Mật khẩu -->
-            <label class="block font-semibold text-gray-800" for="password">
-                Mật khẩu <span class="text-red-600">*</span>
-            </label>
-            <div class="relative mb-5">
-                <input type="password"
-                    class="w-full border border-gray-300 rounded-md px-4 py-2 pr-10 text-gray-400 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
-                    id="password" placeholder="Nhập mật khẩu" name="password" required>
-                <button aria-label="Hiển thị mật khẩu"
-                    class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-600 toggle-password" tabindex="-1"
-                    type="button">
+            <label class="block font-semibold text-gray-800" for="password">Mật khẩu <span class="text-red-600">*</span></label>
+            <div class="relative mb-1">
+                <input type="password" name="password"
+                    class="w-full border rounded-md px-3 py-2 pr-10 @error('password') border-red-500 @else border-gray-300 @enderror"
+                    placeholder="Nhập mật khẩu" required>
+                <button type="button" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-600 toggle-password">
                     <i class="fas fa-eye"></i>
                 </button>
             </div>
+            @error('password')
+                <p class="text-red-500 text-sm mb-3">{{ $message }}</p>
+            @enderror
 
             <!-- Nhập lại mật khẩu -->
-            <label class="block font-semibold text-gray-800" for="password_confirmation">
-                Nhập lại mật khẩu <span class="text-red-600">*</span>
-            </label>
-            <div class="relative mb-5">
-                <input type="password"
-                    class="w-full border border-gray-300 rounded-md px-4 py-2 pr-10 text-gray-400 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
-                    id="password_confirmation" placeholder="Nhập lại mật khẩu" name="password_confirmation" required>
-                <button aria-label="Hiển thị mật khẩu"
-                    class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-600 toggle-password" tabindex="-1"
-                    type="button">
+            <label class="block font-semibold text-gray-800" for="password_confirmation">Nhập lại mật khẩu <span class="text-red-600">*</span></label>
+            <div class="relative mb-1">
+                <input type="password" name="password_confirmation"
+                    class="w-full border rounded-md px-3 py-2 pr-10 border-gray-300"
+                    placeholder="Nhập lại mật khẩu" required>
+                <button type="button" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-600 toggle-password">
                     <i class="fas fa-eye"></i>
                 </button>
             </div>
+
             <!-- Giới tính -->
-            <label class="block font-semibold text-gray-800" for="gender">
-                Giới tính <span class="text-red-600">*</span>
-            </label>
-            <div class="flex items-center mb-5">
+            <label class="block font-semibold text-gray-800">Giới tính <span class="text-red-600">*</span></label>
+            <div class="flex items-center mb-1">
                 <label class="flex items-center mr-4">
-                    <input type="radio" name="gender" value="1" class="mr-2 focus:ring-blue-600" required> Nam
+                    <input type="radio" name="gender" value="1" class="mr-2" {{ old('gender') == 1 ? 'checked' : '' }}> Nam
                 </label>
                 <label class="flex items-center">
-                    <input type="radio" name="gender" value="2" class="mr-2 focus:ring-blue-600" required> Nữ
+                    <input type="radio" name="gender" value="2" class="mr-2" {{ old('gender') == 2 ? 'checked' : '' }}> Nữ
                 </label>
             </div>
+            @error('gender')
+                <p class="text-red-500 text-sm mb-3">{{ $message }}</p>
+            @enderror
 
             <!-- Nút Đăng ký -->
-            <button
-                class="w-full bg-blue-700 text-white font-semibold py-2 rounded-md hover:bg-blue-800 transition-colors"
-                type="submit">
-                Đăng ký
-            </button>
+            <button class="w-full bg-blue-700 text-white font-semibold py-2 rounded-md hover:bg-blue-800 transition-colors"
+                type="submit">Đăng ký</button>
         </form>
+
         <p class="text-center text-sm mt-3 text-gray-800">
             Bạn đã có tài khoản?
             <a class="font-semibold text-blue-700 hover:underline" href="{{ route('website.getlogin') }}">
@@ -145,14 +127,11 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const togglePasswordButtons = document.querySelectorAll('.toggle-password');
-
             togglePasswordButtons.forEach(button => {
                 button.addEventListener('click', function() {
-                    const input = this.previousElementSibling; // Lấy input ngay trước nút
+                    const input = this.previousElementSibling;
                     const type = input.getAttribute('type') === 'password' ? 'text' : 'password';
                     input.setAttribute('type', type);
-
-                    // Đổi icon
                     this.querySelector('i').classList.toggle('fa-eye');
                     this.querySelector('i').classList.toggle('fa-eye-slash');
                 });

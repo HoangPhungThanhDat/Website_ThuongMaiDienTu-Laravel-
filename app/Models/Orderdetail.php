@@ -10,6 +10,9 @@ class Orderdetail extends Model
     use HasFactory;
 
     protected $table = 'orderdetail';
-
-    public $timestamps = false;
+    public $timestamps = false; // Tắt timestamps
+    public function product()
+    {
+        return $this->belongsTo(Product::class, 'product_id', 'id');
+    }
 }

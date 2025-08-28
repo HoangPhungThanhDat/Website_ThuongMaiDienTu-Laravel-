@@ -103,9 +103,9 @@ class CartController extends Controller
             $order->delivery_phone = $request->phone;
             $order->delivery_address = $request->address;
             $order->note = $request->note;
-            $order->created_at = date('Y-m-d H:i:s');
+            $order->created_at = now(); 
             $order->type = 'online';
-            $order->status = 2;
+            $order->status = 1;
             if ($order->save()) {
                 foreach ($carts as $cart) {
                     $orderdetail = new Orderdetail();

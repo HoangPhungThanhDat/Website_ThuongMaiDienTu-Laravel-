@@ -3,7 +3,7 @@
         🔥 Khuyến mãi cực sốc: Giảm đến 50% cho đơn hàng đầu tiên trong hôm nay!
     </div>
     <header>
-        <a href="#" class="logo" aria-label="Bach Long Mobile logo">
+        <a href="{{ route('site.home') }}" class="logo" aria-label="Bach Long Mobile logo">
             <img src="https://bachlongmobile.com/assets/images/logo/logo-website-1.png"
                 alt="Logo Bach Long Mobile màu vàng đỏ" width="120" height="40" />
         </a>
@@ -60,6 +60,7 @@
                     <a href="{{ route('site.post.index') }}">Chính sách đổi trả</a>
                     <a href="{{ route('site.post.topic', ['slug' => 'tin-tuc']) }}">Chính sách bảo hành</a>
                     <a href="{{ route('site.lienhe') }}">Liên hệ</a>
+                    <a href="{{ route('site.lienhe') }}">Giới thiệu về chúng tôi </a>
                 </div>
             </div>
 

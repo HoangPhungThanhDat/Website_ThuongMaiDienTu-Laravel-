@@ -67,8 +67,12 @@ class AuthController extends Controller
             'password' => 'required|min:6|confirmed',
             'gender' => 'required|in:1,2', // Giới tính phải là 1 (Nam) hoặc 2 (Nữ)
         ], [
+            'username.unique' => 'Tên đăng nhập đã tồn tại.',
+            'email.unique'    => 'Email đã được sử dụng.',
+            'phone.unique'    => 'Số điện thoại đã được sử dụng.',
+            'password.confirmed' => 'Mật khẩu nhập lại không khớp.',
             'gender.required' => 'Vui lòng chọn giới tính.',
-            'gender.in' => 'Giới tính không hợp lệ.',
+            'gender.in'       => 'Giới tính không hợp lệ.',
         ]);
 
         // Tạo người dùng mới

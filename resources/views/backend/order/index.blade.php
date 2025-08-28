@@ -61,7 +61,7 @@
                                 <td>{{ $row->type}}</td>
                                 <td>
                                     @if ($row->status == 1)
-                                        <span class="badge badge-success">Đã xác nhận</span>
+                                        <span class="badge badge-success">Chờ xác nhận</span>
                                     @elseif($row->status == 2)
                                         <span class="badge badge-info">Đang giao</span>
                                     @elseif($row->status == 3)

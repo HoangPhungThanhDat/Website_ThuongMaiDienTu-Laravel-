@@ -201,8 +201,7 @@
                         <div class="bg-white rounded-lg p-4 shadow-sm">
                             <h2 class="h5 font-weight-bold mb-3">🛒 Đơn hàng của tôi</h2>
                             <p class="text-muted mb-4">Danh sách tất cả các đơn hàng bạn đã đặt</p>
-                    
-                            @if(isset($orders) && count($orders) > 0)
+                            @if (isset($orders) && count($orders) > 0)
                                 <div class="table-responsive">
                                     <table class="table table-bordered table-hover align-middle">
                                         <thead class="thead-dark">
@@ -210,50 +209,194 @@
                                                 <th scope="col">Mã đơn</th>
                                                 <th scope="col">Ngày đặt</th>
                                                 <th scope="col">Hình</th>
-
                                                 <th scope="col">Tổng tiền</th>
                                                 <th scope="col">Trạng thái</th>
                                                 <th scope="col">Thao tác</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach($orders as $order)
+                                            @foreach ($orders as $order)
                                                 <tr>
                                                     <td>#{{ $order->id }}</td>
                                                     <td>{{ date('d/m/Y H:i', strtotime($order->created_at)) }}</td>
-                                                    <td></td>
-                                                    <td>{{ number_format($order->total, 0, ',', '.') }} đ</td>
                                                     <td>
-                                                        @if($order->status == 'pending')
-                                                            <span class="badge badge-warning">Chờ xử lý</span>
-                                                        @elseif($order->status == 'processing')
-                                                            <span class="badge badge-info">Đang xử lý</span>
-                                                        @elseif($order->status == 'completed')
-                                                            <span class="badge badge-success">Hoàn thành</span>
-                                                        @elseif($order->status == 'cancelled')
-                                                            <span class="badge badge-danger">Đã hủy</span>
+                                                        @if ($order->product_image)
+                                                            <img src="{{ asset('images/products/' . $order->product_image) }}"
+                                                                alt="Product Image" width="50" height="50">
+                                                        @else
+                                                            <span>Không có hình</span>
                                                         @endif
                                                     </td>
+                                                    <td>{{ number_format($order->total, 0, ',', '.') }} đ</td>
                                                     <td>
-                                                        <a href="" 
-                                                           class="btn btn-sm btn-outline-primary">
-                                                           <i class="fas fa-eye"></i> Xem chi tiết
-                                                        </a>
+                                                        @if ($order->status == '1')
+                                                            <span class="badge badge-warning" style="color: #28a745;">Chờ
+                                                                xử lý</span>
+                                                        @elseif($order->status == '2')
+                                                            <span class="badge badge-info" style="color: #28a745;">Đang
+                                                                giao hàng</span>
+                                                        @elseif($order->status == '3')
+                                                            <span class="badge badge-success" style="color: #28a745;">Hoàn
+                                                                thành</span>
+                                                        @elseif($order->status == '0')
+                                                            <span class="badge badge-danger" style="color: #28a745;">Đã
+                                                                hủy</span>
+                                                        @endif
+                                                    </td>
+                                                   
+                                                    <td>
+                                                        <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#orderDetailModal{{ $order->id }}">
+                                                            <i class="fas fa-eye"></i> Xem chi tiết
+                                                        </button>
+                                                        @if ($order->status == '1') <!-- Chỉ hiển thị nút Hủy nếu trạng thái là Chờ xử lý -->
+                                                            <form action="{{ route('order.cancel', $order->id) }}" method="POST" style="display: inline;">
+                                                                @csrf
+                                                                @method('PUT')
+                                                                <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('Bạn có chắc chắn muốn hủy đơn hàng này?')">
+                                                                    <i class="fas fa-times"></i> Hủy
+                                                                </button>
+                                                            </form>
+                                                        @endif
                                                     </td>
                                                 </tr>
+                                            @endforeach
+
+                                            @foreach ($orders as $order)
+                                                <!-- Modal -->
+                                                <div class="modal fade" id="orderDetailModal{{ $order->id }}"
+                                                    tabindex="-1"
+                                                    aria-labelledby="orderDetailModalLabel{{ $order->id }}"
+                                                    aria-hidden="true">
+                                                    <div class="modal-dialog modal-lg modal-dialog-centered">
+                                                        <div class="modal-content shadow-lg border-0 rounded-3">
+                                                            <div class="modal-header bg-primary text-white">
+                                                                <h5 class="modal-title fw-bold"
+                                                                    id="orderDetailModalLabel{{ $order->id }}">
+                                                                    <i class="fas fa-box"></i> Đơn hàng
+                                                                    #{{ $order->id }}
+                                                                </h5>
+                                                                <button type="button" class="btn-close btn-close-white"
+                                                                    data-bs-dismiss="modal" aria-label="Close"></button>
+                                                            </div>
+
+                                                            <div class="modal-body">
+                                                                <!-- Thông tin đơn hàng -->
+                                                                <div class="p-3 mb-4 border rounded bg-light">
+                                                                    <p><i
+                                                                            class="far fa-calendar-alt me-2 text-primary"></i><strong>Ngày
+                                                                            đặt:</strong>
+                                                                        {{ date('d/m/Y H:i', strtotime($order->created_at)) }}
+                                                                    </p>
+                                                                    <p><i
+                                                                            class="fas fa-money-bill-wave me-2 text-success"></i><strong>Tổng
+                                                                            tiền:</strong>
+                                                                        <span
+                                                                            class="fw-bold text-danger">{{ number_format($order->total, 0, ',', '.') }}
+                                                                            đ</span>
+                                                                    </p>
+                                                                    <p><i
+                                                                            class="fas fa-info-circle me-2 text-warning"></i><strong>Trạng
+                                                                            thái:</strong>
+                                                                        @if ($order->status == '1')
+                                                                            <span class="badge bg-warning text-dark">Chờ xử
+                                                                                lý</span>
+                                                                        @elseif($order->status == '2')
+                                                                            <span class="badge bg-info text-dark">Đang giao
+                                                                                hàng</span>
+                                                                        @elseif($order->status == '3')
+                                                                            <span class="badge bg-success">Hoàn
+                                                                                thành</span>
+                                                                        @elseif($order->status == '0')
+                                                                            <span class="badge bg-danger">Đã hủy</span>
+                                                                        @endif
+                                                                    </p>
+
+                                                                    <p>
+                                                                        <i class="fas fa-map-marker-alt me-2 text-danger"></i>
+                                                                        <strong>Địa chỉ giao hàng:</strong>
+                                                                        {{ $order->address }}
+                                                                    </p>
+                                                                    
+                                                                </div>
+
+                                                                <!-- Timeline trạng thái -->
+                                                                <div
+                                                                    class="order-progress d-flex justify-content-between align-items-center text-center mb-3">
+                                                                    <div
+                                                                        class="step {{ $order->status >= 1 ? 'completed' : '' }}">
+                                                                        <div class="circle"><i
+                                                                                class="fas fa-clipboard-list"></i></div>
+                                                                        <span>Chờ xử lý</span>
+                                                                    </div>
+                                                                    <div class="line"></div>
+                                                                    <div
+                                                                        class="step {{ $order->status >= 2 ? 'completed' : '' }}">
+                                                                        <div class="circle"><i
+                                                                                class="fas fa-shipping-fast"></i></div>
+                                                                        <span>Đang giao hàng</span>
+                                                                    </div>
+                                                                    <div class="line"></div>
+                                                                    <div
+                                                                        class="step {{ $order->status >= 3 ? 'completed' : '' }}">
+                                                                        <div class="circle"><i
+                                                                                class="fas fa-check-circle"></i></div>
+                                                                        <span>Hoàn thành</span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <!-- Thông tin sản phẩm -->
+                                                            <div class="product-details">
+                                                                <h5 class="mb-3">Chi tiết sản phẩm</h5>
+                                                                @foreach ($order->orderDetails as $detail)
+                                                                    <div
+                                                                        class="product-item d-flex align-items-center mb-3 p-3 border rounded shadow-sm">
+                                                                        <img src="{{ asset('images/products/' . $detail->product->image) }}"
+                                                                            alt="{{ $detail->product->name }}"
+                                                                            class="product-img me-3">
+
+                                                                        <div class="flex-grow-1">
+                                                                            <h6 class="mb-1 fw-bold">
+                                                                                {{ $detail->product->name }}</h6>
+                                                                            <p class="mb-1 text-muted">
+                                                                                Giá: <span
+                                                                                    class="text-danger fw-bold">{{ number_format($detail->price, 0, ',', '.') }}
+                                                                                    đ</span>
+                                                                            </p>
+                                                                            <p class="mb-0">
+                                                                                Số lượng:
+                                                                                <strong>{{ $detail->qty }}</strong>
+                                                                                | Tổng: <span
+                                                                                    class="text-primary fw-bold">{{ number_format($detail->price * $detail->qty, 0, ',', '.') }}
+                                                                                    đ</span>
+                                                                            </p>
+                                                                        </div>
+                                                                    </div>
+                                                                @endforeach
+                                                            </div>
+
+                                                            <div class="modal-footer border-0">
+                                                                <button type="button" class="btn btn-secondary"
+                                                                    data-bs-dismiss="modal">
+                                                                    <i class="fas fa-times"></i> Đóng
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             @endforeach
                                         </tbody>
                                     </table>
                                 </div>
                             @else
                                 <div class="alert alert-info">
-                                    Bạn chưa có đơn hàng nào. 
+                                    Bạn chưa có đơn hàng nào.
                                     <a href="{{ route('site.sanpham') }}" class="font-weight-bold">Mua ngay</a>
                                 </div>
                             @endif
                         </div>
                     </div>
-                    
+
                     <div class="tab-pane fade" id="services" role="tabpanel">
                         <div class="bg-white rounded-lg p-6 shadow-sm">
                             <h2 class="text-xl font-bold mb-4">Dịch vụ thu hộ đã thanh toán</h2>
@@ -281,6 +424,160 @@
                 </div>
             </div>
         </div>
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-@endsection
+        <!-- Bootstrap JS -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    @endsection
+    <style>
+        /* Timeline trạng thái */
+        .order-progress {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 30px 0;
+            position: relative;
+        }
+
+        .order-progress .step {
+            position: relative;
+            flex: 1;
+            text-align: center;
+            transition: 0.3s;
+        }
+
+        .order-progress .circle {
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            background: #e9ecef;
+            margin: 0 auto 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            color: #adb5bd;
+            transition: 0.3s;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+        }
+
+        .order-progress .circle i {
+            font-size: 20px;
+        }
+
+        .order-progress .line {
+            flex: 1;
+            height: 5px;
+            background: #dee2e6;
+            margin: 0 5px;
+            position: relative;
+            top: 27px;
+            border-radius: 3px;
+            transition: 0.3s;
+        }
+
+        .order-progress .step.completed .circle {
+            background: linear-gradient(135deg, #0d6efd, #4dabf7);
+            color: #fff;
+            box-shadow: 0 4px 12px rgba(13, 110, 253, 0.3);
+        }
+
+        .order-progress .step.completed span {
+            font-weight: bold;
+            color: #0d6efd;
+        }
+
+        .order-progress .step span {
+            display: block;
+            font-size: 14px;
+            margin-top: 5px;
+            color: #6c757d;
+            transition: 0.3s;
+        }
+
+        .order-progress .step.completed~.line {
+            background: linear-gradient(90deg, #0d6efd, #4dabf7);
+        }
+
+        /* Bảng chi tiết sản phẩm */
+        ..product-details h5 {
+            font-size: 18px;
+            font-weight: 700;
+            color: #343a40;
+            border-left: 4px solid #0d6efd;
+            padding-left: 10px;
+        }
+
+        .product-item {
+            transition: all 0.2s ease-in-out;
+            background: #fff;
+        }
+
+        .product-item:hover {
+            background: #f8f9fa;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .product-img {
+            width: 70px;
+            height: 70px;
+            border-radius: 8px;
+            object-fit: cover;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        }
+
+
+        /* Modal Header */
+        .modal-header {
+            background: linear-gradient(135deg, #0d6efd, #4dabf7);
+            color: #fff;
+            border-bottom: none;
+            padding: 16px 24px;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .modal-header .modal-title {
+            font-weight: 700;
+            font-size: 18px;
+            letter-spacing: 0.5px;
+        }
+
+        .modal-header .btn-close {
+            filter: brightness(0) invert(1);
+            opacity: 0.9;
+            transition: 0.2s;
+        }
+
+        .modal-header .btn-close:hover {
+            opacity: 1;
+        }
+
+        /* Modal Body */
+        .modal-body {
+            padding: 25px;
+        }
+
+        /* Modal Footer */
+        .modal-footer {
+            border-top: none;
+            justify-content: center;
+            padding: 15px;
+        }
+
+        .modal-footer .btn {
+            padding: 10px 22px;
+            font-size: 14px;
+            font-weight: 600;
+            border-radius: 8px;
+            transition: 0.2s;
+        }
+
+        .modal-footer .btn-secondary {
+            background: #6c757d;
+            color: #fff;
+            border: none;
+        }
+
+        .modal-footer .btn-secondary:hover {
+            background: #5a6268;
+        }
+    </style>
