@@ -54,8 +54,38 @@
         #comment-list .border:hover {
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
+
+
+        .quantity-box {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            max-width: 200px;
+            background-color: #f9f9f9;
+        }
+
+        .quantity-box input[type="number"] {
+            width: 60px;
+            text-align: center;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            padding: 5px;
+            font-size: 14px;
+        }
+
+        .quantity-box input[type="number"]:focus {
+            outline: none;
+            border-color: #007bff;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+        }
+
+        .quantity-box label {
+            font-size: 14px;
+            color: #333;
+        }
     </style>
     </head>
+
     <body class="bg-white font-sans text-gray-700 text-xs leading-tight">
         <div class="max-w-[1200px] mx-auto px-3 py-3">
             <!-- Breadcrumb -->
@@ -63,14 +93,9 @@
                 <ol class="flex flex-wrap gap-1 items-center text-[10px] font-normal">
                     <li><a href="#" class="hover:underline">Trang chủ</a></li>
                     <li><span>&gt;</span></li>
-                    <li><a href="#" class="hover:underline">Máy cũ giá rẻ</a></li>
-                    <li><span>&gt;</span></li>
-                    <li><a href="#" class="hover:underline">iPhone 14 Series</a></li>
-                    <li><span>&gt;</span></li>
                     <li class="text-gray-400 truncate max-w-[200px]">{{ $product->name }}</li>
                 </ol>
             </nav>
-
             <div class="flex flex-col lg:flex-row gap-6">
                 <!-- Left: Images -->
                 <div class="w-full lg:w-[55%] flex flex-col">
@@ -89,17 +114,17 @@
                     </div>
                     <ul role="list" aria-label="Product color thumbnails"
                         class="mt-3 flex gap-2 overflow-x-auto scrollbar-hide px-1">
-                        @foreach($list_product as $related)
-                        <li>
-                            <button
-                                class="border border-gray-300 rounded-md p-1 focus:outline-none focus:ring-2 focus:ring-yellow-400">
-                                <a href="{{ route('site.product.detail', ['slug' => $related->slug]) }}">
-                                    <img src="{{ asset('images/products/' . $related->image) }}"
-                                        alt="{{ $related->name }}" class="w-14 h-14 object-contain rounded"
-                                        width="60" height="60" />
+                        @foreach ($list_product as $related)
+                            <li>
+                                <button
+                                    class="border border-gray-300 rounded-md p-1 focus:outline-none focus:ring-2 focus:ring-yellow-400">
+                                    <a href="{{ route('site.product.detail', ['slug' => $related->slug]) }}">
+                                        <img src="{{ asset('images/products/' . $related->image) }}"
+                                            alt="{{ $related->name }}" class="w-14 h-14 object-contain rounded"
+                                            width="60" height="60" />
                                     </a>
-                            </button>
-                        </li>
+                                </button>
+                            </li>
                         @endforeach
                     </ul>
                 </div>
@@ -166,11 +191,13 @@
                             </button>
                         </div>
                         <div class="flex gap-3 mb-3">
-                            <div class="flex-1 border border-yellow-400 rounded p-2 text-center text-[10px]">
-                                <p class="font-semibold line-through text-gray-500 mb-1">
-                                    47.990.000 VND
-                                </p>
-                                <p class="text-red-600 font-bold text-sm">-49%</p>
+                            <div class="flex-1 border border-yellow-400 rounded p-2 text-center text-[15px]">
+                                <b>Số lượng còn lại</b>
+                                @if ($product->quantity > 0)
+                                    <p class="text-red-600 font-bold text-sm">{{ $product->quantity }} chiếc</p>
+                                @else
+                                    <p class="text-gray-500 font-bold text-sm">Hết hàng</p>
+                                @endif
                             </div>
                             <div class="flex-1 border border-yellow-400 rounded p-2 text-center text-[10px]">
                                 <p class="font-semibold mb-1">Mua trả góp</p>
@@ -191,20 +218,31 @@
                         </div>
                     </div>
                     <div class="flex flex-wrap gap-2">
-                        <button
-                            class="bg-red-600 text-white rounded w-full sm:w-auto px-6 py-2 font-semibold hover:bg-red-700 transition"
-                            id ="basic-addon2" onclick="handleAddCart({{ $product->id }})">
-                            MUA NGAY
-                            <br />
-                            <span class="text-xs font-normal">Giao hàng tận nơi</span>
-                        </button>
-                        <button
-                            class="border border-red-600 text-red-600 rounded w-full sm:w-auto px-6 py-2 font-semibold hover:bg-red-700 hover:text-white transition flex items-center justify-center gap-2"
-                            id ="basic-addon2" onclick="handleAddCart({{ $product->id }})">
-                            <i class="fas fa-shopping-cart"></i>Thêm giỏ hàng
-                        </button>
-                        Số lượng:<input type="number" value="1" min="0" aria-describedby="basic-addon2"
-                            id="qty">
+                        @if ($product->quantity > 0)
+                            <!-- Hiển thị nút nếu còn hàng -->
+                            <button
+                                class="bg-red-600 text-white rounded w-full sm:w-auto px-6 py-2 font-semibold hover:bg-red-700 transition"
+                                id="basic-addon2" onclick="handleAddCart({{ $product->id }})">
+                                MUA NGAY
+                                <br />
+                                <span class="text-xs font-normal">Giao hàng tận nơi</span>
+                            </button>
+                            <button
+                                class="border border-red-600 text-red-600 rounded w-full sm:w-auto px-6 py-2 font-semibold hover:bg-red-700 hover:text-white transition flex items-center justify-center gap-2"
+                                id="basic-addon2" onclick="handleAddCart({{ $product->id }})">
+                                <i class="fas fa-shopping-cart"></i>Thêm giỏ hàng
+                            </button>
+                        @else
+                            <!-- Hiển thị thông báo hết hàng -->
+                            <div class="text-center text-red-600 font-bold">
+                                Sản phẩm này hiện đã hết hàng.
+                            </div>
+                        @endif
+                        <div class="quantity-box border border-gray-300 rounded flex items-center p-2">
+                            <label for="qty" class="mr-2 font-semibold">Số lượng:</label>
+                            <input type="number" value="1" min="1" id="qty"
+                                class="w-16 border border-gray-300 rounded px-2 py-1 text-center focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
                         <button
                             class="border border-gray-300 text-gray-600 rounded w-full sm:w-auto px-6 py-2 font-semibold hover:bg-gray-100 transition flex items-center justify-center gap-2">
                             <i class="far fa-heart"></i> Yêu thích
@@ -229,8 +267,8 @@
                     <div class="flex flex-wrap gap-2">
                         <button
                             class="bg-blue-100 text-blue-700 rounded w-full sm:w-auto px-6 py-2 font-semibold hover:bg-blue-200 transition flex items-center justify-center gap-2">
-                            <img src="https://placehold.co/20x20/png?text=Z" alt="Zalo icon" class="w-5 h-5"
-                                width="20" height="20" />
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Icon_of_Zalo.svg/1024px-Icon_of_Zalo.svg.png"
+                                alt="Zalo icon" class="w-5 h-5" width="20" height="20" />
                             Chat Zalo
                         </button>
                         <button
@@ -277,22 +315,31 @@
                         </p>
                     </div>
                     <div class="flex flex-wrap gap-2">
-                        <button
-                            class="bg-red-600 text-white rounded w-full sm:w-auto px-6 py-2 font-semibold hover:bg-red-700 transition"
-                            id ="basic-addon2" onclick="handleAddCart({{ $product->id }})">
-                            MUA NGAY
-                            <br />
-                            <span class="text-xs font-normal">Giao hàng tận nơi</span>
-                        </button>
-                        <button
-                            class="border border-red-600 text-red-600 rounded w-full sm:w-auto px-6 py-2 font-semibold hover:bg-red-700 hover:text-white transition flex items-center justify-center gap-2"
-                            id ="basic-addon2" onclick="handleAddCart({{ $product->id }})">
-                            <i class="fas fa-shopping-cart"></i>Thêm giỏ hàng
-                        </button>
-                        <input type="number" value="1" min="0" aria-describedby="basic-addon2"
-                            id="qty">
-
-
+                        @if ($product->quantity > 0)
+                            <!-- Hiển thị nút nếu còn hàng -->
+                            <button
+                                class="bg-red-600 text-white rounded w-full sm:w-auto px-6 py-2 font-semibold hover:bg-red-700 transition"
+                                id="basic-addon2" onclick="handleAddCart({{ $product->id }})">
+                                MUA NGAY
+                                <br />
+                                <span class="text-xs font-normal">Giao hàng tận nơi</span>
+                            </button>
+                            <button
+                                class="border border-red-600 text-red-600 rounded w-full sm:w-auto px-6 py-2 font-semibold hover:bg-red-700 hover:text-white transition flex items-center justify-center gap-2"
+                                id="basic-addon2" onclick="handleAddCart({{ $product->id }})">
+                                <i class="fas fa-shopping-cart"></i>Thêm giỏ hàng
+                            </button>
+                        @else
+                            <!-- Hiển thị thông báo hết hàng -->
+                            <div class="text-center text-red-600 font-bold">
+                                Sản phẩm này hiện đã hết hàng.
+                            </div>
+                        @endif
+                        <div class="quantity-box border border-gray-300 rounded flex items-center p-2">
+                            <label for="qty" class="mr-2 font-semibold">Số lượng:</label>
+                            <input type="number" value="1" min="1" id="qty"
+                                class="w-16 border border-gray-300 rounded px-2 py-1 text-center focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
                         <button
                             class="border border-gray-300 text-gray-600 rounded w-full sm:w-auto px-6 py-2 font-semibold hover:bg-gray-100 transition flex items-center justify-center gap-2">
                             <i class="far fa-heart"></i> Yêu thích

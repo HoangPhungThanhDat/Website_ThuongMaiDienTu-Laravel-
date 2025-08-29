@@ -164,6 +164,7 @@ Route::prefix('admin')->middleware('middleauth')->group(function () {
         Route::get('delete/{id}', [OrderController::class, 'delete'])->name('admin.order.delete');
         Route::get('restore/{id}', [OrderController::class, 'restore'])->name('admin.order.restore');
         Route::delete('destroy/{id}', [OrderController::class, 'destroy'])->name('admin.order.destroy');
+        Route::put('/admin/order/{id}/update-status', [OrderController::class, 'updateStatus'])->name('admin.order.updateStatus');
     });
     // 7.post
     Route::prefix('post')->group(function () {

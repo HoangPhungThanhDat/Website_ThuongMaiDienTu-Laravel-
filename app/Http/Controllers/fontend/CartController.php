@@ -14,8 +14,8 @@ class CartController extends Controller
     public function index()
     {
         $list_cart = session('carts', []);
-        $new_products = Product::where('status',1)  
-        ->orderby('created_at', 'desc')->take(5)->get();
+        $new_products = Product::where('status', 1)
+            ->orderby('created_at', 'desc')->take(5)->get();
         return view('fontend.cart', compact('list_cart', 'new_products'));
     }
 
@@ -103,7 +103,7 @@ class CartController extends Controller
             $order->delivery_phone = $request->phone;
             $order->delivery_address = $request->address;
             $order->note = $request->note;
-            $order->created_at = now(); 
+            $order->created_at = now();
             $order->type = 'online';
             $order->status = 1;
             if ($order->save()) {
@@ -116,6 +116,12 @@ class CartController extends Controller
                     $orderdetail->discount = 0;
                     $orderdetail->amount = $cart['price'] * $cart['qty'];
                     $orderdetail->save();
+                    // Trừ số lượng sản phẩm trong kho
+                    $product = Product::find($cart['id']);
+                    if ($product) {
+                        $product->quantity -= $cart['qty']; // Trừ số lượng đã đặt
+                        $product->save(); // Cập nhật lại số lượng trong cơ sở dữ liệu
+                    }
                 }
             }
 
@@ -135,10 +141,4 @@ class CartController extends Controller
 
         return view('fontend.cart', compact('list_cart', 'new_products'));
     }
-
-
-
-
-    
-    
 }

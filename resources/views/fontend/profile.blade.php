@@ -1,26 +1,5 @@
 @extends('layouts.site')
 @section('content')
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <style>
-        .nav-pills .nav-link.active {
-            background-color: #e9ecef !important;
-            /* xám nhạt */
-            color: #212529 !important;
-            /* chữ đen */
-        }
-
-        .nav-pills .nav-link {
-            border-radius: 0.375rem;
-            /* làm bo nhẹ */
-        }
-
-        .nav-pills .nav-link:hover {
-            background-color: #f8f9fa;
-            /* màu khi hover */
-        }
-    </style>
 
     <body class="bg-gray-100 font-sans text-gray-900">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
@@ -71,12 +50,11 @@
                                 class="fas fa-user"></i> Thông tin cá nhân </a>
                         <a class="nav-link text-dark" data-bs-toggle="pill" href="#orders" role="tab"><i
                                 class="fas fa-box-open"></i> Đơn hàng của tôi</a>
-                        <a class="nav-link text-dark" data-bs-toggle="pill" href="#services" role="tab"><i
-                                class="fas fa-file-invoice-dollar"></i> Dịch vụ thu hộ</a>
                         <a class="nav-link text-dark" data-bs-toggle="pill" href="#loyalty" role="tab"><i
                                 class="fas fa-heart"></i> Khách hàng thân thiết</a>
-                        <a class="nav-link text-dark" data-bs-toggle="pill" href="#addresses" role="tab"><i
-                                class="fas fa-map-marker-alt"></i> Sổ địa chỉ</a>
+                        <a class="nav-link text-dark" data-bs-toggle="pill" href="#addresses" role="tab">
+                            <i class="fas fa-bell"></i> Thông báo
+                        </a>
                         <a class="nav-link text-dark" data-bs-toggle="pill" href="#warranty" role="tab"><i
                                 class="fas fa-shield-alt"></i> Thông tin bảo hành</a>
                         @if (Auth::check() && Auth::user()->roles === 'admin')
@@ -138,6 +116,12 @@
                                         Chưa cập nhật
                                     @endif
                                 </div>
+                                <div class="col-span-1 flex items-center border-b border-gray-200 pb-2">
+                                    Địa chỉ nhận hàng
+                                </div>
+                                <div class="col-span-2 flex items-center border-b border-gray-200 pb-2 font-normal">
+                                    {{ $user->address ?? 'Chưa cập nhật' }}
+                                </div>
                             </div>
                             <div class="flex justify-center mt-8">
                                 <button
@@ -185,11 +169,16 @@
                                                             Chưa cập nhật</option>
                                                     </select>
                                                 </div>
+                                                <div class="mb-3">
+                                                    <label for="address" class="form-label">Địa chỉ nhận hàng</label>
+                                                    <input type="text" class="form-control" id="address"
+                                                        name="address" value="{{ $user->address }}">
+                                                </div>
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-secondary"
                                                     data-bs-dismiss="modal">Hủy</button>
-                                                <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
+                                                <button type="submit" class="btn btn-danger">Lưu thay đổi</button>
                                             </div>
                                         </form>
                                     </div>
@@ -231,28 +220,37 @@
                                                     <td>
                                                         @if ($order->status == '1')
                                                             <span class="badge badge-warning" style="color: #28a745;">Chờ
-                                                                xử lý</span>
+                                                                xác nhận</span>
                                                         @elseif($order->status == '2')
                                                             <span class="badge badge-info" style="color: #28a745;">Đang
-                                                                giao hàng</span>
+                                                                chuẩn bị hàng</span>
                                                         @elseif($order->status == '3')
-                                                            <span class="badge badge-success" style="color: #28a745;">Hoàn
-                                                                thành</span>
+                                                            <span class="badge badge-success" style="color: #28a745;">Đã
+                                                                giao cho ĐVVC</span>
+                                                        @elseif($order->status == '4')
+                                                            <span class="badge badge-success" style="color: #28a745;">Đã
+                                                                nhận được hàng</span>
                                                         @elseif($order->status == '0')
                                                             <span class="badge badge-danger" style="color: #28a745;">Đã
                                                                 hủy</span>
                                                         @endif
                                                     </td>
-                                                   
+
                                                     <td>
-                                                        <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#orderDetailModal{{ $order->id }}">
+                                                        <button class="btn btn-sm btn-outline-primary"
+                                                            data-bs-toggle="modal"
+                                                            data-bs-target="#orderDetailModal{{ $order->id }}">
                                                             <i class="fas fa-eye"></i> Xem chi tiết
                                                         </button>
-                                                        @if ($order->status == '1') <!-- Chỉ hiển thị nút Hủy nếu trạng thái là Chờ xử lý -->
-                                                            <form action="{{ route('order.cancel', $order->id) }}" method="POST" style="display: inline;">
+                                                        @if ($order->status == '1')
+                                                            <!-- Chỉ hiển thị nút Hủy nếu trạng thái là Chờ xử lý -->
+                                                            <form action="{{ route('order.cancel', $order->id) }}"
+                                                                method="POST" style="display: inline;">
                                                                 @csrf
                                                                 @method('PUT')
-                                                                <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('Bạn có chắc chắn muốn hủy đơn hàng này?')">
+                                                                <button type="submit"
+                                                                    class="btn btn-sm btn-outline-danger"
+                                                                    onclick="return confirm('Bạn có chắc chắn muốn hủy đơn hàng này?')">
                                                                     <i class="fas fa-times"></i> Hủy
                                                                 </button>
                                                             </form>
@@ -298,25 +296,30 @@
                                                                             class="fas fa-info-circle me-2 text-warning"></i><strong>Trạng
                                                                             thái:</strong>
                                                                         @if ($order->status == '1')
-                                                                            <span class="badge bg-warning text-dark">Chờ xử
-                                                                                lý</span>
+                                                                            <span class="badge bg-warning text-dark">Chờ
+                                                                                xác
+                                                                                nhận </span>
                                                                         @elseif($order->status == '2')
-                                                                            <span class="badge bg-info text-dark">Đang giao
+                                                                            <span class="badge bg-info text-dark">Đang
+                                                                                chuẩn bị
                                                                                 hàng</span>
                                                                         @elseif($order->status == '3')
-                                                                            <span class="badge bg-success">Hoàn
-                                                                                thành</span>
+                                                                            <span class="badge bg-success">Đã giao cho
+                                                                                ĐVVC</span>
+                                                                        @elseif($order->status == '4')
+                                                                            <span class="badge bg-success">Đã nhận được
+                                                                                hàng</span>
                                                                         @elseif($order->status == '0')
                                                                             <span class="badge bg-danger">Đã hủy</span>
                                                                         @endif
                                                                     </p>
-
                                                                     <p>
-                                                                        <i class="fas fa-map-marker-alt me-2 text-danger"></i>
+                                                                        <i
+                                                                            class="fas fa-map-marker-alt me-2 text-danger"></i>
                                                                         <strong>Địa chỉ giao hàng:</strong>
                                                                         {{ $order->address }}
                                                                     </p>
-                                                                    
+
                                                                 </div>
 
                                                                 <!-- Timeline trạng thái -->
@@ -326,21 +329,28 @@
                                                                         class="step {{ $order->status >= 1 ? 'completed' : '' }}">
                                                                         <div class="circle"><i
                                                                                 class="fas fa-clipboard-list"></i></div>
-                                                                        <span>Chờ xử lý</span>
+                                                                        <span>Chờ xác nhận</span>
                                                                     </div>
                                                                     <div class="line"></div>
                                                                     <div
                                                                         class="step {{ $order->status >= 2 ? 'completed' : '' }}">
                                                                         <div class="circle"><i
-                                                                                class="fas fa-shipping-fast"></i></div>
-                                                                        <span>Đang giao hàng</span>
+                                                                                class="fas fa-box-open"></i></div>
+                                                                        <span>Đang chuẩn bị hàng </span>
                                                                     </div>
                                                                     <div class="line"></div>
                                                                     <div
                                                                         class="step {{ $order->status >= 3 ? 'completed' : '' }}">
                                                                         <div class="circle"><i
+                                                                                class="fas fa-shipping-fast"></i></div>
+                                                                        <span>Đã giao cho ĐVVC</span>
+                                                                    </div>
+                                                                    <div class="line"></div>
+                                                                    <div
+                                                                        class="step {{ $order->status >= 4 ? 'completed' : '' }}">
+                                                                        <div class="circle"><i
                                                                                 class="fas fa-check-circle"></i></div>
-                                                                        <span>Hoàn thành</span>
+                                                                        <span>Đã nhận được hàng</span>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -372,6 +382,18 @@
                                                                             </p>
                                                                         </div>
                                                                     </div>
+
+                                                                    <!-- Nút đánh giá -->
+                                                                    @if ($order->status == 4)
+                                                                        <!-- Kiểm tra trạng thái đơn hàng -->
+                                                                        <div class="text-center mt-4">
+                                                                            <a href=""
+                                                                                class="btn btn-warning">
+                                                                                <i class="fas fa-star"></i> Đánh giá sản
+                                                                                phẩm
+                                                                            </a>
+                                                                        </div>
+                                                                    @endif
                                                                 @endforeach
                                                             </div>
 
@@ -396,188 +418,143 @@
                             @endif
                         </div>
                     </div>
-
-                    <div class="tab-pane fade" id="services" role="tabpanel">
-                        <div class="bg-white rounded-lg p-6 shadow-sm">
-                            <h2 class="text-xl font-bold mb-4">Dịch vụ thu hộ đã thanh toán</h2>
-                            <p>Thông tin các dịch vụ thu hộ đã hoàn tất.</p>
-                        </div>
-                    </div>
                     <div class="tab-pane fade" id="loyalty" role="tabpanel">
-                        <div class="bg-white rounded-lg p-6 shadow-sm">
+                        <div class="bg-white rounded-lg shadow-sm p-6">
                             <h2 class="text-xl font-bold mb-4">Khách hàng thân thiết</h2>
-                            <p>Chính sách và điểm thưởng cho khách hàng thân thiết.</p>
+                            <p class="text-muted mb-4">Tham gia chương trình khách hàng thân thiết để nhận nhiều ưu đãi và
+                                quyền lợi hấp dẫn.</p>
+
+                            <!-- Thông tin cấp độ -->
+                            <div class="loyalty-level mb-4">
+                                <h5 class="fw-bold">Cấp độ hiện tại: <span class="text-warning">Vàng</span></h5>
+                                <div class="progress my-2" style="height: 12px;">
+                                    <div class="progress-bar bg-warning" style="width: 65%"></div>
+                                </div>
+                                <small class="text-muted">Bạn còn thiếu <b>350 điểm</b> để lên hạng <span
+                                        class="text-primary">Kim Cương</span>.</small>
+                            </div>
+
+                            <!-- Quyền lợi -->
+                            <div class="loyalty-benefits grid grid-cols-1 md:grid-cols-2 gap-3">
+                                <div class="benefit-item">
+                                    <i class="fas fa-percent"></i>
+                                    <div>
+                                        <h6>Giảm giá độc quyền</h6>
+                                        <p>Nhận mã giảm giá lên đến 20% cho hội viên.</p>
+                                    </div>
+                                </div>
+                                <div class="benefit-item">
+                                    <i class="fas fa-truck-fast"></i>
+                                    <div>
+                                        <h6>Miễn phí vận chuyển</h6>
+                                        <p>Freeship cho các đơn hàng từ 300k.</p>
+                                    </div>
+                                </div>
+                                <div class="benefit-item">
+                                    <i class="fas fa-gift"></i>
+                                    <div>
+                                        <h6>Quà sinh nhật</h6>
+                                        <p>Nhận voucher 200k vào tháng sinh nhật.</p>
+                                    </div>
+                                </div>
+                                <div class="benefit-item">
+                                    <i class="fas fa-star"></i>
+                                    <div>
+                                        <h6>Tích điểm nhanh hơn</h6>
+                                        <p>Nhân đôi điểm thưởng cho mỗi đơn hàng.</p>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
+
                     <div class="tab-pane fade" id="addresses" role="tabpanel">
-                        <div class="bg-white rounded-lg p-6 shadow-sm">
-                            <h2 class="text-xl font-bold mb-4">Sổ địa chỉ nhận hàng</h2>
-                            <p>Danh sách địa chỉ nhận hàng bạn đã lưu.</p>
+                        <div class="bg-white rounded-lg shadow-sm p-6">
+                            <h2 class="text-xl font-bold mb-4">Thông báo</h2>
+
+                            <div class="list-group">
+
+                                <!-- Thông báo chưa đọc -->
+                                <a href="#"
+                                    class="list-group-item list-group-item-action d-flex align-items-start border-0 border-bottom unread">
+                                    <div class="me-3 text-warning">
+                                        <i class="fas fa-tag fa-lg"></i>
+                                    </div>
+                                    <div class="flex-fill">
+                                        <p class="mb-1 fw-bold">Giảm giá 50% cho đơn hàng hôm nay</p>
+                                        <small class="text-muted">2 giờ trước</small>
+                                    </div>
+                                </a>
+
+                                <!-- Thông báo đã đọc -->
+                                <a href="#"
+                                    class="list-group-item list-group-item-action d-flex align-items-start border-0 border-bottom">
+                                    <div class="me-3 text-primary">
+                                        <i class="fas fa-truck fa-lg"></i>
+                                    </div>
+                                    <div class="flex-fill">
+                                        <p class="mb-1">Đơn hàng #12345 của bạn đã được giao</p>
+                                        <small class="text-muted">Hôm qua</small>
+                                    </div>
+                                </a>
+
+                                <!-- Thông báo khuyến mãi -->
+                                <a href="#"
+                                    class="list-group-item list-group-item-action d-flex align-items-start border-0 border-bottom">
+                                    <div class="me-3 text-danger">
+                                        <i class="fas fa-bullhorn fa-lg"></i>
+                                    </div>
+                                    <div class="flex-fill">
+                                        <p class="mb-1">Săn sale cuối tuần – Giảm đến 70%</p>
+                                        <small class="text-muted">3 ngày trước</small>
+                                    </div>
+                                </a>
+
+                            </div>
                         </div>
                     </div>
+
                     <div class="tab-pane fade" id="warranty" role="tabpanel">
-                        <div class="bg-white rounded-lg p-6 shadow-sm">
+                        <div class="bg-white rounded-lg shadow-sm p-6">
                             <h2 class="text-xl font-bold mb-4">Thông tin bảo hành</h2>
-                            <p>Chi tiết các sản phẩm còn hạn bảo hành.</p>
+                            <p class="text-muted mb-4">Vui lòng tham khảo các quy định bảo hành áp dụng cho sản phẩm.</p>
+
+                            <div class="warranty-rules">
+                                <div class="rule-item">
+                                    <i class="fas fa-shield-alt"></i>
+                                    <div>
+                                        <h6>Bảo hành chính hãng</h6>
+                                        <p>Sản phẩm được bảo hành theo quy định của hãng sản xuất từ 12 - 24 tháng.</p>
+                                    </div>
+                                </div>
+                                <div class="rule-item">
+                                    <i class="fas fa-receipt"></i>
+                                    <div>
+                                        <h6>Điều kiện bảo hành</h6>
+                                        <p>Sản phẩm còn nguyên tem, phiếu bảo hành và hóa đơn mua hàng hợp lệ.</p>
+                                    </div>
+                                </div>
+                                <div class="rule-item">
+                                    <i class="fas fa-tools"></i>
+                                    <div>
+                                        <h6>Trường hợp không bảo hành</h6>
+                                        <p>Sản phẩm hư hỏng do tác động vật lý, rơi vỡ, ngấm nước hoặc tự ý sửa chữa.</p>
+                                    </div>
+                                </div>
+                                <div class="rule-item">
+                                    <i class="fas fa-clock"></i>
+                                    <div>
+                                        <h6>Thời gian xử lý</h6>
+                                        <p>Thời gian tiếp nhận và xử lý bảo hành từ 7 - 15 ngày làm việc.</p>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
+
                 </div>
             </div>
         </div>
         <!-- Bootstrap JS -->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     @endsection
-    <style>
-        /* Timeline trạng thái */
-        .order-progress {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin: 30px 0;
-            position: relative;
-        }
-
-        .order-progress .step {
-            position: relative;
-            flex: 1;
-            text-align: center;
-            transition: 0.3s;
-        }
-
-        .order-progress .circle {
-            width: 55px;
-            height: 55px;
-            border-radius: 50%;
-            background: #e9ecef;
-            margin: 0 auto 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 22px;
-            color: #adb5bd;
-            transition: 0.3s;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
-        }
-
-        .order-progress .circle i {
-            font-size: 20px;
-        }
-
-        .order-progress .line {
-            flex: 1;
-            height: 5px;
-            background: #dee2e6;
-            margin: 0 5px;
-            position: relative;
-            top: 27px;
-            border-radius: 3px;
-            transition: 0.3s;
-        }
-
-        .order-progress .step.completed .circle {
-            background: linear-gradient(135deg, #0d6efd, #4dabf7);
-            color: #fff;
-            box-shadow: 0 4px 12px rgba(13, 110, 253, 0.3);
-        }
-
-        .order-progress .step.completed span {
-            font-weight: bold;
-            color: #0d6efd;
-        }
-
-        .order-progress .step span {
-            display: block;
-            font-size: 14px;
-            margin-top: 5px;
-            color: #6c757d;
-            transition: 0.3s;
-        }
-
-        .order-progress .step.completed~.line {
-            background: linear-gradient(90deg, #0d6efd, #4dabf7);
-        }
-
-        /* Bảng chi tiết sản phẩm */
-        ..product-details h5 {
-            font-size: 18px;
-            font-weight: 700;
-            color: #343a40;
-            border-left: 4px solid #0d6efd;
-            padding-left: 10px;
-        }
-
-        .product-item {
-            transition: all 0.2s ease-in-out;
-            background: #fff;
-        }
-
-        .product-item:hover {
-            background: #f8f9fa;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-        }
-
-        .product-img {
-            width: 70px;
-            height: 70px;
-            border-radius: 8px;
-            object-fit: cover;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-        }
-
-
-        /* Modal Header */
-        .modal-header {
-            background: linear-gradient(135deg, #0d6efd, #4dabf7);
-            color: #fff;
-            border-bottom: none;
-            padding: 16px 24px;
-            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
-        }
-
-        .modal-header .modal-title {
-            font-weight: 700;
-            font-size: 18px;
-            letter-spacing: 0.5px;
-        }
-
-        .modal-header .btn-close {
-            filter: brightness(0) invert(1);
-            opacity: 0.9;
-            transition: 0.2s;
-        }
-
-        .modal-header .btn-close:hover {
-            opacity: 1;
-        }
-
-        /* Modal Body */
-        .modal-body {
-            padding: 25px;
-        }
-
-        /* Modal Footer */
-        .modal-footer {
-            border-top: none;
-            justify-content: center;
-            padding: 15px;
-        }
-
-        .modal-footer .btn {
-            padding: 10px 22px;
-            font-size: 14px;
-            font-weight: 600;
-            border-radius: 8px;
-            transition: 0.2s;
-        }
-
-        .modal-footer .btn-secondary {
-            background: #6c757d;
-            color: #fff;
-            border: none;
-        }
-
-        .modal-footer .btn-secondary:hover {
-            background: #5a6268;
-        }
-    </style>

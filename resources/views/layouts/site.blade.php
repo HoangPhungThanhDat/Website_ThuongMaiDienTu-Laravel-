@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="{{ asset('css/product-new.css') }}">
     <link rel="stylesheet" href="{{ asset('css/baiviet_detail.css') }}">
     <link rel="stylesheet" href="{{ asset('css/home.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/profile.css') }}">
 
 
 
@@ -25,6 +26,9 @@
 
 
 
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
 
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

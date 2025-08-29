@@ -58,12 +58,14 @@ class ProfileController extends Controller
             'name' => 'required|string|max:255',
             'phone' => 'nullable|string|max:15',
             'gender' => 'nullable|in:1,2',
+            'address' => 'nullable|string|max:255',
         ]);
 
         $user = Auth::user();
         $user->name = $request->name;
         $user->phone = $request->phone;
         $user->gender = $request->gender;
+        $user->address = $request->address;
         $user->save();
 
         return redirect()->back()->with('success', 'Thông tin cá nhân đã được cập nhật.');

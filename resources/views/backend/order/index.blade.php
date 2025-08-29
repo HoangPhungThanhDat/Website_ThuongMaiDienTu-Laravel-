@@ -40,12 +40,17 @@
                             <th>Email</th>
                             <th>Ngày tạo</th>
                             <th>Type</th>
-                            <th class="text-center">Trạng thái</th>
+                            <th class="text-center" style="width:150px;">Trạng thái</th>
                             <th class="text-center" style="width:200px;">Chức năng</th>
                             <th class="text-center" style="width:30px;">ID</th>
                         </tr>
                     </thead>
                     <tbody>
+                        @if (session('success'))
+                            <div class="alert alert-success">
+                                {{ session('success') }}
+                            </div>
+                        @endif
                         @foreach ($list as $row)
                             <tr>
                                 <td class="text-center">
@@ -58,19 +63,24 @@
                                 <td>{{ $row->delivery_phone }}</td>
                                 <td>{{ $row->delivery_email }}</td>
                                 <td>{{ $row->created_at }}</td>
-                                <td>{{ $row->type}}</td>
+                                <td>{{ $row->type }}</td>
                                 <td>
-                                    @if ($row->status == 1)
-                                        <span class="badge badge-success">Chờ xác nhận</span>
-                                    @elseif($row->status == 2)
-                                        <span class="badge badge-info">Đang giao</span>
-                                    @elseif($row->status == 3)
-                                        <span class="badge badge-primary">Hoàn thành</span>
-                                    @else
-                                        <span class="badge badge-danger">Hủy</span>
-                                    @endif
+                                    <form action="{{ route('admin.order.updateStatus', $row->id) }}" method="POST">
+                                        @csrf
+                                        @method('PUT')
+                                        <select name="status" class="form-control form-control-sm"
+                                            onchange="this.form.submit()">
+                                            <option value="1" {{ $row->status == 1 ? 'selected' : '' }}>Chờ xác nhận
+                                            </option>
+                                            <option value="2" {{ $row->status == 2 ? 'selected' : '' }}>Đang chuẩn bị
+                                                hàng</option>
+                                            <option value="3" {{ $row->status == 3 ? 'selected' : '' }}>Đã giao cho
+                                                DVVC</option>
+                                            <option value="4" {{ $row->status == 4 ? 'selected' : '' }}>Đã nhận được
+                                                hàng</option>
+                                        </select>
+                                    </form>
                                 </td>
-
 
                                 <td class="text-center">
                                     @php
@@ -88,14 +98,7 @@
                                     <a href="{{ route('admin.order.show', $args) }}" class="btn btn-sm btn-info">
                                         <i class="fa fa-eye " aria-hidden="true"></i>
                                     </a>
-                                     {{-- Nút cập nhật status = 3 --}}
-                                     <form action="{{ route('admin.order.done', $row->id) }}" method="post" class="d-inline">
-                                      @csrf
-                                      <button type="submit" class="btn btn-sm btn-success" 
-                                              onclick="return confirm('Xác nhận khách đã nhận hàng?')">
-                                          <i class="fa fa-check"></i>
-                                      </button>
-                                    </form>
+                              
                                     <a href="{{ route('admin.order.edit', $args) }}" class="btn btn-sm btn-primary">
                                         <i class="fa fa-edit " aria-hidden="true"></i>
                                     </a>

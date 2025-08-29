@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\UpdateOrderRequest;
 use App\Models\Order;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
 
 class OrderController extends Controller
 {
@@ -159,5 +160,21 @@ class OrderController extends Controller
         $order->save();
 
         return redirect()->route('admin.order.index')->with('success', 'Đơn hàng đã được cập nhật thành Hoàn thành.');
+    }
+
+
+
+
+    public function updateStatus(Request $request, $id)
+    {
+        // Tìm đơn hàng theo ID
+        $order = Order::findOrFail($id);
+
+        // Cập nhật trạng thái
+        $order->status = $request->status;
+        $order->save();
+
+        // Chuyển hướng lại với thông báo thành công
+        return redirect()->back()->with('success', 'Cập nhật trạng thái đơn hàng thành công.');
     }
 }

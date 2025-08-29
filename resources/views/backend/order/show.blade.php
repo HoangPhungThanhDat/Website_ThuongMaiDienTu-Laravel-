@@ -22,9 +22,8 @@
             <div class="card-header">
                 <div class="row">
                     <div class="col-12 text-right">
-                        <a href="{{ route('admin.order.delete', ['id' => $order->id]) }}" 
-                           class="btn btn-sm btn-danger"
-                           onclick="return confirm('Bạn có chắc muốn xóa đơn hàng này?')">
+                        <a href="{{ route('admin.order.delete', ['id' => $order->id]) }}" class="btn btn-sm btn-danger"
+                            onclick="return confirm('Bạn có chắc muốn xóa đơn hàng này?')">
                             <i class="fas fa-trash"></i> Xóa
                         </a>
                         <a class="btn btn-sm btn-info" href="{{ route('admin.order.index') }}">
@@ -56,6 +55,14 @@
                             <td>{{ $order->delivery_phone }}</td>
                         </tr>
                         <tr>
+                            <td><strong>Địa chỉ</strong></td>
+                            <td>{{ $order->delivery_address }}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Lưu ý</strong></td>
+                            <td>{{ $order->note }}</td>
+                        </tr>
+                        <tr>
                             <td><strong>Ngày tạo</strong></td>
                             <td>{{ $order->created_at }}</td>
                         </tr>
@@ -66,12 +73,14 @@
                         <tr>
                             <td><strong>Trạng thái</strong></td>
                             <td>
-                                @if($order->status == 1)
-                                    <span class="badge badge-success">Đã xác nhận</span>
+                                @if ($order->status == 1)
+                                    <span class="badge badge-success">Chờ xác nhận</span>
                                 @elseif($order->status == 2)
-                                    <span class="badge badge-info">Đang giao</span>
+                                    <span class="badge badge-info">Đang chuẩn bị hàng </span>
                                 @elseif($order->status == 3)
-                                    <span class="badge badge-primary">Hoàn thành</span>
+                                    <span class="badge badge-primary">Đã giao cho ĐVVC</span>
+                                @elseif($order->status == 4)
+                                    <span class="badge badge-primary">Đã nhận được hàng </span>
                                 @else
                                     <span class="badge badge-danger">Hủy</span>
                                 @endif
@@ -92,7 +101,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($list as $item)
+                        @foreach ($list as $item)
                             <tr>
                                 <td>{{ $item->productname }}</td>
                                 <td class="text-center">{{ $item->productqty }}</td>
