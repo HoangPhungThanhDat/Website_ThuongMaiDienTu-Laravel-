@@ -15,7 +15,7 @@ class CartController extends Controller
     {
         $list_cart = session('carts', []);
         $new_products = Product::where('status', 1)
-            ->orderby('created_at', 'desc')->take(5)->get();
+            ->orderby('created_at', 'desc')->take(10)->get();
         return view('fontend.cart', compact('list_cart', 'new_products'));
     }
 
@@ -134,11 +134,11 @@ class CartController extends Controller
 
 
 
-    public function cart()
-    {
-        $list_cart = session('cart', []);
-        $new_products = Product::orderBy('created_at', 'desc')->take(4)->get(); // Lấy 4 sản phẩm mới nhất
+    // public function cart()
+    // {
+    //     $list_cart = session('cart', []);
+    //     $new_products = Product::orderBy('created_at', 'desc')->take(4)->get(); // Lấy 4 sản phẩm mới nhất
 
-        return view('fontend.cart', compact('list_cart', 'new_products'));
-    }
+    //     return view('fontend.cart', compact('list_cart', 'new_products'));
+    // }
 }

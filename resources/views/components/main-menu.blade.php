@@ -9,6 +9,10 @@
         </a>
         <!-- Nút Danh Mục -->
         <div class="category-menu-wrapper">
+            <button class="menu-toggle" aria-label="Mở menu">
+                <i class="fas fa-bars"></i>
+            </button>
+
             <button class="category-btn" aria-label="Danh mục sản phẩm">
                 <i class="fas fa-bars" aria-hidden="true"></i> Danh mục
             </button>
@@ -132,3 +136,49 @@
         });
     });
 </script>
+
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const menuToggle = document.querySelector('.menu-toggle');
+    const headerLinks = document.querySelector('.header-links');
+    const overlay = document.querySelector('.menu-overlay');
+
+    menuToggle.addEventListener('click', function () {
+        headerLinks.classList.toggle('active');
+        overlay.classList.toggle('active');
+    });
+
+    overlay.addEventListener('click', function () {
+        headerLinks.classList.remove('active');
+        overlay.classList.remove('active');
+    });
+});
+</script>
+
+<style>
+    @media (max-width: 768px) {
+    .menu-toggle {
+        display: block;
+    }
+
+    .header-links {
+        position: fixed;
+        top: 0;
+        left: -100%;
+        width: 50%;
+        height: 100%;
+        background: #fff;
+        flex-direction: column;
+        padding: 20px;
+        gap: 10px;
+        z-index: 1000;
+        overflow-y: auto;
+    }
+
+    .header-links.active {
+        left: 0;
+    }
+}
+</style>

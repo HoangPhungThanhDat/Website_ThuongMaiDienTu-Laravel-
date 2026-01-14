@@ -71,17 +71,28 @@ class SanPhamController extends Controller
 
     public function detail($slug)
     {
-
-        $product = Product::where([['status', '=', 1], ['slug', '=', $slug]])->first();
+        // Lấy sản phẩm theo slug, trạng thái = 1, kèm luôn images
+        $product = Product::with('images')->where([
+            ['status', '=', 1],
+            ['slug', '=', $slug]
+        ])->firstOrFail(); // Nếu không tìm thấy sẽ throw 404
+    
+        // Lấy danh sách id các category con nếu có
         $listcatid = $this->getlistcategoryid($product->category_id);
-        $list_product = Product::where([['status', '=', 1], ['id', '!=', $product->id]])
-            ->whereIn('category_id', $listcatid)
-            ->orderBy('created_at', 'desc')
-            ->limit(10)
-            ->get();
-
+    
+        // Lấy các sản phẩm liên quan cùng category, khác id hiện tại
+        $list_product = Product::where([
+            ['status', '=', 1],
+            ['id', '!=', $product->id]
+        ])
+        ->whereIn('category_id', $listcatid)
+        ->orderBy('created_at', 'desc')
+        ->limit(10)
+        ->get();
+    
         return view('fontend.product_detail', compact('product', 'list_product'));
     }
+    
 
     //lay san pham theo thuong hieu
     public function getlistbrandid($rowid)
@@ -125,5 +136,10 @@ class SanPhamController extends Controller
 
 
 
-
+    public function show($id)
+    {
+        $product = Product::with('options')->findOrFail($id);
+        return view('fontend.product_detail', compact('product'));
+    }
+    
 }

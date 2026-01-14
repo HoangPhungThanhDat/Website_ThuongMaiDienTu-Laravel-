@@ -85,10 +85,19 @@
                                     <label for="quantity">Số lượng kho</label>
                                     <input type="number" value="" name="quantity" id="quantity" class="form-control">
                                 </div>
-                                <div class="mb-3">
-                                    <label for="image">Hình</label>
-                                    <input type="file" name="image" id="image" class="form-control">
+                                <div class="form-group">
+                                    <label>Hình hiện tại</label><br>
+                                    <img src="{{ asset('images/products/' . $product->image) }}" width="100" alt="">
+                                    @foreach($product->images as $img)
+                                        <img src="{{ asset('images/products/' . $img->image_path) }}" width="100" alt="">
+                                    @endforeach
                                 </div>
+                                
+                                <div class="form-group">
+                                    <label>Thay hình mới (có thể chọn nhiều)</label>
+                                    <input type="file" name="images[]" multiple class="form-control">
+                                </div>
+                                
                                 <div class="mb-3">
                                     <label for="status">Trạng thái</label>
                                     <select name="status" id="status" class="form-control">

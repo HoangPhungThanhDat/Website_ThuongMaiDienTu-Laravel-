@@ -21,6 +21,8 @@ use App\Http\Controllers\fontend\ProfileController;
 use App\Http\Controllers\fontend\HomeController;
 use App\Http\Controllers\fontend\LienheController as lienhecontroller;
 use App\Http\Controllers\fontend\SanphamController as sanphamcontroller;
+use App\Http\Controllers\backend\ProductOptionController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 // router site
@@ -215,6 +217,22 @@ Route::prefix('admin')->middleware('middleauth')->group(function () {
         Route::delete('destroy/{id}', [ProductController::class, 'destroy'])->name('admin.product.destroy');
 
     });
+  // ProductOptions
+    Route::prefix('ProductOptions')->group(function () {
+        Route::get('/', [ProductOptionController::class, 'index'])->name('admin.ProductOption.index');
+        Route::get('trash', [ProductOptionController::class, 'trash'])->name('admin.ProductOption.trash');
+        Route::get('show/{id}', [ProductOptionController::class, 'show'])->name('admin.ProductOption.show');
+        Route::get('create', [ProductOptionController::class, 'create'])->name('admin.ProductOption.create');
+        Route::post('store', [ProductOptionController::class, 'store'])->name('admin.ProductOption.store');
+        Route::get('edit/{id}', [ProductOptionController::class, 'edit'])->name('admin.ProductOption.edit');
+        Route::put('update/{id}', [ProductOptionController::class, 'update'])->name('admin.ProductOption.update');
+        Route::get('status/{id}', [ProductOptionController::class, 'status'])->name('admin.ProductOption.status');
+        Route::get('delete/{id}', [ProductOptionController::class, 'delete'])->name('admin.ProductOption.delete');
+        Route::get('restore/{id}', [ProductOptionController::class, 'restore'])->name('admin.ProductOption.restore');
+        Route::delete('destroy/{id}', [ProductOptionController::class, 'destroy'])->name('admin.ProductOption.destroy');
+
+    });
+
     // 10.user
     Route::prefix('user')->group(function () {
         Route::get('/', [UserController::class, 'index'])->name('admin.user.index');

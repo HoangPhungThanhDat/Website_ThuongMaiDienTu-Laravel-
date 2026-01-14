@@ -12,6 +12,9 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
+use App\Models\ProductImage;
+use Illuminate\Http\Request;
+
 class ProductController extends Controller
 {
     /**
@@ -56,51 +59,93 @@ class ProductController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreProductRequest $request)
+    public function store(Request $request)
     {
-        $product = new Product();
+        $request->validate([
+            'name'        => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'detail'      => 'nullable|string',
+            'price'       => 'required|numeric',
+            'pricesale'   => 'nullable|numeric',
+            'quantity'    => 'required|integer',
+            'category_id' => 'required|exists:category,id',
+            'brand_id'    => 'required|exists:brand,id',
+            'status'      => 'required|in:1,2',
+            'images.*'    => 'image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+        ]);
 
-        // Tên trường || tên của thẻ input name
-        $product->name = $request->name;
-        $product->slug = Str::of($request->name)->slug('-');
+        // Xử lý slug
+        $slug = Str::slug($request->name, '-');
+
+        $product = new Product();
+        $product->name        = $request->name;
+        $product->slug        = $slug;
         $product->description = $request->description;
-        $product->status = $request->status;
+        $product->detail      = $request->detail;
+        $product->price       = $request->price;
+        $product->pricesale   = $request->pricesale ?? 0;
+        $product->quantity    = $request->quantity;
         $product->category_id = $request->category_id;
-        $product->brand_id = $request->brand_id;
-        $product->detail = $request->detail;
-        $product->price = $request->price;
-        $product->quantity = $request->quantity; // Số lượng kho
-        $product->pricesale = $request->pricesale;
-        //Upload file
-        if ($request->image) {
-            $exten = $request->file('image')->extension();
-            //Lấy đuôi file
-            if (in_array($exten, ['png', 'jpg', 'jpeg', 'gif', 'webp'])) {
-                $filename = $product->slug.'.'.$exten;
-                $request->image->move(public_path('images/products'), $filename);
-                $product->image = $filename;
+        $product->brand_id    = $request->brand_id;
+        $product->status      = $request->status;
+        $product->created_by  = auth()->id() ?? 1;
+
+        $tempImages = [];
+
+        // Upload ảnh
+        if ($request->hasFile('images')) {
+            $images = $request->file('images');
+            foreach ($images as $key => $file) {
+                $ext = $file->extension();
+                if (in_array($ext, ['png', 'jpg', 'jpeg', 'gif', 'webp'])) {
+                    if ($key === 0) {
+                        // Ảnh chính: slug + đuôi mở rộng
+                        $filename = $slug . '.' . $ext;
+                        $file->move(public_path('images/products'), $filename);
+                        $product->image = $filename;
+                    } else {
+                        // Ảnh phụ: slug-index.ext (vd: iphone-15-1.jpg, iphone-15-2.jpg)
+                        $filename = $slug . '-' . $key . '.' . $ext;
+                        $file->move(public_path('images/products'), $filename);
+
+                        $productImage = new ProductImage();
+                        $productImage->image_path = $filename;
+                        $tempImages[] = $productImage;
+                    }
+                }
             }
         }
 
-        $product->created_at = date('Y-m-d H:i:s');
-        $product->created_by = Auth::id() ?? 1; //Id của người quản trị
+        // Lưu sản phẩm
         $product->save();
 
-        return redirect()->route('admin.product.index');
+        // Lưu các ảnh phụ vào bảng product_images
+        if (!empty($tempImages)) {
+            foreach ($tempImages as $img) {
+                $img->product_id = $product->id;
+                $img->save();
+            }
+        }
+
+        return redirect()->route('admin.product.index')->with('success', 'Thêm sản phẩm thành công!');
     }
+
+
 
     /**
      * Display the specified resource.
      */
     public function show(string $id)
     {
-        $product = Product::find($id);
-        if (! $product) {
+        $product = Product::with('images')->find($id);
+    
+        if (!$product) {
             return redirect()->route('admin.product.index');
         }
-
+    
         return view('backend.product.show', compact('product'));
     }
+    
 
     /**
      * Show the form for editing the specified resource.
@@ -123,43 +168,75 @@ class ProductController extends Controller
      */
     public function update(UpdateProductRequest $request, string $id)
     {
-        $product = Product::find($id);
-        if ($product == null) {
+        $product = Product::with('images')->find($id);
+        if (!$product) {
             return redirect()->route('admin.product.index');
         }
-
-        $product->name = $request->name;
-        $product->slug = Str::of($request->name)->slug('-');
+    
+        // Cập nhật thông tin sản phẩm
+        $slug = Str::slug($request->name, '-');
+        $product->name        = $request->name;
+        $product->slug        = $slug;
         $product->description = $request->description;
-        $product->status = $request->status;
+        $product->status      = $request->status;
         $product->category_id = $request->category_id;
-        $product->brand_id = $request->brand_id;
-        $product->detail = $request->detail;
-        $product->price = $request->price;
-        $product->quantity = $request->quantity; // Số lượng kho
-        $product->pricesale = $request->pricesale;
-
-        //Upload file
-        if ($request->image) {
-            $exten = $request->file('image')->extension();
-            //Lấy đuôi file
-            if (in_array($exten, ['png', 'jpg', 'jpeg', 'gif', 'webp'])) {
-                $filename = $product->slug.'.'.$exten;
-                $request->image->move(public_path('images/products'), $filename);
-                $product->image = $filename;
+        $product->brand_id    = $request->brand_id;
+        $product->detail      = $request->detail;
+        $product->price       = $request->price;
+        $product->quantity    = $request->quantity;
+        $product->pricesale   = $request->pricesale;
+        $product->updated_by  = Auth::id() ?? 1;
+        $product->updated_at  = now();
+    
+        $tempImages = [];
+    
+        // Nếu có upload hình mới
+        if ($request->hasFile('images')) {
+            // 🔹 Xóa hình phụ cũ
+            foreach ($product->images as $img) {
+                if (file_exists(public_path('images/products/' . $img->image_path))) {
+                    unlink(public_path('images/products/' . $img->image_path));
+                }
+                $img->delete();
+            }
+    
+            // 🔹 Upload hình mới
+            $images = $request->file('images');
+            foreach ($images as $key => $file) {
+                $ext = $file->extension();
+                if (in_array($ext, ['png', 'jpg', 'jpeg', 'gif', 'webp'])) {
+                    if ($key === 0) {
+                        // Ảnh chính
+                        $filename = $slug . '.' . $ext;
+                        $file->move(public_path('images/products'), $filename);
+                        $product->image = $filename;
+                    } else {
+                        // Ảnh phụ
+                        $filename = $slug . '-' . $key . '.' . $ext;
+                        $file->move(public_path('images/products'), $filename);
+    
+                        $productImage = new ProductImage();
+                        $productImage->image_path = $filename;
+                        $tempImages[] = $productImage;
+                    }
+                }
             }
         }
-
-        $product->updated_at = date('Y-m-d H:i:s');
-        $product->updated_by = Auth::id() ?? 1; //Id của người quản trị
-
-        // Lưu vào csdl
+    
+        // Lưu sản phẩm
         $product->save();
-
-        // Xử lý
-        // Chuyển hướng trang
-        return redirect()->route('admin.product.index');
+    
+        // Lưu ảnh phụ mới
+        if (!empty($tempImages)) {
+            foreach ($tempImages as $img) {
+                $img->product_id = $product->id;
+                $img->save();
+            }
+        }
+    
+        return redirect()->route('admin.product.index')->with('success', 'Cập nhật sản phẩm thành công!');
     }
+    
 
     /**
      * Remove the specified resource from storage.

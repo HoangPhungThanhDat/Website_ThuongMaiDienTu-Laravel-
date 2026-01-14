@@ -94,41 +94,44 @@
                 <!-- Tabs for accessories and combo -->
                 <div class="flex gap-3 mt-6 select-none">
                     <button class="text-xs border border-red-600 text-red-600 rounded-full px-3 py-1 font-semibold">
-                        Sản phẩm mới nhất 
+                        Sản phẩm mới nhất
                     </button>
                 </div>
                 <!-- Accessories carousel -->
                 <div class="mt-4 relative">
-                    <button aria-label="Previous"
+                    <button id="prevBtn" aria-label="Previous"
                         class="absolute top-1/2 -left-2 -translate-y-1/2 bg-white border border-[#E4E7F1] rounded-full w-7 h-7 flex items-center justify-center text-[#6B7280] hover:text-black shadow-sm z-10">
-                        <i class="fas fa-chevron-left">
-                        </i>
+                        <i class="fas fa-chevron-left"></i>
                     </button>
-                    <div class="flex gap-4 overflow-x-auto scrollbar-hide px-8">
-                        @foreach($new_products as $productnew)
-                        <!-- Accessory item 1 -->
-                        <div class="min-w-[100px] flex flex-col items-center gap-1 select-none">
-                            <a href="{{ route('site.product.detail', ['slug' => $productnew->slug]) }}">
-                             <img alt="{{ $productnew->name }}" class="w-[80px] h-[80px] object-contain" height="80"
-                                src="{{ asset('images/products/' . $productnew->image) }}" width="80" />
-                            </a>
-                            <div class="text-[10px] text-[#6B7280]">
-                                {{ Str::limit($productnew->name, 20) }}
-                            </div>
-                            <a href="{{ route('site.product.detail', ['slug' => $productnew->slug]) }}">
-                                <button class="bg-red-600 text-white text-xs rounded px-3 py-1 mt-1 w-full hover:bg-red-700">
-                                    Thêm vào giỏ hàng 
-                                </button>
-                            </a>
+
+                    <div class="overflow-hidden px-6">
+                        <div id="sliderWrapper" class="flex gap-2 transition-transform duration-500">
+                            @foreach ($new_products as $productnew)
+                                <div class="flex-shrink-0 w-1/5 flex flex-col items-center gap-1 select-none">
+                                    <a href="{{ route('site.product.detail', ['slug' => $productnew->slug]) }}">
+                                        <img alt="{{ $productnew->name }}" class="w-[100px] h-[100px] object-contain"
+                                            src="{{ asset('images/products/' . $productnew->image) }}" />
+                                    </a>
+                                    <div class="text-[10px] text-[#6B7280]">
+                                        {{ Str::limit($productnew->name, 20) }}
+                                    </div>
+                                    <a href="{{ route('site.product.detail', ['slug' => $productnew->slug]) }}">
+                                        <button
+                                            class="bg-red-600 text-white text-xs rounded px-3 py-1 mt-1 w-full hover:bg-red-700">
+                                            Thêm vào giỏ hàng
+                                        </button>
+                                    </a>
+                                </div>
+                            @endforeach
                         </div>
-                       @endforeach
                     </div>
-                    <button aria-label="Next"
+
+                    <button id="nextBtn" aria-label="Next"
                         class="absolute top-1/2 -right-2 -translate-y-1/2 bg-white border border-[#E4E7F1] rounded-full w-7 h-7 flex items-center justify-center text-[#6B7280] hover:text-black shadow-sm z-10">
-                        <i class="fas fa-chevron-right">
-                        </i>
+                        <i class="fas fa-chevron-right"></i>
                     </button>
                 </div>
+
                 <!-- Chương trình khuyến mãi -->
                 <div class="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-4 select-none">
                     <img src="https://beta-api.bachlongmobile.com/media/MageINIC/bannerslider/Banner-macbookpro-1200x200.jpg"
@@ -200,8 +203,7 @@
                         class="w-full bg-blue-900 text-white text-xs font-semibold rounded px-3 py-2 mb-2 hover:bg-blue-800">
                         Trả góp 0% Qua thẻ tín dụng quốc tế
                     </button>
-                    <button
-                        class="w-full bg-blue-700 text-white text-xs font-semibold rounded px-3 py-2 hover:bg-blue-600">
+                    <button class="w-full bg-blue-700 text-white text-xs font-semibold rounded px-3 py-2 hover:bg-blue-600">
                         Trả góp 0% qua thẻ Visa, Master Card, JCB, AMEX
                     </button>
                 </div>
@@ -214,3 +216,36 @@
 @endsection
 @section('footer')
 @endsection
+<script>
+    window.onload = function() {
+        const wrapper = document.getElementById('sliderWrapper');
+        const items = wrapper.children;
+        const totalItems = items.length;
+        const visibleCount = 5; // số sản phẩm hiển thị
+        let currentIndex = 0;
+
+        function updateSlider() {
+            const itemWidth = items[0].offsetWidth; // width = 20% container
+            wrapper.style.transform = `translateX(-${currentIndex * itemWidth}px)`;
+        }
+
+        window.prevSlide = function() {
+            currentIndex = (currentIndex - 1 + totalItems) % totalItems;
+            updateSlider();
+        }
+
+        window.nextSlide = function() {
+            currentIndex = (currentIndex + 1) % totalItems;
+            // Nếu tràn vượt số sản phẩm có thể hiển thị → reset
+            if (currentIndex > totalItems - visibleCount) {
+                currentIndex = 0;
+            }
+            updateSlider();
+        }
+
+        document.getElementById('prevBtn').onclick = prevSlide;
+        document.getElementById('nextBtn').onclick = nextSlide;
+
+        setInterval(nextSlide, 3000);
+    }
+</script>

@@ -66,14 +66,28 @@
                         <tr>
                         <tr>
                             <td>Tồn kho</td>
-                            <td>{{ $product->quantity}}</td>
+                            <td>{{ $product->quantity }}</td>
                         </tr>
+                        <tr>
                             <td>Hình ảnh sản phẩm</td>
                             <td>
-                                <img style="width: 90px;" src="{{ asset('images/products/' . $product->image) }}"
-                                    alt="{{ $product->image }}">
+                                {{-- Ảnh chính --}}
+                                <img style="width: 120px;" src="{{ asset('images/products/' . $product->image) }}"
+                                    alt="{{ $product->name }}" class="img-thumbnail mb-2">
+
+                                {{-- Các ảnh phụ --}}
+                                @if ($product->images->count() > 0)
+                                    <div class="d-flex flex-wrap">
+                                        @foreach ($product->images as $img)
+                                            <img style="width: 90px;"
+                                                src="{{ asset('images/products/' . $img->image_path) }}" alt="Ảnh phụ"
+                                                class="img-thumbnail mr-2 mb-2">
+                                        @endforeach
+                                    </div>
+                                @endif
                             </td>
                         </tr>
+
                         <tr>
                             <td>Parent_id</td>
                             <td>{{ $product->parent_id }}</td>

@@ -85,7 +85,6 @@
         }
     </style>
     </head>
-
     <body class="bg-white font-sans text-gray-700 text-xs leading-tight">
         <div class="max-w-[1200px] mx-auto px-3 py-3">
             <!-- Breadcrumb -->
@@ -100,33 +99,39 @@
                 <!-- Left: Images -->
                 <div class="w-full lg:w-[55%] flex flex-col">
                     <div class="relative border border-gray-300 rounded-md p-3 flex justify-center items-center">
-                        <button aria-label="Previous image"
-                            class="absolute left-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
+                        <button onclick="prevImage()"
+                            class="absolute left-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 z-10">
                             <i class="fas fa-chevron-left text-lg"></i>
                         </button>
-                        <img src="{{ asset('images/products/' . $product->image) }}" alt="{{ $product->image }}"
-                            alt="Red iPhone 14 front and back view with screen on"
-                            class="max-w-full max-h-[400px] object-contain" width="400" height="400" />
-                        <button aria-label="Next image"
-                            class="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
+                    
+                        <!-- Wrapper chứa tất cả hình -->
+                        <div class="w-full overflow-hidden max-w-[400px] max-h-[400px]">
+                            <div id="carouselWrapper" class="flex transition-transform duration-500">
+                                <img src="{{ asset('images/products/' . $product->image) }}"
+                                     alt="{{ $product->image }}"
+                                     class="w-full h-[400px] object-contain" />
+                                @foreach($product->images as $img)
+                                <img src="{{ asset('images/products/' . $img->image_path) }}"
+                                     alt="{{ $img->image_path }}"
+                                     class="w-full h-[400px] object-contain" />
+                                @endforeach
+                            </div>
+                        </div>
+                    
+                        <button onclick="nextImage()"
+                            class="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 z-10">
                             <i class="fas fa-chevron-right text-lg"></i>
                         </button>
                     </div>
-                    <ul role="list" aria-label="Product color thumbnails"
-                        class="mt-3 flex gap-2 overflow-x-auto scrollbar-hide px-1">
-                        @foreach ($list_product as $related)
-                            <li>
-                                <button
-                                    class="border border-gray-300 rounded-md p-1 focus:outline-none focus:ring-2 focus:ring-yellow-400">
-                                    <a href="{{ route('site.product.detail', ['slug' => $related->slug]) }}">
-                                        <img src="{{ asset('images/products/' . $related->image) }}"
-                                            alt="{{ $related->name }}" class="w-14 h-14 object-contain rounded"
-                                            width="60" height="60" />
-                                    </a>
-                                </button>
-                            </li>
+                    
+                    <div class="flex gap-2 justify-center mt-3">
+                        <img onclick="showImage(0)" class="w-20 h-20 object-cover cursor-pointer border"
+                            src="{{ asset('images/products/' . $product->image) }}">
+                        @foreach($product->images as $index => $img)
+                            <img onclick="showImage({{ $index+1 }})" class="w-20 h-20 object-cover cursor-pointer border"
+                                src="{{ asset('images/products/' . $img->image_path) }}">
                         @endforeach
-                    </ul>
+                    </div>
                 </div>
                 <!-- Right: Product info -->
                 <div class="w-full lg:w-[45%] space-y-3">
@@ -148,48 +153,29 @@
                                 So sánh
                             </button>
                         </div>
-
                         <div class="flex gap-2 mb-2">
-                            <button class="bg-yellow-400 text-black font-semibold rounded px-3 py-1 text-xs">
-                                128GB
-                            </button>
-                            <button class="border border-gray-300 rounded px-3 py-1 text-xs hover:bg-gray-100">
-                                256GB
-                            </button>
-                            <button class="border border-gray-300 rounded px-3 py-1 text-xs hover:bg-gray-100">
-                                512GB
-                            </button>
+                            @foreach ($product->options->pluck('storage_gb')->unique() as $storage)
+                                <button class="border border-gray-300 rounded px-3 py-1 text-xs hover:bg-gray-100
+                                    {{ $loop->first ? 'bg-yellow-400 text-black font-semibold' : '' }}">
+                                    {{ $storage }}GB
+                                </button>
+                            @endforeach
                         </div>
-
                         <p class="text-[10px] mb-2 font-semibold">
                             Chọn màu để xem giá và chi nhánh có hàng
                         </p>
+                        @foreach ($product->options->groupBy('storage_gb') as $storage => $options)
                         <div class="grid grid-cols-3 gap-2 text-[10px] mb-3">
-                            <button class="border border-gray-300 rounded px-2 py-1 text-center hover:bg-gray-100">
-                                <p class="font-semibold">Red</p>
-                                <p>11.990.000 VND</p>
-                            </button>
-                            <button class="border border-gray-300 rounded px-2 py-1 text-center hover:bg-gray-100">
-                                <p class="font-semibold">Starlight</p>
-                                <p>10.890.000 VND</p>
-                            </button>
-                            <button class="border border-gray-300 rounded px-2 py-1 text-center hover:bg-gray-100">
-                                <p class="font-semibold">Midnight</p>
-                                <p>10.890.000 VND</p>
-                            </button>
-                            <button class="border border-gray-300 rounded px-2 py-1 text-center hover:bg-gray-100">
-                                <p class="font-semibold">Purple</p>
-                                <p>11.990.000 VND</p>
-                            </button>
-                            <button class="border border-gray-300 rounded px-2 py-1 text-center hover:bg-gray-100">
-                                <p class="font-semibold">Blue</p>
-                                <p>10.890.000 VND</p>
-                            </button>
-                            <button class="border border-gray-300 rounded px-2 py-1 text-center hover:bg-gray-100">
-                                <p class="font-semibold">Yellow</p>
-                                <p>11.990.000 VND</p>
-                            </button>
+                            @foreach ($options as $option)
+                                <button class="border border-gray-300 rounded px-2 py-1 text-center hover:bg-gray-100">
+                                    <p class="font-semibold">{{ $option->color }}</p>
+                                    <p>
+                                        {{ number_format($option->pricesale > 0 ? $option->pricesale : $option->price_adjust) }} VND
+                                    </p>
+                                </button>
+                            @endforeach
                         </div>
+                        @endforeach
                         <div class="flex gap-3 mb-3">
                             <div class="flex-1 border border-yellow-400 rounded p-2 text-center text-[15px]">
                                 <b>Số lượng còn lại</b>
@@ -278,7 +264,6 @@
                     </div>
                 </div>
             </div>
-
             <div class="flex flex-col lg:flex-row gap-6 mt-6">
                 <!-- Left bottom: Product info and store locations -->
                 <div class="w-full lg:w-[55%] space-y-4">
@@ -294,7 +279,6 @@
                             <p>Giá niêm yết: 420.000 VND</p>
                         </div>
                     </div>
-
                     <div class="border border-gray-300 rounded p-3 space-y-1 text-xs text-red-600 font-semibold">
                         <p>
                             Hàng được ưu tiên từ khách có nhu cầu bán lại, thu cũ đổi mới,
@@ -304,7 +288,6 @@
                         <p>Hỗ trợ đổi trả NSX (Nổi nâng cấp gói bảo hành toàn diện)</p>
                         <p class="text-black">Bảo hành 12 tháng</p>
                     </div>
-
                     <div class="flex items-center gap-2">
                         <p class="text-red-600 font-semibold text-lg">
                             Tạm tính:
@@ -420,7 +403,6 @@
                         </div>
                     </div>
                     <div class="col-lg-4">
-
                         <h3 class="text-red-600 font-semibold text-sm mb-2">Video giới thiệu</h3>
                         <div class="aspect-w-16 aspect-h-9 youtube-container">
                             <iframe width="500px" height="500px"
@@ -429,7 +411,6 @@
                                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                                 allowfullscreen></iframe>
                         </div>
-
                     </div>
                 </div>
             </div>
@@ -445,7 +426,6 @@
                                 aria-selected="false">Bình Luận</button>
                         </div>
                     </nav>
-
                     <div class="tab-content" id="nav-tabContent">
                         <!-- Tab Sản Phẩm Liên Quan -->
                         <div class="tab-pane fade show active" id="nav-home" role="tabpanel"
@@ -460,7 +440,6 @@
                                 </div>
                             </div>
                         </div>
-
                         <!-- Tab Bình Luận -->
                         <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab"
                             tabindex="0">
@@ -478,7 +457,6 @@
                                         </button>
                                     </form>
                                 </div>
-
                                 <!-- Danh sách bình luận -->
                                 <div id="comment-list" class="space-y-4">
                                     <!-- Bình luận mẫu -->
@@ -577,6 +555,40 @@
     @section('footer')
         <!-- SweetAlert2 -->
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+        <script>
+            window.onload = function() {
+                const wrapper = document.getElementById('carouselWrapper');
+                const totalImages = wrapper.children.length;
+                let currentIndex = 0;
+            
+                function updateCarousel() {
+                    wrapper.style.transform = `translateX(-${currentIndex * 100}%)`;
+                }
+            
+                window.showImage = function(index) {
+                    currentIndex = index;
+                    updateCarousel();
+                }
+            
+                window.prevImage = function() {
+                    currentIndex = (currentIndex - 1 + totalImages) % totalImages;
+                    updateCarousel();
+                }
+            
+                window.nextImage = function() {
+                    currentIndex = (currentIndex + 1) % totalImages;
+                    updateCarousel();
+                }
+            
+                setInterval(() => {
+                    nextImage();
+                }, 3000);
+            }
+            </script>
+            
+
+
         <script>
             function handleAddCart(productid) {
                 let qty = document.getElementById("qty").value;
