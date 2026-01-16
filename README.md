@@ -1,561 +1,688 @@
-
-# Website Bán Smartphone - Laravel E-Commerce
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 <div align="center">
 
-![Laravel](https://img.shields.io/badge/Laravel-11.x-FF2D20?style=for-the-badge&logo=laravel&logoColor=white)
-![PHP](https://img.shields.io/badge/PHP-8.2+-777BB4?style=for-the-badge&logo=php&logoColor=white)
-![Bootstrap](https://img.shields.io/badge/Bootstrap-5.x-7952B3?style=for-the-badge&logo=bootstrap&logoColor=white)
-![JavaScript](https://img.shields.io/badge/JavaScript-ES6+-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
-![MySQL](https://img.shields.io/badge/MySQL-8.0+-4479A1?style=for-the-badge&logo=mysql&logoColor=white)
+# 📱 Nền Tảng Thương Mại Điện Tử SmartPhone
 
-**Hệ thống quản lý và bán hàng thương mại điện tử toàn diện**
+### Giải Pháp E-Commerce Hiện Đại Trên Nền Tảng Laravel
 
-[Tính năng](#-tính-năng) • [Cài đặt](#-cài-đặt) • [Hướng dẫn](#-hướng-dẫn-sử-dụng)
+[![Laravel](https://img.shields.io/badge/Laravel-11.x-FF2D20?style=for-the-badge&logo=laravel&logoColor=white)](https://laravel.com)
+[![PHP](https://img.shields.io/badge/PHP-8.2+-777BB4?style=for-the-badge&logo=php&logoColor=white)](https://php.net)
+[![Bootstrap](https://img.shields.io/badge/Bootstrap-5.x-7952B3?style=for-the-badge&logo=bootstrap&logoColor=white)](https://getbootstrap.com)
+[![MySQL](https://img.shields.io/badge/MySQL-8.0+-4479A1?style=for-the-badge&logo=mysql&logoColor=white)](https://mysql.com)
+[![License](https://img.shields.io/badge/License-MIT-green.svg?style=for-the-badge)](LICENSE)
+
+[Tính năng](#-tính-năng-chính) • [Demo](#-demo) • [Cài đặt](#-cài-đặt) • [Tài liệu](#-tài-liệu) • [Hỗ trợ](#-hỗ-trợ)
+
+---
 
 </div>
 
----
+## 📖 Mục Lục
 
-## 📋 Mục lục
-
-- [Giới thiệu](#-giới-thiệu)
-- [Tính năng](#-tính-năng)
+- [Tổng quan](#-tổng-quan)
+- [Tính năng chính](#-tính-năng-chính)
 - [Công nghệ sử dụng](#-công-nghệ-sử-dụng)
 - [Yêu cầu hệ thống](#-yêu-cầu-hệ-thống)
 - [Cài đặt](#-cài-đặt)
-- [Cấu trúc dự án](#-cấu-trúc-dự-án)
+- [Cấu hình](#-cấu-hình)
 - [Hướng dẫn sử dụng](#-hướng-dẫn-sử-dụng)
-- [Screenshots](#-screenshots)
-- [Tác giả](#-tác-giả)
+- [Cấu trúc dự án](#-cấu-trúc-dự-án)
+- [Cấu trúc Database](#-cấu-trúc-database)
+- [Tài liệu API](#-tài-liệu-api)
+- [Ảnh minh họa](#-ảnh-minh-họa)
+- [Triển khai](#-triển-khai)
+- [Đóng góp](#-đóng-góp)
+- [Giấy phép](#-giấy-phép)
+- [Liên hệ](#-liên-hệ)
 
 ---
 
-## 🎯 Giới thiệu
+## 🎯 Tổng Quan
 
-Website Bán Smartphone là một nền tảng thương mại điện tử được xây dựng trên Laravel Framework, chuyên cung cấp các sản phẩm điện thoại thông minh, Laptop, PC,  và phụ kiện công nghệ. Hệ thống được thiết kế với giao diện thân thiện, dễ sử dụng và tích hợp đầy đủ các tính năng cần thiết cho một website bán hàng chuyên nghiệp.
+**Nền Tảng Thương Mại Điện Tử SmartPhone** là một hệ thống bán hàng trực tuyến toàn diện, được xây dựng trên Laravel 11, chuyên cung cấp điện thoại thông minh, laptop, PC và phụ kiện công nghệ. Hệ thống có giao diện hiện đại, responsive với đầy đủ tính năng thương mại điện tử phù hợp cho triển khai thực tế.
 
-### ✨ Điểm nổi bật
+### 🌟 Điểm Nổi Bật
 
-- 🎨 Giao diện hiện đại, responsive trên mọi thiết bị
-- 🔐 Hệ thống phân quyền Admin/User rõ ràng
-- 📦 Quản lý sản phẩm đa dạng với nhiều thuộc tính
-- 🛍️ Giỏ hàng và thanh toán thông minh
-- 📰 Hệ thống tin tức và bài viết tích hợp
-- ♻️ Tính năng xóa mềm và khôi phục dữ liệu
-- 🔍 Tìm kiếm và lọc sản phẩm nâng cao
+```
+✨ Giao diện hiện đại, responsive trên mọi thiết bị
+🔐 Hệ thống phân quyền mạnh mẽ (Admin/User)
+📦 Quản lý sản phẩm nâng cao với nhiều thuộc tính
+🛒 Giỏ hàng thông minh và hệ thống thanh toán
+📰 Quản lý blog và tin tức tích hợp
+♻️ Tính năng xóa mềm với khả năng khôi phục dữ liệu
+🔍 Tìm kiếm và lọc nâng cao
+📊 Dashboard phân tích theo thời gian thực
+🎨 Giao diện và bố cục tùy chỉnh
+🚀 Tối ưu cho hiệu suất và SEO
+```
 
 ---
 
-## 🚀 Tính năng
+## ✨ Tính Năng Chính
 
-### 👨‍💼 Quản trị viên (Admin)
+<table>
+<tr>
+<td width="50%">
 
-#### 📊 Dashboard
-- Thống kê tổng quan doanh thu, đơn hàng
-- Biểu đồ phân tích bán hàng theo thời gian
-- Danh sách đơn hàng mới nhất
+### 👨‍💼 Quản Trị Viên
 
-#### 🛍️ Quản lý sản phẩm
-- ✅ Thêm, sửa, xóa sản phẩm
-- 📸 Upload nhiều hình ảnh cho mỗi sản phẩm
-- 🎨 Quản lý thuộc tính sản phẩm (màu sắc, dung lượng)
-- 💰 Thiết lập giá gốc, giá sale
+#### Dashboard & Phân Tích
+- 📊 Thống kê bán hàng theo thời gian thực
+- 📈 Biểu đồ doanh thu tương tác
+- 📋 Bảng theo dõi đơn hàng
+- 👥 Phân tích khách hàng
 - 📦 Quản lý tồn kho
-- 🗑️ CRUD, xóa mềm và khôi phục sản phẩm
 
-#### 📂 Quản lý danh mục
-- Tạo và quản lý danh mục sản phẩm
-- Cấu trúc danh mục phân cấp
-- CRUD, xóa mềm và khôi phục danh mục
+#### Quản Lý Sản Phẩm
+- ✅ CRUD đầy đủ
+- 📸 Hỗ trợ upload nhiều ảnh
+- 🎨 Thuộc tính sản phẩm (màu sắc, dung lượng)
+- 💰 Quản lý giá và giảm giá
+- 📊 Theo dõi tồn kho
+- ♻️ Xóa mềm & khôi phục
 
-#### 🏷️ Quản lý thương hiệu
-- Quản lý các thương hiệu điện thoại
-- Thêm logo và mô tả thương hiệu
-- CRUD, xóa mềm và khôi phục
+#### Quản Lý Nội Dung
+- 📂 Quản lý danh mục phân cấp
+- 🏷️ Quản lý thương hiệu với logo
+- 📰 Tạo và chỉnh sửa bài viết blog
+- 🎫 Quản lý banner/slider
+- 🗂️ Công cụ tối ưu SEO
 
-#### 📰 Quản lý bài viết
-- Tạo và chỉnh sửa bài viết tin tức
-- Phân loại bài viết theo chủ đề
-- Quản lý hình ảnh bài viết
-- CRUD, xóa mềm và khôi phục
+</td>
+<td width="50%">
 
-#### 🎫 Quản lý Banner/Slider
-- Upload và quản lý banner trang chủ
-- Sắp xếp thứ tự hiển thị
-- Thiết lập link liên kết
+### 👤 Khách Hàng
 
-#### 📋 Quản lý đơn hàng
-- Xem chi tiết đơn hàng
-- Cập nhật trạng thái đơn hàng
-- Thống kê doanh thu
+#### Trải Nghiệm Mua Sắm
+- 🏠 Trang chủ động với sản phẩm nổi bật
+- 🔍 Tìm kiếm và lọc nâng cao
+- 📱 Trang chi tiết sản phẩm với thư viện ảnh
+- 🛒 Giỏ hàng thông minh
+- 💳 Quy trình thanh toán bảo mật
+- 📜 Theo dõi lịch sử đơn hàng
 
-#### 👥 Quản lý thành viên
-- Quản lý tài khoản người dùng
-- Phân quyền Admin/User
-- Xem lịch sử mua hàng
+#### Tài Khoản Người Dùng
+- 👤 Quản lý hồ sơ
+- 🔐 Xác thực bảo mật
+- 📧 Thông báo qua email
+- 💾 Danh sách yêu thích
+- 🔄 Theo dõi đơn hàng
 
-#### 📧 Quản lý liên hệ
-- Xem và trả lời tin nhắn liên hệ
-- Quản lý phản hồi khách hàng
+#### Tính Năng Bổ Sung
+- 📰 Phần blog & tin tức
+- 📞 Form liên hệ
+- 🌍 Hỗ trợ đa ngôn ngữ (sẵn sàng)
+- 💬 Đánh giá của khách hàng
+- 🔔 Hệ thống thông báo
 
-#### 🎯 Quản lý Menu
-- Tùy chỉnh menu điều hướng
-- Sắp xếp thứ tự menu
-
-### 👤 Người dùng (User)
-
-#### 🏠 Trang chủ
-- 🔥 Hiển thị sản phẩm đang sale
-- ⭐ Sản phẩm mới nhất
-- 🎯 Sản phẩm theo danh mục
-- 📱 Sản phẩm theo thương hiệu
-- 🔥 Bài viết mới nhất 
-- 🎪 Banner/Slider quảng cáo
-
-#### 🔍 Tìm kiếm & Lọc
-- Tìm kiếm sản phẩm theo tên
-- Lọc theo danh mục
-- Lọc theo thương hiệu
-- Lọc theo khoảng giá
-- Sắp xếp theo giá, tên, mới nhất
-
-#### 📱 Chi tiết sản phẩm
-- Xem thông tin chi tiết sản phẩm
-- Xem nhiều hình ảnh sản phẩm
-- Chọn thuộc tính (màu sắc, dung lượng)
-- Xem sản phẩm liên quan
-- Thêm vào giỏ hàng
-
-#### 🛒 Giỏ hàng
-- Thêm/Xóa/Cập nhật số lượng
-- Tính toán tổng tiền tự động
-- Áp dụng mã giảm giá (nếu có)
-
-#### 💳 Thanh toán
-- Nhập thông tin giao hàng
-- Chọn phương thức thanh toán
-- Xác nhận đơn hàng
-
-#### 📰 Tin tức & Bài viết
-- Xem danh sách bài viết
-- Xem chi tiết bài viết
-- Bài viết liên quan
-- Phân loại theo chủ đề
-
-#### 👤 Tài khoản cá nhân
-- Xem thông tin cá nhân
-- Lịch sử đơn hàng
-- Cập nhật thông tin
-- Đổi mật khẩu
-
-#### 📞 Liên hệ
-- Gửi tin nhắn liên hệ
-- Thông tin công ty
-- Bản đồ địa chỉ
+</td>
+</tr>
+</table>
 
 ---
 
-## 💻 Công nghệ sử dụng
+## 💻 Công Nghệ Sử Dụng
 
 ### Backend
-- **Framework:** Laravel 11.x
-- **Language:** PHP 8.2+
-- **Database:** MySQL 8.0+
-- **ORM:** Eloquent
+```yaml
+Framework:     Laravel 11.x
+Ngôn ngữ:      PHP 8.2+
+Database:      MySQL 8.0+ / MariaDB 10.6+
+ORM:           Eloquent
+Xác thực:      Laravel Breeze/Sanctum
+Cache:         Redis (tùy chọn)
+Hàng đợi:      Database/Redis
+```
 
 ### Frontend
-- **HTML5** - Cấu trúc trang web
-- **CSS3** - Styling và animations
-- **JavaScript (ES6+)** - Tương tác động
-- **Bootstrap 5.x** - Responsive framework
-- **jQuery** - DOM manipulation
-
-### Libraries & Tools
-- **Font Awesome** - Icons
-- **SweetAlert2** - Beautiful alerts
-- **DataTables** - Advanced tables
-- **Summernote** - WYSIWYG editor
-- **Select2** - Enhanced select boxes
-- **Chart.js** - Data visualization
-
----
-
-## 📋 Yêu cầu hệ thống
-
-- **PHP:** >= 8.2
-- **Composer:** >= 2.5
-- **MySQL:** >= 8.0 hoặc MariaDB >= 10.6
-- **Node.js:** >= 18.x (nếu build assets)
-- **Web Server:** Apache/Nginx
-
-### PHP Extensions
+```yaml
+Template:      Blade Components
+CSS:           Bootstrap 5.x + Custom CSS
+JavaScript:    Vanilla JS (ES6+) + jQuery
+Icons:         Font Awesome 6
+WYSIWYG:       Summernote Editor
+Biểu đồ:       Chart.js
+DataTables:    DataTables.net
+Thông báo:     SweetAlert2
 ```
-- BCMath
-- Ctype
-- Fileinfo
-- JSON
-- Mbstring
-- OpenSSL
-- PDO
-- Tokenizer
-- XML
-- GD hoặc Imagick
+
+### Công Cụ Phát Triển
+```yaml
+Quản lý gói:      Composer, NPM
+Build Tool:       Vite/Laravel Mix
+Quản lý phiên bản: Git
+Chuẩn code:       PSR-12
+Testing:          PHPUnit
 ```
 
 ---
 
-## 🔧 Cài đặt
+## 📋 Yêu Cầu Hệ Thống
 
-### 1️⃣ Clone dự án
-```bash
-git clone https://github.com/yourusername/smartphone-laravel.git
-cd smartphone-laravel
+### Yêu Cầu Tối Thiểu
+
+| Thành phần | Phiên bản |
+|-----------|---------|
+| **PHP** | 8.2 trở lên |
+| **Composer** | 2.5 trở lên |
+| **MySQL/MariaDB** | 8.0+ / 10.6+ |
+| **Node.js** | 18.x trở lên |
+| **Web Server** | Apache 2.4+ / Nginx 1.18+ |
+| **RAM** | Tối thiểu 512 MB |
+| **Ổ cứng** | 1 GB dung lượng trống |
+
+### PHP Extensions Yêu Cầu
+```
+bcmath, ctype, fileinfo, json, mbstring, openssl, 
+pdo, pdo_mysql, tokenizer, xml, gd/imagick, curl, zip
 ```
 
-### 2️⃣ Cài đặt dependencies
+### Khuyến Nghị Cho Production
+```
+- PHP 8.3+ với OPcache được bật
+- RAM 2GB trở lên
+- Ổ cứng SSD
+- Chứng chỉ SSL
+- Tích hợp CDN
+```
+
+---
+
+## 🔧 Cài Đặt
+
+### Bắt Đầu Nhanh (5 phút)
+
 ```bash
-# Cài đặt PHP dependencies
+# 1. Clone repository
+git clone https://github.com/HoangPhungThanhDat/Website_SmartPhone_LARAVEL.git
+cd Website_SmartPhone_LARAVEL
+
+# 2. Cài đặt PHP dependencies
 composer install
 
-# Cài đặt Node dependencies (nếu cần)
+# 3. Cài đặt Node dependencies
 npm install
-```
 
-### 3️⃣ Cấu hình môi trường
-```bash
-# Copy file .env
+# 4. Thiết lập môi trường
 cp .env.example .env
-
-# Generate application key
 php artisan key:generate
+
+# 5. Cấu hình database trong file .env
+# Chỉnh sửa DB_DATABASE, DB_USERNAME, DB_PASSWORD
+
+# 6. Chạy migrations và seeders
+php artisan migrate --seed
+
+# 7. Tạo symbolic link cho storage
+php artisan storage:link
+
+# 8. Build frontend assets
+npm run build
+
+# 9. Khởi chạy server development
+php artisan serve
 ```
 
-### 4️⃣ Cấu hình Database
+Truy cập `http://localhost:8000` 🎉
 
-Mở file `.env` và cập nhật thông tin database:
+### Cài Đặt Với Docker (Thay thế)
+
+```bash
+# Sử dụng Laravel Sail
+./vendor/bin/sail up -d
+./vendor/bin/sail artisan migrate --seed
+```
+
+---
+
+## ⚙️ Cấu Hình
+
+### Biến Môi Trường
+
+Tạo và cấu hình file `.env`:
+
 ```env
+# Ứng dụng
+APP_NAME="SmartPhone Store"
+APP_ENV=local
+APP_DEBUG=true
+APP_URL=http://localhost:8000
+
+# Database
 DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
 DB_PORT=3306
 DB_DATABASE=smartphone_db
 DB_USERNAME=root
 DB_PASSWORD=your_password
+
+# Cấu hình Email (cho thông báo)
+MAIL_MAILER=smtp
+MAIL_HOST=smtp.gmail.com
+MAIL_PORT=587
+MAIL_USERNAME=your_email@gmail.com
+MAIL_PASSWORD=your_app_password
+MAIL_ENCRYPTION=tls
+MAIL_FROM_ADDRESS=noreply@yourstore.com
+MAIL_FROM_NAME="${APP_NAME}"
+
+# Cổng thanh toán (nếu có)
+PAYMENT_GATEWAY_KEY=your_key
+PAYMENT_GATEWAY_SECRET=your_secret
+
+# Cache & Session
+CACHE_DRIVER=file
+SESSION_DRIVER=file
+QUEUE_CONNECTION=sync
 ```
 
-### 5️⃣ Chạy Migration và Seeder
-```bash
-# Tạo tables
-php artisan migrate
+### Thông Tin Đăng Nhập Admin Mặc Định
 
-# Import dữ liệu mẫu (nếu có)
-php artisan db:seed
+```
+Email:    admin@example.com
+Mật khẩu: admin123
 ```
 
-### 6️⃣ Tạo symbolic link cho storage
-```bash
-php artisan storage:link
+> ⚠️ **Lưu ý Bảo mật**: Đổi thông tin đăng nhập mặc định ngay sau lần đăng nhập đầu tiên!
+
+---
+
+## 📖 Hướng Dẫn Sử Dụng
+
+### Dành Cho Quản Trị Viên
+
+#### 1. Truy Cập Trang Quản Trị
+```
+URL: http://yourdomain.com/admin/login
 ```
 
-### 7️⃣ Khởi chạy ứng dụng
-```bash
-# Development server
-php artisan serve
-
-# Hoặc sử dụng với port tùy chỉnh
-php artisan serve --port=8080
+#### 2. Quy Trình Quản Lý Sản Phẩm
+```
+Dashboard → Sản phẩm → Thêm mới
+↓
+Điền thông tin sản phẩm (tên, danh mục, thương hiệu, giá)
+↓
+Upload hình ảnh sản phẩm (hỗ trợ nhiều ảnh)
+↓
+Thêm biến thể sản phẩm (màu sắc, dung lượng)
+↓
+Thiết lập mức tồn kho
+↓
+Lưu & Xuất bản
 ```
 
-Truy cập: `http://localhost:8000`
+#### 3. Quản Lý Đơn Hàng
+```
+Đơn hàng → Xem tất cả
+↓
+Click vào đơn hàng để xem chi tiết
+↓
+Cập nhật trạng thái (Chờ xử lý → Đang xử lý → Đã giao → Hoàn thành)
+↓
+In hóa đơn (tùy chọn)
+```
 
-### 8️⃣ Build Assets (Optional)
-```bash
-# Development
-npm run dev
+### Dành Cho Khách Hàng
 
-# Production
-npm run build
+#### 1. Quy Trình Mua Hàng
+```
+Duyệt sản phẩm → Chọn sản phẩm → Chọn thuộc tính
+↓
+Thêm vào giỏ → Xem giỏ hàng → Tiến hành thanh toán
+↓
+Nhập thông tin giao hàng → Chọn phương thức thanh toán
+↓
+Xác nhận đơn hàng → Nhận email xác nhận
+```
 
-# Watch mode
-npm run watch
+#### 2. Quản Lý Tài Khoản
+```
+Đăng ký/Đăng nhập → Tài khoản của tôi
+↓
+Xem hồ sơ | Lịch sử đơn hàng | Yêu thích | Cài đặt
 ```
 
 ---
 
-## 📁 Cấu trúc dự án
+## 📁 Cấu Trúc Dự Án
+
 ```
-Website_SmartPhone_LARAVEL/
+smartphone-laravel/
+│
 ├── 📂 app/
 │   ├── Http/
 │   │   ├── Controllers/
-│   │   │   ├── backend/          # Admin controllers
+│   │   │   ├── Backend/          # Controllers quản trị
 │   │   │   │   ├── DashboardController.php
 │   │   │   │   ├── ProductController.php
 │   │   │   │   ├── CategoryController.php
-│   │   │   │   ├── BrandController.php
 │   │   │   │   ├── OrderController.php
-│   │   │   │   ├── PostController.php
-│   │   │   │   ├── BannerController.php
-│   │   │   │   ├── UserController.php
 │   │   │   │   └── ...
-│   │   │   └── fontend/          # User controllers
+│   │   │   └── Frontend/         # Controllers khách hàng
 │   │   │       ├── HomeController.php
-│   │   │       ├── SanPhamController.php
+│   │   │       ├── ProductController.php
 │   │   │       ├── CartController.php
-│   │   │       ├── BaiVietController.php
 │   │   │       └── ...
 │   │   ├── Middleware/
-│   │   └── Requests/             # Form validations
-│   ├── Models/                   # Eloquent models
+│   │   │   ├── AdminMiddleware.php
+│   │   │   └── ...
+│   │   └── Requests/             # Validation form
+│   │       ├── ProductRequest.php
+│   │       └── ...
+│   │
+│   ├── Models/
 │   │   ├── Product.php
 │   │   ├── Category.php
-│   │   ├── Brand.php
 │   │   ├── Order.php
-│   │   ├── Post.php
+│   │   ├── User.php
 │   │   └── ...
-│   └── View/
-│       └── Components/           # Blade components
-├── 📂 public/
-│   ├── images/                   # Static images
-│   ├── css/                      # Stylesheets
-│   ├── js/                       # JavaScript files
-│   ├── bootstrap/
-│   ├── fontawesome-free/
-│   └── plugins/                  # Third-party plugins
-├── 📂 resources/
-│   └── views/
-│       ├── backend/              # Admin views
-│       │   ├── dashboard/
-│       │   ├── product/
-│       │   ├── category/
-│       │   ├── brand/
-│       │   ├── order/
-│       │   ├── post/
-│       │   └── ...
-│       ├── fontend/              # User views
-│       │   ├── home.blade.php
-│       │   ├── sanpham.blade.php
-│       │   ├── product_detail.blade.php
-│       │   ├── cart.blade.php
-│       │   ├── baiviet.blade.php
-│       │   └── ...
-│       ├── components/           # Reusable components
-│       └── layouts/
-│           ├── admin.blade.php
-│           └── site.blade.php
-├── 📂 routes/
-│   └── web.php                   # Route definitions
+│   │
+│   └── Services/                 # Logic nghiệp vụ
+│       ├── ProductService.php
+│       └── OrderService.php
+│
 ├── 📂 database/
-│   ├── migrations/               # Database migrations
-│   └── seeders/                  # Data seeders
+│   ├── migrations/
+│   ├── seeders/
+│   │   ├── DatabaseSeeder.php
+│   │   ├── ProductSeeder.php
+│   │   └── ...
+│   └── factories/
+│
+├── 📂 public/
+│   ├── css/
+│   ├── js/
+│   ├── images/
+│   └── uploads/                  # Files người dùng tải lên
+│
+├── 📂 resources/
+│   ├── views/
+│   │   ├── backend/
+│   │   │   ├── layouts/
+│   │   │   ├── dashboard/
+│   │   │   ├── products/
+│   │   │   └── ...
+│   │   ├── frontend/
+│   │   │   ├── layouts/
+│   │   │   ├── home.blade.php
+│   │   │   ├── products/
+│   │   │   └── ...
+│   │   └── components/
+│   ├── css/
+│   └── js/
+│
+├── 📂 routes/
+│   ├── web.php                   # Routes web
+│   ├── api.php                   # Routes API (nếu cần)
+│   └── console.php
+│
+├── 📂 config/                    # Files cấu hình
+├── 📂 storage/                   # Files tạo tự động
+├── 📂 tests/                     # Unit & Feature tests
+│
 ├── .env.example
 ├── composer.json
 ├── package.json
+├── artisan
 └── README.md
 ```
 
----
 
-## 📖 Hướng dẫn sử dụng
 
-### 🔐 Đăng nhập Admin
+## 📸 Ảnh Minh Họa
 
-1. Truy cập: `http://localhost:8000/admin/login`
-2. Thông tin đăng nhập mặc định:
-```
-   Email: admin@example.com
-   Password: admin123
-```
+<table>
+<tr>
+<td width="50%">
 
-### 👤 Đăng ký tài khoản User
+### 🏠 Giao Diện Khách Hàng
+![Trang chủ](public/image/Anh1.jpg)
+*Trang chủ hiện đại, responsive với sản phẩm nổi bật*
 
-1. Truy cập: `http://localhost:8000/register`
-2. Điền thông tin đăng ký
-3. Đăng nhập và mua sắm
+</td>
+<td width="50%">
 
-### 🛍️ Quy trình mua hàng
+### 👨‍💼 Dashboard Admin
+![Admin Dashboard](public/image/Anh2.jpg)
+*Bảng điều khiển quản trị toàn diện*
 
-1. **Duyệt sản phẩm** → Chọn sản phẩm yêu thích
-2. **Thêm vào giỏ** → Chọn màu sắc, dung lượng
-3. **Xem giỏ hàng** → Kiểm tra sản phẩm
-4. **Thanh toán** → Nhập thông tin giao hàng
-5. **Xác nhận** → Hoàn tất đơn hàng
+</td>
+</tr>
+<tr>
+<td>
 
-### ⚙️ Quản lý sản phẩm (Admin)
+### 🛒 Giỏ Hàng
+![Giỏ hàng](public/image/Anh3.jpg)
+*Giỏ hàng thông minh với tính toán thời gian thực*
 
-1. Đăng nhập Admin
-2. Vào **Quản lý sản phẩm**
-3. Click **Thêm mới** để tạo sản phẩm
-4. Điền đầy đủ thông tin:
-   - Tên sản phẩm
-   - Danh mục
-   - Thương hiệu
-   - Giá gốc/Giá sale
-   - Mô tả chi tiết
-   - Upload hình ảnh
-   - Thêm thuộc tính (màu sắc, dung lượng)
-5. **Lưu** để hoàn tất
+</td>
+<td>
 
-### ♻️ Xóa mềm và Khôi phục
-```php
-// Xóa mềm
-$product->delete();
+### 📱 Chi Tiết Sản Phẩm
+![Chi tiết sản phẩm](public/image/Anh4.jpg)
+*Trang chi tiết với thư viện ảnh*
 
-// Xem dữ liệu đã xóa
-$trashedProducts = Product::onlyTrashed()->get();
-
-// Khôi phục
-$product->restore();
-
-// Xóa vĩnh viễn
-$product->forceDelete();
-```
+</td>
+</tr>
+</table>
 
 ---
 
-## 📸 Screenshots
+## 🚀 Triển Khai
 
-### 🏠 Trang chủ
-![Home Page](screenshots/home.png)
+### Tối Ưu Cho Production
 
-### 📱 Chi tiết sản phẩm
-![Product Detail](screenshots/product-detail.png)
-
-### 🛒 Giỏ hàng
-![Shopping Cart](screenshots/cart.png)
-
-### 👨‍💼 Admin Dashboard
-![Admin Dashboard](screenshots/admin-dashboard.png)
-
-### 📊 Quản lý sản phẩm
-![Product Management](screenshots/product-management.png)
-
----
-
-## 🗄️ Database Schema
-
-### Bảng chính
-```sql
--- users: Quản lý người dùng
--- categories: Danh mục sản phẩm
--- brands: Thương hiệu
--- products: Sản phẩm
--- product_images: Hình ảnh sản phẩm
--- product_options: Thuộc tính sản phẩm (màu, dung lượng)
--- orders: Đơn hàng
--- orderdetails: Chi tiết đơn hàng
--- posts: Bài viết
--- topics: Chủ đề bài viết
--- banners: Banner/Slider
--- menus: Menu điều hướng
--- contacts: Liên hệ
-```
-
----
-
-## 🔒 Bảo mật
-
-- ✅ CSRF Protection
-- ✅ XSS Protection
-- ✅ SQL Injection Prevention (Eloquent ORM)
-- ✅ Password Hashing (BCrypt)
-- ✅ Authentication & Authorization
-- ✅ Input Validation & Sanitization
-- ✅ Secure Session Management
-
----
-
-## 🚀 Deployment
-
-### Production Checklist
 ```bash
-# 1. Optimize configuration
+# 1. Cache cấu hình
 php artisan config:cache
 php artisan route:cache
 php artisan view:cache
 
-# 2. Build assets
+# 2. Tối ưu autoloader
+composer install --optimize-autoloader --no-dev
+
+# 3. Build production assets
 npm run build
 
-# 3. Set permissions
+# 4. Thiết lập quyền đúng
 chmod -R 755 storage bootstrap/cache
 chown -R www-data:www-data storage bootstrap/cache
-
-# 4. Update .env
-APP_ENV=production
-APP_DEBUG=false
 ```
 
-### Khuyến nghị Server
+### Cấu Hình Môi Trường
 
-- **RAM:** >= 2GB
-- **Disk:** >= 10GB SSD
-- **PHP:** >= 8.2 with OPcache
-- **Database:** MySQL 8.0+ hoặc MariaDB 10.6+
-- **SSL Certificate:** Bắt buộc cho production
+```env
+APP_ENV=production
+APP_DEBUG=false
+APP_URL=https://yourdomain.com
+
+# Bật cache cho production
+CACHE_DRIVER=redis
+SESSION_DRIVER=redis
+QUEUE_CONNECTION=redis
+```
+
+### Cấu Hình Web Server
+
+#### Apache (.htaccess)
+```apache
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteRule ^(.*)$ public/$1 [L]
+</IfModule>
+```
+
+#### Nginx
+```nginx
+server {
+    listen 80;
+    server_name yourdomain.com;
+    root /var/www/smartphone-laravel/public;
+
+    add_header X-Frame-Options "SAMEORIGIN";
+    add_header X-Content-Type-Options "nosniff";
+
+    index index.php;
+
+    location / {
+        try_files $uri $uri/ /index.php?$query_string;
+    }
+
+    location ~ \.php$ {
+        fastcgi_pass unix:/var/run/php/php8.2-fpm.sock;
+        fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
+        include fastcgi_params;
+    }
+}
+```
+
+---
+
+## 🔒 Tính Năng Bảo Mật
+
+```
+✅ Bảo vệ CSRF (Laravel tích hợp sẵn)
+✅ Phòng chống XSS (Blade auto-escaping)
+✅ Phòng chống SQL Injection (Eloquent ORM)
+✅ Mã hóa mật khẩu (BCrypt)
+✅ Xác thực hai yếu tố (sẵn sàng triển khai)
+✅ Giới hạn tần suất request
+✅ Quản lý session bảo mật
+✅ Validation & Sanitization đầu vào
+✅ Kiểm tra file upload
+✅ Bắt buộc HTTPS (production)
+```
+
+---
+
+## 🧪 Testing
+
+```bash
+# Chạy tất cả tests
+php artisan test
+
+# Chạy test suite cụ thể
+php artisan test --testsuite=Feature
+
+# Chạy với coverage
+php artisan test --coverage
+```
+
+---
+
+## 🤝 Đóng Góp
+
+Chúng tôi hoan nghênh mọi đóng góp! Đây là cách bạn có thể giúp đỡ:
+
+### Quy Trình Đóng Góp
+
+1. **Fork** repository
+2. **Tạo** branch tính năng
+   ```bash
+   git checkout -b feature/TinhNangTuyetVoi
+   ```
+3. **Commit** thay đổi của bạn
+   ```bash
+   git commit -m 'Thêm tính năng tuyệt vời'
+   ```
+4. **Push** lên branch
+   ```bash
+   git push origin feature/TinhNangTuyetVoi
+   ```
+5. **Mở** Pull Request
+
+### Chuẩn Code
+
+- Tuân thủ chuẩn PSR-12
+- Viết commit message có ý nghĩa
+- Thêm tests cho tính năng mới
+- Cập nhật tài liệu khi cần
+- Giữ PRs nhỏ gọn và tập trung
 
 ---
 
 ## 📝 Changelog
 
-### Version 1.0.0 (2025-01)
-- ✨ Ra mắt phiên bản đầu tiên
-- 🎯 Đầy đủ tính năng quản lý sản phẩm
-- 🛍️ Hệ thống giỏ hàng và thanh toán
-- 📰 Quản lý bài viết tin tức
-- ♻️ Xóa mềm và khôi phục dữ liệu
-- 🎨 Giao diện responsive
+### Phiên bản 1.0.0 (Tháng 1/2025)
+
+#### ✨ Tính Năng Mới
+- Hệ thống quản lý sản phẩm hoàn chỉnh
+- Giỏ hàng và thanh toán
+- Quản lý blog và tin tức
+- Khả năng xóa mềm và khôi phục
+- Dashboard quản trị responsive
+- Tìm kiếm và lọc nâng cao
+
+#### 🐛 Sửa Lỗi
+- N/A (Phiên bản đầu tiên)
+
+#### 📚 Tài Liệu
+- README hoàn chỉnh
+- Hướng dẫn cài đặt
+- Tài liệu API
 
 ---
 
-## 🤝 Đóng góp
+## 📄 Giấy Phép
 
-Mọi đóng góp đều được chào đón! Hãy tạo Pull Request hoặc mở Issue nếu bạn có ý tưởng cải thiện.
+Dự án này được cấp phép theo **Giấy phép MIT**.
 
-### Quy trình đóng góp
+```
+MIT License
 
-1. Fork dự án
-2. Tạo branch mới (`git checkout -b feature/AmazingFeature`)
-3. Commit changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to branch (`git push origin feature/AmazingFeature`)
-5. Mở Pull Request
+Copyright (c) 2025 Hoàng Phụng Thành Đạt
 
----
+Theo đây cấp phép miễn phí cho bất kỳ ai có được bản sao
+của phần mềm này và các tệp tài liệu liên quan ("Phần mềm"),
+để xử lý Phần mềm mà không bị hạn chế, bao gồm nhưng không
+giới hạn quyền sử dụng, sao chép, sửa đổi, hợp nhất, xuất bản,
+phân phối, cấp phép con và/hoặc bán các bản sao của Phần mềm.
+```
 
-## 📄 Giấy phép
-
-Dự án này được phân phối dưới giấy phép MIT. Xem file `LICENSE` để biết thêm chi tiết.
-
----
-
-## 👨‍💻 Tác giả
-
-**Hoàng Phụng Thành Đạt**
-
-- 📧 Email: hoangdatcoder@gmail.com
-- 🌐 Website: [Portfolio](https://portfolio-hoang-dat.vercel.app/)
-- 💼 LinkedIn: [Linkedin](https://www.linkedin.com/in/%C4%91%E1%BA%A1t-ho%C3%A0ng-69b60a327)
-- 🐙 GitHub: [Github](https://github.com/HoangPhungThanhDat)
+Xem file [LICENSE](LICENSE) để biết chi tiết đầy đủ.
 
 ---
 
-## 🙏 Lời cảm ơn
+## 👨‍💻 Tác Giả
 
-- [Laravel](https://laravel.com/) - Framework tuyệt vời
-- [Bootstrap](https://getbootstrap.com/) - CSS Framework
-- [Font Awesome](https://fontawesome.com/) - Icons
-- [AdminLTE](https://adminlte.io/) - Admin template inspiration
-- Và tất cả các thư viện mã nguồn mở đã sử dụng
+<div align="center">
+
+### Hoàng Phụng Thành Đạt
+
+**Full-Stack Developer | Laravel Enthusiast**
+
+[![Email](https://img.shields.io/badge/Email-hoangdatcoder%40gmail.com-red?style=for-the-badge&logo=gmail&logoColor=white)](mailto:hoangdatcoder@gmail.com)
+[![Portfolio](https://img.shields.io/badge/Portfolio-Ghé%20thăm-blue?style=for-the-badge&logo=google-chrome&logoColor=white)](https://portfolio-hoang-dat.vercel.app/)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Kết%20nối-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/%C4%91%E1%BA%A1t-ho%C3%A0ng-69b60a327)
+[![GitHub](https://img.shields.io/badge/GitHub-Theo%20dõi-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/HoangPhungThanhDat)
+
+</div>
 
 ---
 
-## 📞 Hỗ trợ
+## 🙏 Lời Cảm Ơn
 
-Nếu bạn thích dự án này, hãy cho một ⭐️ trên GitHub!
+Xin gửi lời cảm ơn đặc biệt đến các dự án mã nguồn mở tuyệt vời:
 
-Có câu hỏi? [Mở một issue](https://github.com/yourusername/smartphone-laravel/issues)
+- [Laravel](https://laravel.com/) - PHP Framework dành cho Web Artisans
+- [Bootstrap](https://getbootstrap.com/) - Framework CSS phổ biến nhất thế giới
+- [Font Awesome](https://fontawesome.com/) - Bộ font và CSS toolkit
+- [Chart.js](https://www.chartjs.org/) - Thư viện biểu đồ JavaScript đơn giản
+- [SweetAlert2](https://sweetalert2.github.io/) - Thông báo đẹp và responsive
+- [DataTables](https://datatables.net/) - Bảng nâng cao dễ dàng
+- [Summernote](https://summernote.org/) - WYSIWYG editor đơn giản
+
+Và tất cả các nhà đóng góp và người duy trì của các thư viện mã nguồn mở được sử dụng trong dự án này.
 
 ---
+
+## 💬 Hỗ Trợ
+
+### Cần Giúp Đỡ?
+
+- 📖 Xem [Tài liệu](#-tài-liệu)
+- 🐛 Báo lỗi qua [GitHub Issues](https://github.com/HoangPhungThanhDat/Website_SmartPhone_LARAVEL/issues)
+- 💬 Đặt câu hỏi trong [Discussions](https://github.com/HoangPhungThanhDat/Website_SmartPhone_LARAVEL/discussions)
+- 📧 Email:
 
 <div align="center">
 
